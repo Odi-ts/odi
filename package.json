@@ -1,0 +1,53 @@
+{
+  "name": "odi",
+  "version": "0.0.1",
+  "description": "",
+  "main": "lib/src/index.js",
+  "typings": "lib/src/index.d.ts",
+  "scripts": {
+    "test": "tsc && node lib/test/index.js",
+    "bench": "node benchmark/bench"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/glob": "^5.0.34",
+    "@types/jsonwebtoken": "^7.2.5",
+    "@types/koa-bodyparser": "^5.0.1",
+    "@types/koa-compress": "^2.0.8",
+    "@types/koa-mount": "^3.0.1",
+    "@types/koa-router": "^7.0.31",
+    "@types/koa-static": "^4.0.0",
+    "@types/koa-views": "^2.0.3",
+    "@types/koa__cors": "^2.2.3",
+    "@types/lodash": "^4.14.93",
+    "@types/nanoid": "^1.2.0",
+    "@types/node": "^9.3.0",
+    "@types/passport": "^0.4.6",
+    "@types/reflect-metadata": "^0.1.0",
+    "@types/socket.io": "^1.4.31",
+    "@types/strip-json-comments": "0.0.30",
+    "@types/uniqid": "^4.1.2"
+  },
+  "dependencies": {
+    "autocannon": "^2.4.1",
+    "chalk": "^2.3.1",
+    "glob": "^7.1.2",
+    "jsonwebtoken": "^8.1.1",
+    "koa": "^2.5.2",
+    "koa-bodyparser": "^4.2.1",
+    "koa-compress": "^3.0.0",
+    "koa-ejs": "^4.1.2",
+    "koa-mount": "^3.0.0",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
+    "koa-views": "^6.1.4",
+    "lodash": "^4.17.10",
+    "nanoid": "^1.2.2",
+    "passport": "^0.4.0",
+    "reflect-metadata": "^0.1.10",
+    "socket.io": "^2.0.4",
+    "typeorm": "^0.1.12",
+    "uniqid": "^5.0.3"
+  }
+}
