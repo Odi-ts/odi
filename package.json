@@ -27,10 +27,11 @@
     "@types/reflect-metadata": "^0.1.0",
     "@types/socket.io": "^1.4.31",
     "@types/strip-json-comments": "0.0.30",
-    "@types/uniqid": "^4.1.2"
+    "@types/uniqid": "^4.1.2",
+    
+    "autocannon": "^2.4.1"
   },
   "dependencies": {
-    "autocannon": "^2.4.1",
     "chalk": "^2.3.1",
     "glob": "^7.1.2",
     "jsonwebtoken": "^8.1.1",
