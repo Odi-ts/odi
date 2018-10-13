@@ -42,7 +42,7 @@ export class ControllersLoader implements ILoader {
 
             const router = new Router({ prefix: base.path });
 
-            for (let propertyKey of [...reflectProperties(target), ...reflectOwnProperties(target)]) {               
+            for (let propertyKey of [...reflectOwnProperties(target)]) {               
                 if (isRouteHandler(target, propertyKey)) {       
                     const meta = metadata(target, propertyKey);
                     
