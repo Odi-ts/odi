@@ -35,7 +35,7 @@ export function reflectOwnProperties(obj: any): string[]{
     return Object.getOwnPropertyNames(proto);
 }
 
-export function reflectParameters(target: any, key?: string): any[]{
+export function reflectParameters(target: any, key?: string | symbol): any[]{
     if(key){
         return Reflect.getMetadata("design:paramtypes", target, key);
     }
