@@ -62,6 +62,10 @@ export function RenderController<T>(path?: BasePath){
     return controllerFactory(path, { type: ControllerType.Render })
 }
 
+export function Data(): ClassDecorator {
+    return (target: any) => Reflect.defineMetadata(keys.DATA_CLASS, true, target);
+}
+
 
 export const Get: RouteHandlerDecorator = handlerFactory('get');
 export const Post: RouteHandlerDecorator = handlerFactory('post');

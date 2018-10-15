@@ -87,10 +87,12 @@ export class ControllersLoader implements ILoader {
         const result = [];
 
         for(const param of params) {
-            if(typeof param === 'string')
-                result.push(ctx.params[param]);
-            else if(typeof param === 'object')               
-                result.push(Reflect.hasMetadata(param, keys.DATA_CLASS) ? await transformAndValidate(ctx.body, param) : undefined);            
+            if(param.type.name === 'String')
+                result.push(ctx.params[param.name]);
+
+            /* Treat like constructor */
+            else if(param.type === 'function')            
+                result.push(Reflect.hasMetadata(keys.DATA_CLASS, param.type) ? await transformAndValidate(ctx.body, param) : undefined);            
             else
                 result.push(undefined);
         }
