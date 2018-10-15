@@ -15,7 +15,7 @@ import { MiddlewareFunction } from '../middleware/middleware.decorators';
 import { metadata } from '../../utils/metadata.utils';
 import { IController } from './controller.interface';
 import { IHttpError } from '../../errors/http.error';
-import { plainToClass } from 'class-transformer';
+import { transformAndValidate } from 'class-transformer-validator';
 
 export type AuthMetadata = any;
 export interface LoaderOptions {
@@ -70,7 +70,7 @@ export class ControllersLoader implements ILoader {
             const ctrl = this.bindController(target)['applyContext'](ctx);
     
             try {                
-                ctx.body = await ctrl[property].call(ctrl, ...this.bindParams(ctx, params));
+                ctx.body = await ctrl[property].call(ctrl, ...(await this.bindParams(ctx, params)));
             } catch (error) {
                 
                 if(error instanceof IHttpError){
@@ -83,15 +83,19 @@ export class ControllersLoader implements ILoader {
         }
     }
 
-    public bindParams(ctx: IRouterContext, params: FunctionParam[]) {
-        return params.map(elem => { 
-            if(typeof elem === 'string')
-                return ctx.params[elem];
-            else if(typeof elem === 'object')               
-                return Reflect.hasMetadata(elem, keys.DATA_CLASS) ? plainToClass(ctx.body, elem) : undefined            
+    public async bindParams(ctx: IRouterContext, params: FunctionParam[]) {
+        const result = [];
+
+        for(const param of params) {
+            if(typeof param === 'string')
+                result.push(ctx.params[param]);
+            else if(typeof param === 'object')               
+                result.push(Reflect.hasMetadata(param, keys.DATA_CLASS) ? await transformAndValidate(ctx.body, param) : undefined);            
             else
-                return undefined;
-        });
+                result.push(undefined);
+        }
+
+        return result;
     }
 
     public bindController(target: IController){
