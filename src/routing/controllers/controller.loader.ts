@@ -15,7 +15,7 @@ import { MiddlewareFunction } from '../middleware/middleware.decorators';
 import { metadata } from '../../utils/metadata.utils';
 import { IController } from './controller.interface';
 import { IHttpError } from '../../errors/http.error';
-import { transformAndValidate } from 'class-transformer-validator';
+import { plainToClass } from 'class-transformer';
 
 export type AuthMetadata = any;
 export interface LoaderOptions {
@@ -68,7 +68,7 @@ export class ControllersLoader implements ILoader {
     public bindHandler(target: IController, property: string, params: FunctionParam[]) {
         return async (ctx: IRouterContext, next: () => Promise<any>) => {
             const ctrl = this.bindController(target)['applyContext'](ctx);
-    
+
             try {                
                 ctx.body = await ctrl[property].call(ctrl, ...(await this.bindParams(ctx, params)));
             } catch (error) {
@@ -91,8 +91,8 @@ export class ControllersLoader implements ILoader {
                 result.push(ctx.params[param.name]);
 
             /* Treat like constructor */
-            else if(param.type === 'function')            
-                result.push(Reflect.hasMetadata(keys.DATA_CLASS, param.type) ? await transformAndValidate(ctx.body, param) : undefined);            
+            else if(typeof param.type === 'function')    
+                result.push(Reflect.hasMetadata(keys.DATA_CLASS, param.type) ? await plainToClass(param.type, ctx.request.body) : undefined);  
             else
                 result.push(undefined);
         }

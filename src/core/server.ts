@@ -72,8 +72,8 @@ export class Core{
     protected afterDependeciesLoad(){};
     
     protected setMiddleware(): void{
-        this.app.use(compress())
-        this.app.use(bodyparser())
+        this.app.use(compress());
+        this.app.use(bodyparser());
     }
 
     protected setDatabase(): Promise<Connection> {
