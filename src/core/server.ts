@@ -51,11 +51,7 @@ export class Core{
         this.options = options;
         this.dependencyComposer = new DependencyComposer();
         
-        this.app = new Koa();
-      
-        this.setUp()
-            .then(result => this.listen())
-            .catch(error => console.log(error))
+        this.app = new Koa();      
     }   
 
     private async setUp(): Promise<any>{
@@ -95,8 +91,10 @@ export class Core{
         await this.dependencyLoader.compose();
     }
 
-    public listen(){
-        this.server.listen(this.options.server.port, (e: any) => console.log('Server was successfully started'))
+    public async listen(){
+        await this.setUp();
+
+        this.server.listen(this.options.server.port, (port: any) => console.log(`Server was successfully started on - ${port} port`));
     }
     
 }

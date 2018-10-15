@@ -45,9 +45,9 @@ export function handlerFactory(method: string): PropertyDecorator{
 }
 
 function controllerFactory(path?: BasePath, options? : object){
-    path = path || '';
+    path = !path || path === '/' ? '' : path;
 
-    if(path !== '' && path.charAt(0) !== '/'){
+    if((path !== '') && path.charAt(0) !== '/'){
         throw new Error(`Controller Parsing Error : ${path}. '/' should be at the beginning of the path.`);
     }
 
