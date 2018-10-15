@@ -28,11 +28,11 @@
     "@types/socket.io": "^1.4.31",
     "@types/strip-json-comments": "0.0.30",
     "@types/uniqid": "^4.1.2",
-    
     "autocannon": "^2.4.1"
   },
   "dependencies": {
     "chalk": "^2.3.1",
+    "class-transformer": "^0.1.9",
     "glob": "^7.1.2",
     "jsonwebtoken": "^8.1.1",
     "koa": "^2.5.2",

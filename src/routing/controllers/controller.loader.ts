@@ -7,15 +7,15 @@ import DependencyComposer from '../../dependency/dependency.composer';
 
 import { IRouterContext } from 'koa-router'
 import { RouteMetadata, isRouteHandler, ControllerMeta, ControllerType, Returning} from './controller.decorators'
-import { RFunction, reflectProperties, ILoader, reflectOwnProperties } from '../../utils/directory.loader';
+import { RFunction, ILoader, reflectOwnProperties } from '../../utils/directory.loader';
 import { CoreAuth } from '../../auth/local/auth.interface';
 import { extractAuth, extractUser } from './controller.middleware';
-import { fnArgsList, getFunctionArgs, FunctionParam } from '../../utils/function.reflection';
+import { getFunctionArgs, FunctionParam } from '../../utils/function.reflection';
 import { MiddlewareFunction } from '../middleware/middleware.decorators';
 import { metadata } from '../../utils/metadata.utils';
 import { IController } from './controller.interface';
 import { IHttpError } from '../../errors/http.error';
-
+import { plainToClass } from 'class-transformer';
 
 export type AuthMetadata = any;
 export interface LoaderOptions {
@@ -66,8 +66,6 @@ export class ControllersLoader implements ILoader {
     }
 
     public bindHandler(target: IController, property: string, params: FunctionParam[]) {
-        const getParams = params.forEach(elem => metadata(elem.type).hasMetadata(keys.DATA_CLASS));
-
         return async (ctx: IRouterContext, next: () => Promise<any>) => {
             const ctrl = this.bindController(target)['applyContext'](ctx);
     
@@ -90,7 +88,7 @@ export class ControllersLoader implements ILoader {
             if(typeof elem === 'string')
                 return ctx.params[elem];
             else if(typeof elem === 'object')               
-                return Reflect.hasMetadata(elem, keys.DATA_CLASS) ? ctx.body : undefined            
+                return Reflect.hasMetadata(elem, keys.DATA_CLASS) ? plainToClass(ctx.body, elem) : undefined            
             else
                 return undefined;
         });
