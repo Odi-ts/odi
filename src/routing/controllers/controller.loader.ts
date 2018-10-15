@@ -10,7 +10,7 @@ import { RouteMetadata, isRouteHandler, ControllerMeta, ControllerType, Returnin
 import { RFunction, reflectProperties, ILoader, reflectOwnProperties } from '../../utils/directory.loader';
 import { CoreAuth } from '../../auth/local/auth.interface';
 import { extractAuth, extractUser } from './controller.middleware';
-import { fnArgsList } from '../../utils/function.reflection';
+import { fnArgsList, getFunctionArgs, FunctionParam } from '../../utils/function.reflection';
 import { MiddlewareFunction } from '../middleware/middleware.decorators';
 import { metadata } from '../../utils/metadata.utils';
 import { IController } from './controller.interface';
@@ -47,14 +47,14 @@ export class ControllersLoader implements ILoader {
                     const meta = metadata(target, propertyKey);
                     
                     const { path, method }: RouteMetadata = meta.getMetadata(keys.ROUTE);
-                    const params = meta.getMetadata('design:paramtypes');
+                    const params = getFunctionArgs(target, propertyKey);
 
                     const auMeta: AuthMetadata =  meta.getMetadata(keys.AUTH_MIDDLEWARE);                   
                     const mdMeta: MiddlewareFunction[] = meta.getMetadata(keys.ROUTE_MIDDLEWARE);
                     
                     const isProtected = meta.hasMetadata(keys.AUTH_MIDDLEWARE);
 
-                    router[method](path, this.bindHandler(target, propertyKey));                    
+                    router[method](path, this.bindHandler(target, propertyKey, params));                    
                 }
             }
 
@@ -65,12 +65,14 @@ export class ControllersLoader implements ILoader {
         }
     }
 
-    public bindHandler(target: IController, property: string){
+    public bindHandler(target: IController, property: string, params: FunctionParam[]) {
+        const getParams = params.forEach(elem => metadata(elem.type).hasMetadata(keys.DATA_CLASS));
+
         return async (ctx: IRouterContext, next: () => Promise<any>) => {
             const ctrl = this.bindController(target)['applyContext'](ctx);
     
             try {                
-                ctx.body = await ctrl[property].call(ctrl);
+                ctx.body = await ctrl[property].call(ctrl, ...this.bindParams(ctx, params));
             } catch (error) {
                 
                 if(error instanceof IHttpError){
@@ -81,6 +83,17 @@ export class ControllersLoader implements ILoader {
                 
             }
         }
+    }
+
+    public bindParams(ctx: IRouterContext, params: FunctionParam[]) {
+        return params.map(elem => { 
+            if(typeof elem === 'string')
+                return ctx.params[elem];
+            else if(typeof elem === 'object')               
+                return Reflect.hasMetadata(elem, keys.DATA_CLASS) ? ctx.body : undefined            
+            else
+                return undefined;
+        });
     }
 
     public bindController(target: IController){

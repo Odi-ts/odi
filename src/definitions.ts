@@ -1,6 +1,6 @@
 import { Connection } from "typeorm";
 
-const naming = '__Bastion';
+const naming = '__Odi';
 
 /* Basic controller metadata */
 export const CONTROLLER = `${naming}_controller`;
@@ -8,6 +8,7 @@ export const ROUTE = `${naming}_route`;
 export const ROUTE_HANDLER = `${naming}_route_handler`
 
 /* Controller advanced metadata */
+export const DATA_CLASS = `${naming}_data_class`;
 export const ROUTE_ARGS = `${naming}_route_args`
 export const ROUTE_MIDDLEWARE = `${naming}_route_md`;
 export const CONTROLLER_MIDDLEWARE = `${naming}_controller_md`;
