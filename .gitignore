@@ -38,6 +38,8 @@ build/Release
 # Build directory
 build/
 
+test/integration
+
 # vscode
 .vscode/
 
