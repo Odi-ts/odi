@@ -16,6 +16,7 @@ import { metadata } from '../../utils/metadata.utils';
 import { IController } from './controller.interface';
 import { IHttpError } from '../../errors/http.error';
 import { plainToClass } from 'class-transformer';
+import { validate } from 'class-validator';
 
 export type AuthMetadata = any;
 export interface LoaderOptions {
@@ -65,12 +66,22 @@ export class ControllersLoader implements ILoader {
         }
     }
 
-    public bindHandler(target: IController, property: string, params: FunctionParam[]) {
+    public bindHandler(target: IController, property: string, rawParams: FunctionParam[]) {
         return async (ctx: IRouterContext, next: () => Promise<any>) => {
             const ctrl = this.bindController(target)['applyContext'](ctx);
+            const { params, dto } = await this.bindParams(ctx, rawParams);
+
+            if(dto) {
+                const validation = await validate(dto);
+
+                if(validation.length > 0) {
+                    ctx.body = validation;
+                    return;
+                }
+            } 
 
             try {                
-                ctx.body = await ctrl[property].call(ctrl, ...(await this.bindParams(ctx, params)));
+                ctx.body = await ctrl[property].call(ctrl, ...params);
             } catch (error) {
                 
                 if(error instanceof IHttpError){
@@ -83,21 +94,25 @@ export class ControllersLoader implements ILoader {
         }
     }
 
-    public async bindParams(ctx: IRouterContext, params: FunctionParam[]) {
-        const result = [];
+    public async bindParams(ctx: IRouterContext, rawParams: FunctionParam[]) {
+        const params = [];
+        let dto = null;
 
-        for(const param of params) {
-            if(param.type.name === 'String')
-                result.push(ctx.params[param.name]);
+        for(const param of rawParams) {
+            if(param.type.name === 'String') {
+                params.push(ctx.params[param.name]);
 
             /* Treat like constructor */
-            else if(typeof param.type === 'function')    
-                result.push(Reflect.hasMetadata(keys.DATA_CLASS, param.type) ? await plainToClass(param.type, ctx.request.body) : undefined);  
-            else
-                result.push(undefined);
+            } else if(typeof param.type === 'function' && Reflect.hasMetadata(keys.DATA_CLASS, param.type)) { 
+                dto = await plainToClass(param.type, ctx.request.body);
+
+                params.push(dto);  
+            } else {
+                params.push(undefined);
+            }
         }
 
-        return result;
+        return { params, dto };
     }
 
     public bindController(target: IController){
