@@ -74,4 +74,4 @@ export function Data(): ClassDecorator {
 
 export const Get: RouteHandlerDecorator = handlerFactory('get');
 export const Post: RouteHandlerDecorator = handlerFactory('post');
-export const Any: RouteHandlerDecorator = handlerFactory('any');
+export const All: RouteHandlerDecorator = handlerFactory('all');
