@@ -17,6 +17,3 @@ export * from './dependency/dependency.decorators'
 
 export * from './errors/http.error'
 export * from './aliases'
-
-/* Exposing API under ODI package */
-export * from 'class-validator';
