@@ -36,10 +36,12 @@ export function handlerFactory(method: string): PropertyDecorator{
     return (target: any, propertyKey: string | symbol) => {
         let path = propertyKey.toString();
 
-        if(path.charAt(0) !== '/'){
-            path = '/' + path;
-        }    
+        if(path === 'index') 
+            path = '/';
 
+        if(path.charAt(0) !== '/')
+            path = '/' + path;
+        
         Reflect.defineMetadata(keys.ROUTE, { method, path }, target, propertyKey);
     };
 }
