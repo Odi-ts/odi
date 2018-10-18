@@ -48,7 +48,7 @@ export default class DependencyComposer{
 
         for(let propertyKey of autowiredProps){
             const dependency = Reflect.getMetadata("design:type", target, propertyKey);                    
-            target[propertyKey] = await this.proccessDependency(target, dependency) || 'kek';
+            target[propertyKey] = await this.proccessDependency(target, dependency);
         }
 
         return;
