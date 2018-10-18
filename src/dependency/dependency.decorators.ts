@@ -1,4 +1,4 @@
-import { AUTOWIRED, AUTOWIRED_PROPS } from "../definitions";
+import { AUTOWIRED, AUTOWIRED_PROPS, COMPONENT } from "../definitions";
 import { isFunction } from "../utils/directory.loader";
 import { autowiredPropsStore } from "./dependency.utils";
 
@@ -13,6 +13,6 @@ export const Autowired = (id?: string) => (target: any, propertyKey: string | sy
         autowiredPropsStore.get(target)!.push(propertyKey);
     else
         autowiredPropsStore.set(target, [propertyKey]);
-
 }
 
+export const Component = () => (target: any) => Reflect.defineMetadata(COMPONENT, true, target);
