@@ -1,5 +1,5 @@
 import { INJECT_ID, SERVICE, DB_CONNECTION, AUTOWIRED, AUTOWIRED_PROPS } from "../definitions";
-import { reflectParameters, reflectOwnProperties } from "../utils/directory.loader";
+import { reflectParameters, reflectOwnProperties, reflectType } from "../utils/directory.loader";
 import { Connection } from "typeorm";
 import { isServiceRepo } from "./dependency.classifier";
 import { autowiredPropsStore, onInit } from "./dependency.utils";
@@ -47,7 +47,8 @@ export default class DependencyComposer{
         }
 
         for(let propertyKey of autowiredProps){
-            const dependency = Reflect.getMetadata("design:type", target, propertyKey);                    
+            const dependency = reflectType(target, propertyKey);    
+
             target[propertyKey] = await this.proccessDependency(target, dependency);
         }
 
