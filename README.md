@@ -6,7 +6,7 @@ TypeScript framework for creating enterprise-grade (web) applications with simpl
 
 Odi provides feature set for creation of easy supportable and scalable web applications.
 
-Features Roadmap:
+Features Overview:
  - [x] MVC
  - [x] Extendable DI / IoT
  - [x] Authentication
@@ -16,6 +16,7 @@ Features Roadmap:
  - [ ] AOP
  - [ ] SSR
  
+For future updates check [Roadmap](https://github.com/Odi-ts/Odi/wiki/Roadmap)
  
 ## Getting Started 
 1. Install npm package<br/>
