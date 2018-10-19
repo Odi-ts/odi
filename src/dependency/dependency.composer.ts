@@ -1,15 +1,17 @@
-import { INJECT_ID, SERVICE, DB_CONNECTION, AUTOWIRED, AUTOWIRED_PROPS } from "../definitions";
+import { INJECT_ID, SERVICE, DB_CONNECTION, AUTOWIRED } from "../definitions";
 import { reflectParameters, reflectOwnProperties, reflectType } from "../utils/directory.loader";
 import { Connection } from "typeorm";
 import { isServiceRepo } from "./dependency.classifier";
 import { autowiredPropsStore, onInit } from "./dependency.utils";
 import { isObject } from "util";
+import { defaultEntry, ComponentEntry } from "./dependency.decorators";
+
+import { Class } from "../utils/object.reflection";
+import { isNull } from "../utils/object.utils";
 
 export interface Implemenations{   
     [index: string]: Object
 }
-
-export class DependencyReserver{}
 
 export default class DependencyComposer{
     private map: Map<Function, Implemenations>;
@@ -20,25 +22,29 @@ export default class DependencyComposer{
         this.idMap = new Map();
     }
 
-
-    public async instanciateClassType(classType: any){
-        const target = new classType(...( await this.injectByConstructor(classType) ));  
+    public async instanciateClassType<T extends Class>(classType: T, { id, constructorArgs, props, type }: ComponentEntry<T> = defaultEntry){
+        const target = new classType(...await this.injectByConstructor(classType, constructorArgs));  
       
         if(target[onInit]){
            await target[onInit](); 
         }
 
-        await this.injectByProperty(target);
+        await this.injectByProperty(target, props);
         await this.injectByMethod(target);
+
+        if(type === 'singleton')
+            this.put(classType, target, id);
 
         return target;
     }
 
-    private async injectByConstructor(classType: any): Promise<any[]>{
-        return this.injectByParams(classType);
+    private async injectByConstructor<T>(classType: T, ctrArgs: any[] = []): Promise<any[]>{
+        const params = await this.injectByParams(classType);
+        
+        return params.map((param, i) => (isNull(ctrArgs[i])) ? ctrArgs[i] : param);
     }
 
-    private async injectByProperty(target: any){
+    private async injectByProperty(target: any, predefined: any = {}){
         const prototype = Object.getPrototypeOf(target);
         const autowiredProps = this.getInjectableProps(prototype);
 
@@ -49,7 +55,7 @@ export default class DependencyComposer{
         for(let propertyKey of autowiredProps){
             const dependency = reflectType(target, propertyKey);    
 
-            target[propertyKey] = await this.proccessDependency(target, dependency);
+            target[propertyKey] = !isNull(predefined[propertyKey]) ? predefined[propertyKey] : await this.proccessDependency(target, dependency);
         }
 
         return;
