@@ -18,7 +18,6 @@ Features Roadmap:
  Example:
  ```typescript
 import { Controller, IController, Post, Get, Data } from 'odi';
-import { IsDate, IsOptional, MaxLength } from 'odi/validator';
 
 @Controller()
 export class TodoController extends IController {
@@ -43,19 +42,4 @@ export class TodoController extends IController {
         return todo;
     }
 }
-
-
-@Data()
-class TodoDTO {
-
-    @MaxLength(255)
-    summary: string;
-
-    @IsOptional()
-    tags: string[];
-
-    @IsDate()
-    deadline: Date;
-}
-
  ```
