@@ -20,7 +20,7 @@ export const defaultEntry: ComponentEntry<any> = {
     id: 'default',
     type: 'singleton',
     constructorArgs: [],
-    props: ''
+    props: {}
 }
 
 export const defaultSettings: ComponentSettings<any> = {
