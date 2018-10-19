@@ -1,4 +1,5 @@
 
+
 # Odi
 
 TypeScript framework for creating enterprise-grade (web) applications with simple and minimalistic API, that allows you to focus on business logic. Based on declarative and imperative programming, inspiried by [ASP.NET](https://www.asp.net/) / [Spring](https://spring.io/). 
@@ -15,7 +16,25 @@ Features Roadmap:
  - [ ] AOP
  - [ ] SSR
  
- Example:
+ 
+## Getting Started 
+1. Install npm package<br/>
+  `npm install odi --save`
+
+2. Install reflect-metadata <br/>
+	 `npm install reflect-metadata --save`
+	
+3. Import reflect-metadata (for example in  `index.ts`):<br/>
+	 `import "reflect-metadata";`
+	
+4. Enabled the following settings in `tsconfig.json`
+	```json
+	"emitDecoratorMetadata":  true, 
+	"experimentalDecorators":  true
+	```
+
+	
+ ## Example
  ```typescript
 import { Controller, IController, Post, Get, Data } from 'odi';
 
