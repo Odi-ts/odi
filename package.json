@@ -1,14 +1,22 @@
 {
   "name": "odi",
   "version": "0.0.2",
-  "description": "",
+  "description": "🌪🌌 Opinionated, Declarative, Idiomatic framework for building scalable, supportable, enterprise-grade applications.",
   "main": "lib/src/index.js",
+  "keywords": [
+    "typesciprt",
+    "web",
+    "server",
+    "DI",
+    "enterprise",
+    "esnext"
+  ],
   "typings": "lib/src/index.d.ts",
   "scripts": {
     "test": "tsc && node lib/test/index.js",
     "bench": "node benchmark/bench"
   },
-  "author": "",
+  "author": "Dan Tsekhmastryuk",
   "license": "MIT",
   "devDependencies": {
     "@types/glob": "^5.0.34",
