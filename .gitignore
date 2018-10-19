@@ -37,6 +37,7 @@ build/Release
 
 # Build directory
 build/
+dsl/
 
 test/integration
 
