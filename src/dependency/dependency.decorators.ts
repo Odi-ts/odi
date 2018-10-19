@@ -3,12 +3,13 @@ import { AUTOWIRED, AUTOWIRED_PROPS, COMPONENT } from "../definitions";
 import { Class } from "../utils/object.reflection";
 import { isFunction } from "../utils/directory.loader";
 import { autowiredPropsStore } from "./dependency.utils";
+import { ObjectType } from "typeorm";
 
 export interface ComponentEntry<T extends Class> {
     id?: string
     type?: 'singleton' | 'pool',
-    constructorArgs?: ConstructorParameters<T>,
-    props?: Partial<T>
+    constructorArgs?: Partial<ConstructorParameters<T>>,
+    props?: any
 }
 
 export interface ComponentSettings<T extends Class> {
@@ -19,7 +20,7 @@ export const defaultEntry: ComponentEntry<any> = {
     id: 'default',
     type: 'singleton',
     constructorArgs: [],
-    props: {}
+    props: ''
 }
 
 export const defaultSettings: ComponentSettings<any> = {
