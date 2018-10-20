@@ -8,7 +8,7 @@ Odi provides feature set for creation of easy supportable and scalable web appli
 
 Features Roadmap:
  - [x] MVC
- - [x] Extendable DI / IoT
+ - [x] Full-typed DI / IoT
  - [x] Authentication
  - [x] WebSockets
  - [x] TypeORM integration
