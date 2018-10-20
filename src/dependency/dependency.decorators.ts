@@ -4,12 +4,15 @@ import { Class } from "../utils/object.reflection";
 import { isFunction } from "../utils/directory.loader";
 import { autowiredPropsStore } from "./dependency.utils";
 import { ObjectType } from "typeorm";
+import { ValuedProps } from "./dependency.manager";
+
+
 
 export interface ComponentEntry<T extends Class> {
     id?: string
     type?: 'singleton' | 'pool',
     constructorArgs?: Partial<ConstructorParameters<T>>,
-    props?: any
+    props?: Partial<ValuedProps<InstanceType<T>>>
 }
 
 export interface ComponentSettings<T extends Class> {

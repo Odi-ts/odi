@@ -38,7 +38,7 @@ export default class DependencyComposer{
         return target;
     }
 
-    private async injectByConstructor<T>(classType: T, ctrArgs: any[] = []): Promise<any[]>{
+    private async injectByConstructor<T>(classType: T, ctrArgs: any = []): Promise<any[]>{
         const params = await this.injectByParams(classType);
         
         return params.map((param, i) => (isNull(ctrArgs[i])) ? ctrArgs[i] : param);

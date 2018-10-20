@@ -1,6 +1,9 @@
 
 import { Class } from "../utils/object.reflection";
 import { ComponentSettings } from "./dependency.decorators";
+import { ClassType } from "class-transformer/ClassTransformer";
+import { ObjectType } from "typeorm";
+import { ValuedProps } from "./dependency.manager";
 
 export const onInit = Symbol('onInit');
 
