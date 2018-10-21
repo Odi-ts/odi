@@ -94,7 +94,7 @@ export class Core{
     public async listen(){
         await this.setUp();
 
-        this.server.listen(this.options.server.port, (port: any) => console.log(`Server was successfully started on - ${port} port`));
+        this.server.listen(this.options.server.port, (port: any) => console.log(`Server was successfully started on - ${this.options.server.port} port`));
     }
     
 }

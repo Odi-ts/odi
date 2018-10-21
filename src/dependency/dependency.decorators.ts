@@ -3,8 +3,7 @@ import { AUTOWIRED, AUTOWIRED_PROPS, COMPONENT } from "../definitions";
 import { Class } from "../utils/object.reflection";
 import { isFunction } from "../utils/directory.loader";
 import { autowiredPropsStore } from "./dependency.utils";
-import { ObjectType } from "typeorm";
-import { ValuedProps } from "./dependency.manager";
+import { ValuedProps, ConstructorParameters } from "./dependency.manager";
 
 
 
