@@ -2,10 +2,11 @@
 
 ## Installation
 
-1. Install npm package `npm install odi --save`
-2. Install reflect-metadata  `npm install reflect-metadata --save`
-3. Import reflect-metadata \(for example in `index.ts`\): `import "reflect-metadata";`
-4. Enabled the following settings in `tsconfig.json`
+1. Install npm package  `npm install odi --save` 
+2. Install reflect-metadata   `npm install reflect-metadata --save` 
+3. Import reflect-metadata \(for example in `index.ts`\):  `import "reflect-metadata";` 
+4. Enabled the following settings in `tsconfig.json`  
+
 
    ```javascript
    "emitDecoratorMetadata":  true, 
