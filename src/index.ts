@@ -1,4 +1,5 @@
 import 'reflect-metadata'
+import { IController } from './routing/controllers/controller.interface';
 
 
 export { Core } from './core/server'
@@ -7,7 +8,9 @@ export { CoreAuth, UserData } from './auth/local/auth.interface'
 export * from './auth/local/auth.decorator'
 
 export * from './routing/controllers/controller.decorators'
-export * from './routing/controllers/controller.interface'
+export * from './routing/controllers/controller.types'
+export { IController } from './routing/controllers/controller.interface'
+
 
 export * from './services/services.decorator'
 

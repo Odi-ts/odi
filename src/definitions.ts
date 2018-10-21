@@ -5,6 +5,7 @@ const naming = '__Odi';
 /* Basic controller metadata */
 export const CONTROLLER = `${naming}_controller`;
 export const ROUTE = `${naming}_route`;
+export const RAW_ROUTE =`${naming}_raw_route`;
 export const ROUTE_HANDLER = `${naming}_route_handler`
 
 /* Controller advanced metadata */

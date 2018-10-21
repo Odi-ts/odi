@@ -47,7 +47,7 @@ export class ControllersLoader implements ILoader {
                 if (isRouteHandler(target, propertyKey)) {       
                     const meta = metadata(target, propertyKey);
                     
-                    const { path, method }: RouteMetadata = meta.getMetadata(keys.ROUTE);
+                    const { path, method }: RouteMetadata = meta.getMetadata( meta.hasMetadata(keys.ROUTE) ? keys.ROUTE : keys.RAW_ROUTE);
                     const params = getFunctionArgs(target, propertyKey);
 
                     const auMeta: AuthMetadata =  meta.getMetadata(keys.AUTH_MIDDLEWARE);                   

@@ -3,6 +3,7 @@ import * as keys from '../../definitions'
 import { IController } from './controller.interface';
 import { ObjectType } from 'typeorm';
 import { StrictObjectType } from '../../utils/object.reflection';
+import { Method } from './controller.types';
 
 export type BasePath = string;
 export type RouteHandler = (...args: any[]) => any | void;
@@ -29,7 +30,7 @@ export interface RouteMetadata {
 }
 
 export function isRouteHandler(target: any, propertyKey: string){
-    return Reflect.hasMetadata(keys.ROUTE, target, propertyKey)
+    return Reflect.hasMetadata(keys.ROUTE, target, propertyKey) || Reflect.hasMetadata(keys.RAW_ROUTE, target, propertyKey);
 }
 
 export function handlerFactory(method: string): PropertyDecorator{
@@ -71,7 +72,14 @@ export function Data(): ClassDecorator {
     return (target: any) => Reflect.defineMetadata(keys.DATA_CLASS, true, target);
 }
 
+export function Route(method: Method, path: string) {
+    return (target: any, propertyKey: string | symbol) => Reflect.defineMetadata(keys.RAW_ROUTE, { method, path }, target, propertyKey);
+}
+
 
 export const Get: RouteHandlerDecorator = handlerFactory('get');
 export const Post: RouteHandlerDecorator = handlerFactory('post');
+export const Put: RouteHandlerDecorator = handlerFactory('put');
+export const Patch: RouteHandlerDecorator = handlerFactory('patch');
+export const Del: RouteHandlerDecorator = handlerFactory('delete');
 export const All: RouteHandlerDecorator = handlerFactory('all');
