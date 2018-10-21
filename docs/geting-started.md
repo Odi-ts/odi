@@ -1,4 +1,0 @@
-# geting-started
-
-
-

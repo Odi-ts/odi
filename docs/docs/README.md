@@ -1,6 +1,9 @@
 # Table of contents
 
 * [Read Me](../README.md)
-* [geting-started](../geting-started.md)
-* [summary](../summary.md)
+* [Intoduction](../introduction/README.md)
+  * [Motivation](../introduction/motivation.md)
+  * [Core Concepts](../introduction/core-concepts.md)
+* [Fundamentals](../basics/README.md)
+  * [Getting Started](../basics/getting-started.md)
 
