@@ -1,6 +1,6 @@
 # Read Me
 
-##  Odi
+## Odi
 
 TypeScript framework for creating enterprise-grade \(web\) applications with simple and minimalistic API, that allows you to focus on business logic. Based on declarative and imperative programming, inspiried by [ASP.NET](https://www.asp.net/) / [Spring](https://spring.io/).
 
@@ -22,14 +22,14 @@ For future updates check [Roadmap](https://github.com/Odi-ts/Odi/wiki/Roadmap)
 
 ### Getting Started
 
-1. Install npm package  `npm install odi --save`
-2. Install reflect-metadata   `npm install reflect-metadata --save`
-3. Import reflect-metadata \(for example in `index.ts`\):  `import "reflect-metadata";`
-4. Enable the following settings in `tsconfig.json`
+1. Install npm package `npm install odi --save`
+2. Install reflect-metadata  `npm install reflect-metadata --save`
+3. Import reflect-metadata \(for example in `index.ts`\): `import "reflect-metadata";`
+4. Enabled the following settings in `tsconfig.json`
 
    ```javascript
-    "emitDecoratorMetadata":  true, 
-    "experimentalDecorators":  true
+   "emitDecoratorMetadata":  true, 
+   "experimentalDecorators":  true
    ```
 
 ### Example

@@ -2,7 +2,7 @@
 
 ## **Overview**
 
-Imagine that you have common CRUD server application. Or you can have huge server with non trivial logic. At least, you want to have clear code, that can be supported and updeted with less efforts and more fun. Next concepts can help with it:  **Single Resposibility, Loosely Coupled Code, Segregation Principle** and  **Substitution Principle.** 
+Imagine that you have common CRUD server application. Or you can have huge server with non trivial logic. At least, you want to have clear code, that can be supported and updeted with less efforts and more fun. Next concepts can help with it: **Single Resposibility, Loosely Coupled Code, Segregation Principle** and **Substitution Principle.**
 
 ## Paradigm
 
@@ -12,9 +12,9 @@ But functional programming also take a part in development.
 
 ## **Architecture**
 
-Lets take a look on common **Odi** architecture, including database \([TypeORM](http://typeorm.io/#/) integration\): 
+Lets take a look on common **Odi** architecture, including database \([TypeORM](http://typeorm.io/#/) integration\):
 
-![](../.gitbook/assets/untitled-diagram.png)
+![](../.gitbook/assets/untitled-diagram%20%281%29.png)
 
 For responsibility, it can be divided into next layers:
 
@@ -33,7 +33,7 @@ As opposite example: Controller should not dirrectly interact database.
 
 ### Service
 
-Business logic center. It is the place, where you should forget about HTTP statuses, cookies and etc. Only your application logic should appear here. But still no direct interaction with database. Different repositories can be combined for implementing required processes \(like transactions, calculations and etc.\). 
+Business logic center. It is the place, where you should forget about HTTP statuses, cookies and etc. Only your application logic should appear here. But still no direct interaction with database. Different repositories can be combined for implementing required processes \(like transactions, calculations and etc.\).
 
 ### Repository
 
@@ -43,7 +43,7 @@ Definitely about database. Interact \(search, create, update and anything else\)
 
 It's only about storing and linking data. Basic class for representation in database. Describe fields \(type, nullability, relation and etc\) for storing in database.
 
-Opposite example: implementing business logic methods or validations. 
+Opposite example: implementing business logic methods or validations.
 
 ## Environment
 
@@ -59,6 +59,4 @@ Enable the following settings in `tsconfig.json`
 Those setting allows properly handle **Dependency Injection** and many other things, that connected with runtime types. Without this options enabled, the most part of core features will be disabled.
 
 In future version there can be changes, as CLI tool will be released.
-
-
 
