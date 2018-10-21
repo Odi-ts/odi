@@ -1,8 +1,8 @@
-
-
-# Odi
+<p align="center"> <img src="https://i.imgur.com/4Zf3O35.png" height="94"/> </p>
 
 TypeScript framework for creating enterprise-grade (web) applications with simple and minimalistic API, that allows you to focus on business logic. Based on declarative and imperative programming, inspiried by [ASP.NET](https://www.asp.net/) / [Spring](https://spring.io/). 
+
+**Check [Docs](https://odi.gitbook.io/core) for more details.**
 
 Odi provides feature set for creation of easy supportable and scalable web applications.
 
@@ -18,7 +18,7 @@ Features Overview:
  
 For future updates check [Roadmap](https://github.com/Odi-ts/Odi/wiki/Roadmap)
  
-## Getting Started 
+## 🚀 Getting Started 
 1. Install npm package<br/>
   `npm install odi --save`
 
@@ -35,7 +35,7 @@ For future updates check [Roadmap](https://github.com/Odi-ts/Odi/wiki/Roadmap)
 	```
 
 	
- ## Example
+ ## 🌪 Example
  ```typescript
 import { Controller, IController, Post, Get, Data } from 'odi';
 
