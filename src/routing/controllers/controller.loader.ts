@@ -9,7 +9,6 @@ import { IRouterContext } from 'koa-router'
 import { RouteMetadata, isRouteHandler, ControllerMeta, ControllerType, Returning} from './controller.decorators'
 import { RFunction, ILoader, reflectOwnProperties } from '../../utils/directory.loader';
 import { CoreAuth } from '../../auth/local/auth.interface';
-import { extractAuth, extractUser } from './controller.middleware';
 import { getFunctionArgs, FunctionParam } from '../../utils/function.reflection';
 import { MiddlewareFunction } from '../middleware/middleware.decorators';
 import { metadata } from '../../utils/metadata.utils';
@@ -38,10 +37,14 @@ export class ControllersLoader implements ILoader {
         this.auth = this.options.dependencyComposer.getById('auth');
 
         return async (classType: any) => {
-            const base: ControllerMeta = Reflect.getMetadata(keys.CONTROLLER, classType);
+            const ctrlMeta = metadata(classType);            
             const target = await this.options.dependencyComposer.instanciateClassType(classType);
 
+            const base: ControllerMeta = ctrlMeta.getMetadata(keys.CONTROLLER);
+            const middlware: MiddlewareFunction[] = ctrlMeta.getMetadata(keys.ROUTE_MIDDLEWARE) || [];
+
             const router = new Router({ prefix: base.path });
+            router.use(...middlware);
 
             for (let propertyKey of [...reflectOwnProperties(target)]) {               
                 if (isRouteHandler(target, propertyKey)) {       
@@ -51,11 +54,11 @@ export class ControllersLoader implements ILoader {
                     const params = getFunctionArgs(target, propertyKey);
 
                     const auMeta: AuthMetadata =  meta.getMetadata(keys.AUTH_MIDDLEWARE);                   
-                    const mdMeta: MiddlewareFunction[] = meta.getMetadata(keys.ROUTE_MIDDLEWARE);
+                    const mdMeta: MiddlewareFunction[] = meta.getMetadata(keys.ROUTE_MIDDLEWARE) || [];
                     
                     const isProtected = meta.hasMetadata(keys.AUTH_MIDDLEWARE);
 
-                    router[method](path, this.bindHandler(target, propertyKey, params));                    
+                    router[method](path, ...mdMeta, this.bindHandler(target, propertyKey, params));                    
                 }
             }
 

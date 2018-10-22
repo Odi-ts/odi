@@ -1,13 +1,13 @@
 import 'reflect-metadata'
 import * as keys from '../../definitions'
+import { IRouterContext } from '../../aliases';
 
-import { NextFunction, Response, Request } from 'express';
+export type MiddlewareFunction = (context: IRouterContext, next: () => Promise<any>) => void;
 
-export type MiddlewareFunction = (req: Request, res: Response, next: NextFunction) => void
-
-export function Middleware(...functions: MiddlewareFunction[]): PropertyDecorator{
-    return (target: any, propertyKey: string | symbol) => {
-      Reflect.defineMetadata(keys.ROUTE_MIDDLEWARE, functions, target, propertyKey)       
-    };
+export function CMiddleware(...functions: MiddlewareFunction[]): ClassDecorator {
+  return (target: any) => Reflect.defineMetadata(keys.ROUTE_MIDDLEWARE, functions, target);
 }
 
+export function Middleware(...functions: MiddlewareFunction[]) {
+  return (target: any, propertyKey: string | symbol) => Reflect.defineMetadata(keys.ROUTE_MIDDLEWARE, functions, target, propertyKey);
+}
