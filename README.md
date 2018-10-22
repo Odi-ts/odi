@@ -37,7 +37,9 @@ For future updates check [Roadmap](https://github.com/Odi-ts/Odi/wiki/Roadmap)
 	
  ## 🌪 Example
  ```typescript
-import { Controller, IController, Post, Get, Data } from 'odi';
+import { Controller, IController, Post, Get, Autowired } from "odi";
+import { TodoService } from "./todo.service";
+import { TodoDTO } from "./todo.dto";
 
 @Controller()
 export class TodoController extends IController {
