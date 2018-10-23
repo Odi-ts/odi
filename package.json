@@ -65,7 +65,7 @@
     "lodash": "^4.17.11",
     "nanoid": "^1.2.2",
     "passport": "^0.4.0",
-    "reflect-metadata": "^0.1.10",
+    "reflect-metadata": "^0.1.12",
     "shortid": "^2.2.13",
     "socket.io": "^2.0.4",
     "typeorm": "^0.1.12",
