@@ -44,7 +44,7 @@
     "@types/socket.io": "^1.4.38",
     "@types/strip-json-comments": "0.0.30",
     "@types/uniqid": "^4.1.2",
-    "autocannon": "^2.4.1"
+    "autocannon": "^3.1.0"
   },
   "dependencies": {
     "ajv": "^6.5.4",
