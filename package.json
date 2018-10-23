@@ -26,7 +26,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/ajv": "^1.0.0",
-    "@types/glob": "^5.0.34",
+    "@types/glob": "^5.0.36",
     "@types/jsonwebtoken": "^7.2.5",
     "@types/koa-bodyparser": "^5.0.1",
     "@types/koa-compress": "^2.0.8",
