@@ -27,7 +27,7 @@
   "devDependencies": {
     "@types/ajv": "^1.0.0",
     "@types/glob": "^5.0.34",
-    "@types/jsonwebtoken": "^7.2.5",
+    "@types/jsonwebtoken": "^7.2.8",
     "@types/koa-bodyparser": "^5.0.1",
     "@types/koa-compress": "^2.0.8",
     "@types/koa-mount": "^3.0.1",
