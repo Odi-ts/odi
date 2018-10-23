@@ -68,10 +68,6 @@ export function RenderController<T>(path?: BasePath){
     return controllerFactory(path, { type: ControllerType.Render })
 }
 
-export function Data(): ClassDecorator {
-    return (target: any) => Reflect.defineMetadata(keys.DATA_CLASS, true, target);
-}
-
 export function Route(method: Method, path: string = '/') {
     return (target: any, propertyKey: string | symbol) => Reflect.defineMetadata(keys.RAW_ROUTE, { method, path }, target, propertyKey);
 }

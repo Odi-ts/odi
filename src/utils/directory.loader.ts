@@ -43,7 +43,7 @@ export function reflectParameters(target: any, key?: string | symbol): any[]{
     return Reflect.getMetadata("design:paramtypes", target);
 }
 
-export function reflectType(target: any, key?: string): string{
+export function reflectType(target: any, key?: string | symbol) {
     if(key){
         return Reflect.getMetadata("design:type", target, key);
     }

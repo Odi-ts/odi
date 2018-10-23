@@ -9,7 +9,6 @@ export const RAW_ROUTE =`${naming}_raw_route`;
 export const ROUTE_HANDLER = `${naming}_route_handler`
 
 /* Controller advanced metadata */
-export const DATA_CLASS = `${naming}_data_class`;
 export const ROUTE_ARGS = `${naming}_route_args`
 export const ROUTE_MIDDLEWARE = `${naming}_route_md`;
 export const CONTROLLER_MIDDLEWARE = `${naming}_controller_md`;
@@ -32,6 +31,10 @@ export const COMPONENT = `${naming}_component`
 
 export const INJECT = `${naming}_inject`;
 export const INJECT_ID = `${naming}_inject_id`;
+
+/* DTO */
+export const DATA_CLASS = `${naming}_data_class`;
+export const DATA_VALIDATION_PROP = `${naming}_data_validation`
 
 /* Auth */
 export const AUTH = `${naming}_auth_defaults`

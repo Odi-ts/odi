@@ -3,6 +3,8 @@ import * as keys from '../../definitions'
 import * as Koa from 'koa';
 import * as Router from 'koa-router';
 
+import * as Ajv from 'ajv';
+
 import DependencyComposer from '../../dependency/dependency.composer';
 
 import { IRouterContext } from 'koa-router'
@@ -15,7 +17,8 @@ import { metadata } from '../../utils/metadata.utils';
 import { IController } from './controller.interface';
 import { IHttpError } from '../../errors/http.error';
 import { plainToClass } from 'class-transformer';
-import { validate } from 'class-validator';
+import { DtoSchemaStorage } from '../../dto/dto.storage';
+
 
 export type AuthMetadata = any;
 export interface LoaderOptions {
@@ -69,26 +72,25 @@ export class ControllersLoader implements ILoader {
         }
     }
 
-    public bindHandler(target: IController, property: string, rawParams: FunctionParam[]) {
+    public bindHandler(target: IController, property: string, rawParams: FunctionParam[]) {        
+        const validate = DtoSchemaStorage.get(this.getDto(rawParams))!;
+
         return async (ctx: IRouterContext, next: () => Promise<any>) => {
             const ctrl = this.bindController(target)['applyContext'](ctx);
-            const { params, dto } = await this.bindParams(ctx, rawParams);
+            
+            try {      
+                const validation = await validate(ctx.request.body);
+                const params = await this.bindParams(ctx, rawParams);
 
-            if(dto) {
-                const validation = await validate(dto);
-
-                if(validation.length > 0) {
-                    ctx.body = validation;
-                    return;
-                }
-            } 
-
-            try {                
                 ctx.body = await ctrl[property].call(ctrl, ...params);
             } catch (error) {
                 
                 if(error instanceof IHttpError){
-                    ctx.throw(error.getHttpCode(), error.message)
+                    ctx.throw(error.getHttpCode(), error.message);
+
+                //@ts-ignore
+                } else if(error instanceof Ajv.ValidationError) {
+                    ctx.body = error.errors;
                 } else {
                     throw error;
                 }
@@ -97,28 +99,31 @@ export class ControllersLoader implements ILoader {
         }
     }
 
-    public async bindParams(ctx: IRouterContext, rawParams: FunctionParam[]) {
+    private async bindParams(ctx: IRouterContext, rawParams: FunctionParam[]) {
         const params = [];
-        let dto = null;
-
+        
         for(const param of rawParams) {
             if(param.type.name === 'String') {
                 params.push(ctx.params[param.name]);
 
             /* Treat like constructor */
             } else if(typeof param.type === 'function' && Reflect.hasMetadata(keys.DATA_CLASS, param.type)) { 
-                dto = await plainToClass(param.type, ctx.request.body);
-
-                params.push(dto);  
+                params.push(await plainToClass(param.type, ctx.request.body));  
             } else {
                 params.push(undefined);
             }
         }
 
-        return { params, dto };
+        return params;
     }
 
-    public bindController(target: IController){
+    private bindController(target: IController){
         return Object.assign(Object.create(Object.getPrototypeOf(target)), target);
+    }
+
+    private getDto(rawParams: FunctionParam[]) {
+        for(const param of rawParams)
+            if(typeof param.type === 'function' && Reflect.hasMetadata(keys.DATA_CLASS, param.type))
+                return param.type    
     }
 }
