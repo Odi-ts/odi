@@ -41,7 +41,7 @@
     "@types/passport": "^0.4.6",
     "@types/reflect-metadata": "^0.1.0",
     "@types/shortid": "0.0.29",
-    "@types/socket.io": "^1.4.31",
+    "@types/socket.io": "^1.4.38",
     "@types/strip-json-comments": "0.0.30",
     "@types/uniqid": "^4.1.2",
     "autocannon": "^2.4.1"
