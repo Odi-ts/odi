@@ -2,7 +2,7 @@ import { uniq } from "lodash";
 
 import { reflectType } from "../utils/directory.loader";
 import { DATA_CLASS, DATA_VALIDATION_PROP } from "../definitions";
-import { DtoSchemaStorage, DtoPropsStorage, getSchema, GAJV } from "./dto.storage";
+import { DtoSchemaStorage, getSchema, GAJV, getDtoProps } from "./dto.storage";
 import { metadata } from "../utils/metadata.utils";
 
 
@@ -41,7 +41,7 @@ function extractBase(type: any) {
 
 export function buildSchema(target: any) {
     const instance = new target();        
-    const reflectedProperties = uniq(DtoPropsStorage.get(Object.getPrototypeOf(instance)) || []);
+    const reflectedProperties = uniq(getDtoProps(Object.getPrototypeOf(instance)));
     
     let requiredProperties = [...reflectedProperties];
     let properties: any = {};

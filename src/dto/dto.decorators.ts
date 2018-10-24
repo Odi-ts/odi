@@ -1,12 +1,11 @@
 import * as shortid from 'shortid';
 
 import { ValidateFunction } from 'ajv';
-
 import { DATA_CLASS, DATA_VALIDATION_PROP } from "../definitions";
 import { ValidatorFormat } from "./dto.type";
 import { buildSchema } from "./dto.validator";
-import { DtoPropsStorage, getSchema, GAJV } from "./dto.storage";
-import ajv = require('ajv');
+import { DtoPropsStorage, getSchema, GAJV, DtoPropsTypes } from "./dto.storage";
+
 
 export function Data(): ClassDecorator {
     return (target: any) => {
@@ -54,13 +53,23 @@ export const IsOptional = () => validationFactory({ isOptional: true });
 export const Deafault = <T>(def: T) => validationFactory({ default: def });
 
 /* Array validaitons */
-export const ArrayOf = (target: any) => validationFactory({ items: getSchema(target) });
+export const ArrayOf = (targetClass: any) => (target: any, propertyKey: string | symbol) => {
+    const items = getSchema(target);
+
+    validationFactory({ items })(target, propertyKey);
+   
+    /* Set array value */
+    const prevTypes = DtoPropsTypes.get(target) || {};
+
+    DtoPropsTypes.set(target, { ...prevTypes, [propertyKey]: targetClass });
+}
 
 export const MaxItems = (maxItems: number) => validationFactory({ maxItems });
 export const MinItems = (minItems: number) => validationFactory({ minItems });
 
 /* Nesting validations */
 export const Nested = () => validationFactory({});
+
 export const CustomValidation = (validate: ValidateFunction, params: any = true) => {
     const keyword = `odi_${shortid().toLowerCase()}`;
     GAJV.addKeyword(keyword, {
@@ -69,4 +78,4 @@ export const CustomValidation = (validate: ValidateFunction, params: any = true)
     });
 
     return validationFactory({ [keyword]: true })
-}
+};

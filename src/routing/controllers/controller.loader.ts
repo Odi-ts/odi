@@ -8,7 +8,7 @@ import * as Ajv from 'ajv';
 import DependencyComposer from '../../dependency/dependency.composer';
 
 import { IRouterContext } from 'koa-router'
-import { RouteMetadata, isRouteHandler, ControllerMeta, ControllerType, Returning} from './controller.decorators'
+import { RouteMetadata, isRouteHandler, ControllerMeta } from './controller.decorators'
 import { RFunction, ILoader, reflectOwnProperties } from '../../utils/directory.loader';
 import { CoreAuth } from '../../auth/local/auth.interface';
 import { getFunctionArgs, FunctionParam } from '../../utils/function.reflection';
@@ -16,7 +16,7 @@ import { MiddlewareFunction } from '../middleware/middleware.decorators';
 import { metadata } from '../../utils/metadata.utils';
 import { IController } from './controller.interface';
 import { IHttpError } from '../../errors/http.error';
-import { plainToClass } from 'class-transformer';
+import { plainToClass } from '../../dto/dto.transformer';
 import { DtoSchemaStorage } from '../../dto/dto.storage';
 
 
