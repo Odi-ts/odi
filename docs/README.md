@@ -25,30 +25,32 @@ For future updates check [Roadmap](https://github.com/Odi-ts/Odi/wiki/Roadmap)
 ### Example
 
 ```typescript
-import { Controller, IController, Post, Get, Data } from 'odi';
+import { Controller, IController, Post, Get, Autowired } from "odi";
+import { TodoService } from "./todo.service";
+import { TodoDTO } from "./todo.dto";
 
 @Controller()
 export class TodoController extends IController {
 
-    @Autowired()
-    todoService: TodoService;
+   @Autowired()
+   todoService: TodoService;
 
-    @Get index() {
-        return `Hello, ${this.request.ip}`;
-    }
+   @Get index() {
+       return `Hello, ${this.request.ip}`;
+   }
 
-    @Post async save(toDo: TodoDTO) {
-        await this.todoService.save(toDo);
-    }
-
-    @Get async '/:id' (id: string) {
-        const todo = await this.todoService.find(id);
-
-        if(!todo) 
-          throw NotFound;
-
-        return todo;
-    }
+   @Post async save(toDo: TodoDTO) {
+       await this.todoService.save(toDo);
+   }
+   
+   @Get async '/:id' (id: string) {
+       const todo = await this.todoService.find(id);
+       
+       if(!todo) 
+         throw NotFound;
+       
+       return todo;
+   }
 }
 ```
 
