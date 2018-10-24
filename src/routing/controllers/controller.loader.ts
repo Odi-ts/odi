@@ -78,8 +78,10 @@ export class ControllersLoader implements ILoader {
         return async (ctx: IRouterContext, next: () => Promise<any>) => {
             const ctrl = this.bindController(target)['applyContext'](ctx);
             
-            try {      
-                const validation = await validate(ctx.request.body);
+            try {    
+                if(validate)  
+                    await validate(ctx.request.body);
+
                 const params = await this.bindParams(ctx, rawParams);
 
                 ctx.body = await ctrl[property].call(ctrl, ...params);

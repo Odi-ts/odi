@@ -1,6 +1,4 @@
 import 'reflect-metadata'
-import { IController } from './routing/controllers/controller.interface';
-
 
 export { Core } from './core/server'
 export { CoreAuth, UserData } from './auth/local/auth.interface'
@@ -20,6 +18,8 @@ export * from './services/services.decorator'
 export * from './respositories/repository.decorator'
 
 export * from './dependency/dependency.decorators'
+export { define } from './dependency/dependency.utils'
 
 export * from './errors/http.error'
 export * from './aliases'
+

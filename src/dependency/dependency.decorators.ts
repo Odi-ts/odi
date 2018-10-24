@@ -8,8 +8,7 @@ import { ValuedProps, ConstructorParameters } from "./dependency.manager";
 
 
 export interface ComponentEntry<T extends Class> {
-    id?: string
-    type?: 'singleton' | 'pool',
+    type?: 'singleton' | 'scoped',
     constructorArgs?: Partial<ConstructorParameters<T>>,
     props?: Partial<ValuedProps<InstanceType<T>>>
 }
@@ -19,7 +18,6 @@ export interface ComponentSettings<T extends Class> {
 }
 
 export const defaultEntry: ComponentEntry<any> = {
-    id: 'default',
     type: 'singleton',
     constructorArgs: [],
     props: {}
@@ -30,7 +28,7 @@ export const defaultSettings: ComponentSettings<any> = {
 };
 
 export const Autowired = (id?: string) => (target: any, propertyKey: string | symbol) => {
-    Reflect.defineMetadata(AUTOWIRED, id || true, target, propertyKey);
+    Reflect.defineMetadata(AUTOWIRED, id || "default", target, propertyKey);
 
     if(isFunction(target,propertyKey)){
         return;

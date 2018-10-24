@@ -8,6 +8,8 @@ import { defaultEntry, ComponentEntry } from "./dependency.decorators";
 
 import { Class } from "../utils/object.reflection";
 import { isNull } from "../utils/object.utils";
+import { metadata } from "../utils/metadata.utils";
+import { ComponentSettingsStorage } from "./dependency.manager";
 
 export interface Implemenations{   
     [index: string]: Object
@@ -22,9 +24,11 @@ export default class DependencyComposer{
         this.idMap = new Map();
     }
 
-    public async instanciateClassType<T extends Class>(classType: T, { id, constructorArgs, props, type }: ComponentEntry<T> = defaultEntry){
+    public async instanciateClassType<T extends Class>(classType: T, { id, constructorArgs, props = {}, type = "singleton" }: ComponentEntry<T> & { id?: string } = defaultEntry){
         const target = new classType(...await this.injectByConstructor(classType, constructorArgs));  
-      
+
+        Object.keys(props).forEach(prop => target[prop] = props![prop]);
+
         if(target[onInit]){
            await target[onInit](); 
         }
@@ -55,7 +59,7 @@ export default class DependencyComposer{
         for(let propertyKey of autowiredProps){
             const dependency = reflectType(target, propertyKey);    
 
-            target[propertyKey] = !isNull(predefined[propertyKey]) ? predefined[propertyKey] : await this.proccessDependency(target, dependency);
+            target[propertyKey] = !isNull(predefined[propertyKey]) ? predefined[propertyKey] : await this.proccessDependency(target, dependency, propertyKey);
         }
 
         return;
@@ -102,11 +106,9 @@ export default class DependencyComposer{
             return;
         }
 
-        if(!this.map.has(instance.constructor || classType)){
-            this.map.set(instance.constructor || classType, { [id]: instance })
-            return;
-        }
-
+        const prev = this.map.has(instance.constructor || classType) || {};
+        
+        this.map.set(instance.constructor || classType, { ...prev, [id]: instance });    
     }
 
     public get(classType: Function, id: string = 'default'): any{
@@ -115,14 +117,14 @@ export default class DependencyComposer{
         return instance ? instance[id] : null;
     }
 
-    public contain(classType: Function, id: string = 'default'): boolean{
+    public contain(classType: Function, id: string = 'default'): boolean {
         const instance = this.map.get(classType);
 
         if(!instance){
             return false;
         }
 
-        return (instance[id] !== undefined || instance[id] !== null);
+        return (instance[id] !== undefined);
     }
 
    
@@ -141,18 +143,20 @@ export default class DependencyComposer{
 
 
 
-    private async proccessDependency(parentObject: any, dependency: any){       
-        if(Reflect.hasMetadata(INJECT_ID, dependency)){
-            const typeId = Reflect.getMetadata(INJECT_ID, dependency) || 'default';
-
-            if(!this.contain(dependency, typeId)){
-                const instance = await this.instanciateClassType(dependency);
+    private async proccessDependency(parentObject: any, dependency: any, propertyKey?: string) {    
+        if(metadata(dependency).hasMetadata(INJECT_ID) || ComponentSettingsStorage.get(dependency)){
+            const id = metadata(Object.getPrototypeOf(parentObject), propertyKey).getMetadata(AUTOWIRED) || 
+                       metadata(dependency).getMetadata(INJECT_ID) || 
+                       'default';
             
-                this.put(dependency, instance, typeId);
+            const settings = ComponentSettingsStorage.get(dependency)![id];
+
+            if(!this.contain(dependency, id)){
+                await this.instanciateClassType(dependency, { id, ...settings });
             }
 
-            return this.get(dependency);
-        }else{                         
+            return this.get(dependency, id);
+        } else {                         
             return this.proccessUnexpected(parentObject, dependency);
         }
     }
