@@ -64,6 +64,7 @@ export const ArrayOf = (targetClass: any) => (target: any, propertyKey: string |
     DtoPropsTypes.set(target, { ...prevTypes, [propertyKey]: targetClass });
 }
 
+export const UniqueItems = () => validationFactory({ uniqueItems: true });
 export const MaxItems = (maxItems: number) => validationFactory({ maxItems });
 export const MinItems = (minItems: number) => validationFactory({ minItems });
 
