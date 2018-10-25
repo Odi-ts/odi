@@ -114,9 +114,9 @@ export abstract class CoreAuth<T extends object,U>{
 
     abstract load(decoding: T | string | object | null, options?: any): Promise<U | null>;
     
-    abstract assign(req: Request, res: Response, payload: U, options?: any): Promise<void | any> | void | any;
+    abstract assign(req: Request, res: Response, payload: U, options?: any): Promise<any>;
 
-    abstract destroy(req: Request, res: Response, options?: any): void | any;
+    abstract destroy(req: Request, res: Response, options?: any): any;
 
     abstract authenticated(req: Request, res: Response, next: () => Promise<any>, user: U | null | undefined, options?: any): Promise<void | any>;
 }
