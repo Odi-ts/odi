@@ -1,8 +1,12 @@
 # DTO
 
-## Validation
+## General
 
 **DTO**\(_Data Transfer Object_\) __is used for parsing and validating data from request body. DTOs always used with **Controllers**.
+
+## Validation
+
+It's a common scenario when web server should validate data before processing. DTO can optimize and automate this process.
 
 ### Overview
 
@@ -157,6 +161,35 @@ Data transformation from plain object to DTO instance applied automatically. But
 Decorators for transformations will be added in next major release.
 {% endhint %}
 
+## Inheritance
+
+You can easily use inheritance `(extends)` for DTOs.
+
+```typescript
+import { Data, Format, MaxLength, IsOptional } from "odi/dto";
+
+@Data()
+class BaseDTO {
+    
+    @Format('uuid')
+    id: string;
+    
+}
+
+@Data()
+class TodoDTO extends BaseDTO {
+
+    @MaxLength(80)
+    title: string;
+
+    @IsOptional()
+    desctiption: string;
+        
+}
+```
+
+`TodoDTO` will inherit all properties from base class for both transformation and validation purposes.
+
 ## Flow
 
 Every controller method, that contains **DTO** class as argument will be automatically provided with validated and mapped data. Validation will be performed before controller method call.
@@ -164,6 +197,10 @@ Every controller method, that contains **DTO** class as argument will be automat
 ![](../.gitbook/assets/untitled-diagram-2.png)
 
 Only after transformation, DTO will be injected into method call. Under the hood [ajv](https://ajv.js.org) is used. Decorators is used to build schema.
+
+## 
+
+## 
 
 
 
