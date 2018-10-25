@@ -9,7 +9,7 @@
 
 TypeScript framework for creating enterprise-grade (web) applications with simple and minimalistic API, that allows you to focus on business logic. Based on declarative and imperative programming, inspiried by [ASP.NET](https://www.asp.net/) / [Spring](https://spring.io/). 
 
-**Check [Docs](https://odi.gitbook.io/core) for more details.**
+**Check [Docs](https://odi.gitbook.io/core/basics/getting-started) for more details.**
 
 Odi provides feature set for creation of easy supportable and scalable web applications.
 
