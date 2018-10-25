@@ -38,35 +38,12 @@ export class SampleController extends IController {
 
 There are 2 different decorators for middleware purposes. 
 
-<table>
-  <thead>
-    <tr>
-      <th style="text-align:left">Decorator</th>
-      <th style="text-align:left">Arguments</th>
-      <th style="text-align:left">Reference</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align:left"><b>@CMiddleware</b>
-      </td>
-      <td style="text-align:left"><em>(...functions: MiddlewareFunction[])        </em> 
-      </td>
-      <td style="text-align:left">Set middleware for whole controller. Accepts unlimited number of middleware
-        functions.</td>
-    </tr>
-    <tr>
-      <td style="text-align:left"><b>@Middleware</b>
-      </td>
-      <td style="text-align:left"><em>(...functions: MiddlewareFunction[])</em>  <em>                                                       </em>
-      </td>
-      <td style="text-align:left">
-        <p>Set middleware for only one path. Accepts</p>
-        <p>unlimited number of middleware functions.</p>
-      </td>
-    </tr>
-  </tbody>
-</table>Don't forget about function context. You should set it manually or use lambda functions instead.
+* `@CMiddleware(...functions: MiddlewareFunction[])` - set middleware for whole controller. Accepts unlimited number of middleware functions. 
+* `@Middleware(...functions: MiddlewareFunction[]` - set middleware for only one path. Accepts 
+
+  unlimited number of middleware functions. 
+
+Don't forget about function context. You should set it manually or use lambda functions instead.
 
 ## Purposes
 

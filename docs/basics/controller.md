@@ -51,42 +51,38 @@ So, as you see, method names participate in route building. Also, `@Controller` 
 
 Information from request **body** or request **params** will be automatically injected in method, so you don't need to write any additional code for those purposes.
 
-### 
+
 
 ### Decorators
 
 There is fixed set of decorators for routing.
 
-| Decorator | Arguments | Reference |
-| :--- | :--- | :--- |
-| **@Controller** | _\(basePath: string = "/"\)_                                 | Sets class as controller. Accepts only one optional argument - base path. \(I.E: prefix for all routes in controller\). |
-| **@Route** | _\(method: Method, path: string = "/"\)_                                                                                                      | Sets method of controller as route handler. Accepts two arguments. HTTP method and path. But path also got default value - "/" |
+* `@Controller(basePath: string = "/")` __- sets class as controller. Accepts only one optional argument - base path. \(I.E: prefix for all routes in controller\). 
+* `@Route(method: Method, path: string = "/")` -  sets method of controller as route handler. Accepts two arguments. HTTP method and path. But path also got default value - "/"
 
 {% hint style="info" %}
 Note, **@Route** decorator got short version. Check it below.
 {% endhint %}
 
-And set of decorators for binding class methods of controller, to routes such as method name. 
+And set of decorators for binding class methods of controller, to routes such as method name. Decorator name are similar to HTTP method. Method decorated by `@All` decorator accepts all HTTP methods.
 
-| Decorator | Reference |
-| :--- | :--- |
-| **@All** | Sets method of controller as route handler that accept all http methods. |
-| **@Get** | Sets method of controller as route handler with HTTP method - _GET_ |
-| **@Del** | ...  - _DELETE_ |
-| **@Put** | ...  - _PUT_ |
-| **@Post** | ...  - _POST_ |
-| **@Patch** | ... - _PATCH_ |
+* `@All` 
+* `@Get`
+* `@Del`
+* `@Put`
+* `@Post`
+* `@Patch`
 
+#### Route Shorthand
 
+Also, there is available shorthand for `@Route` decorator, to omit _method_ parameter. All those decorators accept path as a parameter. Default value is - "/". 
 
-Also, there is available shorthand for @Route decorator, to omit _method_ parameter. All those decorators accept path as a parameter. Default value is - "/". 
-
-* **@RouteAll**
-* **@RouteGet**
-* **@RouteDel**
-* **@RoutePut**
-* **@RoutePost**
-* **@RoutePatch**
+* `@RouteAll`
+* `@RouteGet`
+* `@RouteDel`
+* `@RoutePut`
+* `@RoutePost`
+* `@RoutePatch`
 
 {% hint style="warning" %}
 Note, if method was decorated by both **@Route** and **@Get** \(or others like Post, All, ..etc\). Metadata from **@Route** will be in priority during build time.
@@ -215,29 +211,29 @@ Note, new methods will be added in next major release for convenient work.
 
 There are 3 methods to work with **headers:**
 
-*  `getHeader(key: string)` - return header value by key 
-*  `setHeader(key: string, value: string)` - set header value 
-*  `getHeaders()` - return all headers as object 
+* `getHeader(key: string)` - return header value by key 
+* `setHeader(key: string, value: string)` - set header value 
+* `getHeaders()` - return all headers as object 
 
 #### Cookies
 
 There are 2 methods to work with **cookies:**
 
-*  `getCookie(key: string)` - get cookie value by key 
-*  `setCookie(key: string, value: string)`  - set cookie value by key 
+* `getCookie(key: string)` - get cookie value by key 
+* `setCookie(key: string, value: string)`  - set cookie value by key 
 
 #### Query
 
 There are 3 methods to work with **query:**
 
-*  `getQueryParam(key: string)` - return query parameter value by key 
-*  `getQuery()`  - return all query parametes as object 
+* `getQueryParam(key: string)` - return query parameter value by key 
+* `getQuery()`  - return all query parametes as object 
 
 #### Route Parameters
 
 There are only 1 method to work with **route parameters**:
 
-*  `getQueryParam(key: string)` - return query parameter value by key
+* `getQueryParam(key: string)` - return query parameter value by key
 
 But if you need full list or additional information, you can always reference to raw http request. Read below about it.
 
@@ -245,10 +241,10 @@ But if you need full list or additional information, you can always reference to
 
 Information about request/response objects persist like a properties of class instance.
 
-*  `httpRequest` - raw Node.js http request 
-*  `httpResponse` - raw Node.js http response 
-*  `request` - wrapped http request 
-*  `response` - wrapped http response
+* `httpRequest` - raw Node.js http request 
+* `httpResponse` - raw Node.js http response 
+* `request` - wrapped http request 
+* `response` - wrapped http response
 
   
 
@@ -256,8 +252,8 @@ Information about request/response objects persist like a properties of class in
 
 There are few other methods
 
-*  `redirect(url: string)` - redirect request to another url 
-*  `render(template: string, params = {})` - render view. Params will be pathed to templating engine 
+* `redirect(url: string)` - redirect request to another url 
+* `render(template: string, params = {})` - render view. Params will be pathed to templating engine 
 
 Check **views** docs for more details:
 
