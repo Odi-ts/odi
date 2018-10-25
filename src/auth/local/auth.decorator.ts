@@ -1,5 +1,4 @@
 import 'reflect-metadata'
-import { time } from 'uniqid'
 
 import { CoreAuth } from "./auth.interface";
 import { AUTH, AUTH_MIDDLEWARE, INJECT_ID } from "../../definitions";

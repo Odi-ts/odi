@@ -61,5 +61,9 @@
     "reflect-metadata": "^0.1.12",
     "shortid": "^2.2.13",
     "uniqid": "^5.0.3"
+  },
+  "optionalDependencies": {
+    "jsonwebtoken": "^8.3.0",
+    "typeorm": "^0.2.8"
   }
 }

@@ -1,6 +1,5 @@
 import 'reflect-metadata'
 
-import { time } from 'uniqid'
 import { INJECT_ID, SERVICE } from '../definitions';
 import { ObjectType } from '../utils/object.reflection';
 
