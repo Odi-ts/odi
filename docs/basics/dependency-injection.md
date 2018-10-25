@@ -87,5 +87,29 @@ OrderService property `discounter` will be an instance of `DiscountCalculator` c
 
 There is only 1 decorator for **DI**:
 
+`@Autowired(id?: string)` - sets method or property which will be provided with dependencies. Have one optional parameter id with default value `"default"`.  If you use `define` method for configuring instances, autowired will find that instance by passed id for injection.
 
+{% hint style="warning" %}
+Decorator for parameters will be added in next small release. 
+{% endhint %}
+
+## Injection
+
+Currently there are three supported types of injection.
+
+* By constructor
+* By property
+* By method
+
+{% hint style="success" %}
+Note, in next major release injection by **Providers** and **Factories** will be added.
+{% endhint %}
+
+### Constructor
+
+Every argument of constructor will be automatically injected by type. Primitive or unresolved types will be ignored. For more control over the process, **property** or **method** injection should be used.
+
+### Property
+
+### Method
 
