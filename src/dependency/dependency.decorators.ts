@@ -27,6 +27,7 @@ export const defaultSettings: ComponentSettings<any> = {
     'default': defaultEntry
 };
 
+
 export const Autowired = (id?: string) => (target: any, propertyKey: string | symbol) => {
     Reflect.defineMetadata(AUTOWIRED, id || "default", target, propertyKey);
 
@@ -40,4 +41,6 @@ export const Autowired = (id?: string) => (target: any, propertyKey: string | sy
         autowiredPropsStore.set(target, [propertyKey]);
 }
 
-export const Component = () => (target: any) => Reflect.defineMetadata(COMPONENT, true, target);
+export const Inject = (id?: string) => (target: any, propertyKey: string | symbol) => {
+
+}
