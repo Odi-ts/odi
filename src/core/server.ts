@@ -77,7 +77,7 @@ export class Core{
     }
 
     protected setDatabase(): Promise<Connection> {
-        return createConnection(this.options.database);
+        return createConnection(this.options.database!);
     }
 
     private async loadDependencies(): Promise<void>{

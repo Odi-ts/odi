@@ -27,8 +27,6 @@ export const SERVICE = `${naming}_service`;
 export const AUTOWIRED = `${naming}_autowired`
 export const AUTOWIRED_PROPS = `${naming}_autowired`;
 
-export const COMPONENT = `${naming}_component`
-
 export const INJECT = `${naming}_inject`;
 export const INJECT_ID = `${naming}_inject_id`;
 

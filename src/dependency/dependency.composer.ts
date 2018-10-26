@@ -1,4 +1,4 @@
-import { INJECT_ID, SERVICE, DB_CONNECTION, AUTOWIRED } from "../definitions";
+import { INJECT_ID, SERVICE, DB_CONNECTION, AUTOWIRED, INJECT } from "../definitions";
 import { reflectParameters, reflectOwnProperties, reflectType } from "../utils/directory.loader";
 import { Connection } from "typeorm";
 import { isServiceRepo } from "./dependency.classifier";
@@ -59,7 +59,7 @@ export default class DependencyComposer{
         for(let propertyKey of autowiredProps){
             const dependency = reflectType(target, propertyKey);    
 
-            target[propertyKey] = !isNull(predefined[propertyKey]) ? predefined[propertyKey] : await this.proccessDependency(target, dependency, propertyKey);
+            target[propertyKey] = !isNull(predefined[propertyKey]) ? predefined[propertyKey] : await this.proccessDependency(target, dependency, "default", propertyKey);
         }
 
         return;
@@ -78,7 +78,8 @@ export default class DependencyComposer{
 
     }
 
-    private async injectByParams(target: any, propertyKey?: any){
+    private async injectByParams(target: any, propertyKey?: any){        
+        const ids = metadata(target, propertyKey).getMetadata(INJECT);
         const reflect = reflectParameters(target, propertyKey);
 
         if(!reflect){
@@ -86,12 +87,12 @@ export default class DependencyComposer{
         }
 
         const dependencies = [];
-        for(const dependency of reflect){
+        for(const [index, dependency] of reflect.entries()){
             if(!dependency){
                 throw Error(`DI points to undefined reference into "${target.name}" constructor.`)
             }
             
-            const processed = await this.proccessDependency(target, dependency);
+            const processed = await this.proccessDependency(target, dependency, ids[index]);
             dependencies.push(processed);
             
         }
@@ -143,11 +144,12 @@ export default class DependencyComposer{
 
 
 
-    private async proccessDependency(parentObject: any, dependency: any, propertyKey?: string) {    
+    private async proccessDependency(parentObject: any, dependency: any, depId: string = 'default', propertyKey?: string) {    
         if(metadata(dependency).hasMetadata(INJECT_ID) || ComponentSettingsStorage.get(dependency)){
+            
             const id = metadata(Object.getPrototypeOf(parentObject), propertyKey).getMetadata(AUTOWIRED) || 
                        metadata(dependency).getMetadata(INJECT_ID) || 
-                       'default';
+                       depId;
             
             const settings = ComponentSettingsStorage.get(dependency)![id];
 
