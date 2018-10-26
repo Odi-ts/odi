@@ -63,6 +63,7 @@
   },
   "optionalDependencies": {
     "jsonwebtoken": "^8.3.0",
+    "socket.io": "^2.1.1",
     "typeorm": "^0.2.8"
   }
 }
