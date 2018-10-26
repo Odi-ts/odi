@@ -44,7 +44,7 @@ new Core({ server: { port }, sources }).listen();
 
 Build your application and run it `tsc && node index.js` Check it in your browser
 
-![](../.gitbook/assets/image%20%281%29.png)
+![](../.gitbook/assets/image%20%284%29.png)
 
 It was just a basic example. There are many other interesting things. Check docs for further information.
 
