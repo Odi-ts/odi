@@ -90,10 +90,6 @@ There are 2 decorators for **DI**:
 * `@Autowired(id?: string)` - sets method or property which will be provided with dependencies. Have one optional parameter id with default value `"default"`.  If you use `define` method for configuring instances, autowired will find that instance by passed `id` for injection. Note, `id` will work only for class properties, methods will ignore it.  
 * `@Inject(id?: string)` - define dependency by `id` for parameter. It can be used for constructor and method injection. If `default` instance is needed, just omit usage of this decorator.
 
-{% hint style="success" %}
-View examples below
-{% endhint %}
-
 ## Injection
 
 Currently there are three supported types of injection.
