@@ -268,7 +268,7 @@ define(Foo)
     })
 ```
 
-### Typization
+### Typization Preview
 
 `props` accepts only properties, not methods, so it's fully save. Same thing with `constructorArgs`. It's strict tuple. 
 
