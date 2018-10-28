@@ -5,7 +5,6 @@ export type Event = string;
 
 export function Sockets(path: Namespace): ClassDecorator{
     return (target: any) => {
-        target.prototype
         Reflect.defineMetadata(SOCKET, path, target)
     }
 }

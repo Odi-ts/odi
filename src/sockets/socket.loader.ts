@@ -5,6 +5,7 @@ import { RFunction, inject, reflectProperties, ILoader } from "../utils/director
 import { Namespace, Event } from "./socket.decorator";
 import { SOCKET, SOCKET_EVENT } from "../definitions";
 import { ISocket } from "./socket.interfaces";
+import { StrictObjectType } from "../utils/object.reflection";
 
 
 export interface LoaderOptions{
@@ -24,14 +25,15 @@ export default class ScoketLoader implements ILoader{
     }
 
     public processBase(): RFunction{
-        return (classType: any) => {
-            let instance = new classType();
-            let base: Namespace = Reflect.getMetadata(SOCKET, instance['constructor']);      
+        return (classType: StrictObjectType<ISocket>) => {
+            const instance = new classType();
+            const base: Namespace = Reflect.getMetadata(SOCKET, instance['constructor']);      
       
-            (<ISocket>instance)['nsp'] = this.options.socketServer.of(base);            
-            (<ISocket>instance)['nsp'].on('connection', (socket: SocketIO.Socket): void => {
+            instance['nsp'] = this.options.socketServer.of(base);            
+            instance['nsp'].on('connection', (socket: SocketIO.Socket): void => {
                 /* Events handlers should go there */
-            
+                
+                
             });        
         } 
     }

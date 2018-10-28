@@ -1,16 +1,15 @@
 import { sign, verify, decode } from 'jsonwebtoken'
 import { Request, Response } from '../../aliases';
-import { Strategy, StrategyCreatedStatic } from 'passport';
-
-import * as passport from 'passport';
+//import { Strategy } from 'passport';
+//import * as passport from 'passport';
 
 
 export abstract class UserData<Decoding, User>{      
     abstract load(options?: any) : Promise<User | null>;    
     abstract assign(data: User, options?: any) : Promise<any> | void;
     abstract destroy(options?: any) : void;
-    abstract requestStrategy(name: string, options? :any): void;
-    abstract acceptStrategy(name: string, options?: any): Promise<any>;
+    //abstract requestStrategy(name: string, options? :any): void;
+    //abstract acceptStrategy(name: string, options?: any): Promise<any>;
 }
     
 interface BaseData<Decoding,User>{
@@ -40,10 +39,11 @@ export abstract class CoreAuth<T extends object,U>{
             assign: (user: U, options?: any) =>  this.assign(req, res, user, options),
             destroy: (options?: any) => this.destroy(req, res, options),
             
+            /*
             requestStrategy: (name: string, options?: any) => passport.authenticate(name, options)(req,res,next),
             acceptStrategy: (name: string, options: any = {}) => new Promise((resolve, reject) => {
                 passport.authenticate(name, options, (err, profile, info) => err ? reject(err) : resolve({ profile, info }) )(req,res,next);
-            })
+            })*/
         });
     }
 
@@ -89,9 +89,10 @@ export abstract class CoreAuth<T extends object,U>{
     protected configure(){};
 
     
+    /*
     protected applyStrategy(key: string, srategy: Strategy){
         passport.use(key, srategy);
-    }
+    }*/
 
     public createToken(data: T, secret?: string): string{
         return sign(data, secret || this.secret);
