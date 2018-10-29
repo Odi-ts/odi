@@ -3,7 +3,7 @@
 <p align="center"> 
 	<img src="https://img.shields.io/npm/v/odi.svg" /> 
 	<img src="https://img.shields.io/github/license/Odi-ts/Odi.svg" /> 
-	<img src="https://img.shields.io/depfu/Odi-ts/Odi.svg" />
+	<img src="https://img.shields.io/depfu/Odi-ts/odi.svg" />
 	<img src="https://img.shields.io/github/last-commit/Odi-ts/Odi.svg" />
 </p>
 
