@@ -1,16 +1,8 @@
-import { sign, verify, decode } from 'jsonwebtoken'
-import { Request, Response } from '../../aliases';
+import { sign, verify, decode, SignOptions } from 'jsonwebtoken'
+import { Context } from '../../aliases';
+import { UserData } from './auth.container';
 //import { Strategy } from 'passport';
 //import * as passport from 'passport';
-
-
-export abstract class UserData<Decoding, User>{      
-    abstract load(options?: any) : Promise<User | null>;    
-    abstract assign(data: User, options?: any) : Promise<any> | void;
-    abstract destroy(options?: any) : void;
-    //abstract requestStrategy(name: string, options? :any): void;
-    //abstract acceptStrategy(name: string, options?: any): Promise<any>;
-}
     
 interface BaseData<Decoding,User>{
     decoding: Decoding,
@@ -31,40 +23,20 @@ export abstract class CoreAuth<T extends object,U>{
 
     constructor(){
         this.configure();
+
+        this.decodeToken.bind(this);
     }
    
-    private extractUser(req: Request, res: Response, next: () => Promise<any>, { token, decoded }: BaseExtraction<T>): UserData<T, U>{
-        return ({
-            load:  (options?: any) => this.load(decoded, options),
-            assign: (user: U, options?: any) =>  this.assign(req, res, user, options),
-            destroy: (options?: any) => this.destroy(req, res, options),
-            
-            /*
-            requestStrategy: (name: string, options?: any) => passport.authenticate(name, options)(req,res,next),
-            acceptStrategy: (name: string, options: any = {}) => new Promise((resolve, reject) => {
-                passport.authenticate(name, options, (err, profile, info) => err ? reject(err) : resolve({ profile, info }) )(req,res,next);
-            })*/
-        });
+    private extractUser(ctx: Context): UserData<T, U>{
+        const container = new UserData<T, U>(ctx, this);
+        container.token = this.extractToken(ctx);
+
+        return container;
     }
 
-    private extractData(token: string): BaseExtraction<T>{
-        let decoded = null;
-        
-        try{
-            decoded = token ? this.decodeToken(token) : null;
-        }catch{
-            decoded = null;
-        }
-
-        return {
-            token,
-            decoded
-        }
-    }
-
-    private extractToken(req: Request, container: string = this.container){  
-        const header = req.header('authorization') ;
-        let def = undefined;
+    private extractToken(ctx: Context, container: string = this.container){  
+        const header = ctx.get('authorization');
+        let def;
 
         if(header){
             const parts = header.split(' ');
@@ -73,16 +45,7 @@ export abstract class CoreAuth<T extends object,U>{
             }
         }
 
-        return def //|| req[container] || req.headers[container] || req.body[container];
-    }
-
-    private async extractProtected(req: Request, res: Response, next: () => Promise<any>, options?: any){
-        let tokenBase = <UserData<T,U>>(<any>req)['tokenBase'];
-        let user = await tokenBase.load();
-
-        (<any>req).tokenUser = user;
-                
-        await this.authenticated(req, res, next, user, options);
+        return def || ctx.cookies.get(container);
     }
 
 
@@ -94,30 +57,15 @@ export abstract class CoreAuth<T extends object,U>{
         passport.use(key, srategy);
     }*/
 
-    public createToken(data: T, secret?: string): string{
-        return sign(data, secret || this.secret);
+    public createToken(data: T, options?: SignOptions): string{
+        return sign(data, this.secret, options);
     }
 
-    public verifyToken(token: string, secret?: string): string | T{
-        let vr: object | string = verify(token, secret || this.secret);
-
-        if(typeof vr === 'string'){
-            return vr;
-        }
-
-        return <T>vr;
+    public verifyToken(token: string): T {
+        return (verify(token, this.secret) as T);
     }
 
     public decodeToken(token: string): T | null {
         return (decode(token) as T);
-    }
-
-
-    abstract load(decoding: T | string | object | null, options?: any): Promise<U | null>;
-    
-    abstract assign(req: Request, res: Response, payload: U, options?: any): Promise<any>;
-
-    abstract destroy(req: Request, res: Response, options?: any): any;
-
-    abstract authenticated(req: Request, res: Response, next: () => Promise<any>, user: U | null | undefined, options?: any): Promise<void | any>;
+    };
 }

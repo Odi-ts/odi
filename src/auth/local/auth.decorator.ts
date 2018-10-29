@@ -1,8 +1,5 @@
 import 'reflect-metadata'
-
-import { CoreAuth } from "./auth.interface";
-import { AUTH, AUTH_MIDDLEWARE, INJECT_ID } from "../../definitions";
-import { ObjectType } from '../../utils/object.reflection';
+import { AUTH, AUTH_MIDDLEWARE } from "../../definitions";
 
 export interface AuthDefaults<T>{
     secret : string,
@@ -10,7 +7,7 @@ export interface AuthDefaults<T>{
     containerAlias : string
 }
 
-export function Authentication<T>(options: AuthDefaults<T>): ClassDecorator{
+export function Authentication<T>(options?: AuthDefaults<T>): ClassDecorator{
     return (target: any) => {
         Reflect.defineMetadata(AUTH, options, target)
     }

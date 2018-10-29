@@ -1,16 +1,18 @@
-import { CoreAuth, BaseExtraction, UserData } from "../../auth/local/auth.interface";
+import { CoreAuth } from "../../auth/local/auth.interface";
 import { IRouterContext } from "koa-router";
 import { Context } from "koa";
 import { SetOption } from "cookies";
 import { Request, Response } from "../../aliases";
+import { UserData } from "../../auth/local/auth.container";
 
-export class IController<T extends object = any, U = any>{ 
-    private authService: CoreAuth<T,U>;    
-    private userData: UserData<T,U>;
+type UDD<T> = T extends UserData<infer D, infer U> ? { D: D, U: U }: never;
+
+
+export class IController<T = any>{ 
+    private authService: CoreAuth<UDD<T>['D'], UDD<T>['U']>;    
+    private userData: UserData<UDD<T>['D'], UDD<T>['U']>;
 
     protected context: Context;
-    protected tokenData: BaseExtraction<T>;
-
 
     /* Koa request and response */
     get request(): Request{
@@ -91,14 +93,7 @@ export class IController<T extends object = any, U = any>{
             return this.userData;
         }
 
-        const token = this.authService['extractToken'](this.request);
-
-        if(!token){
-            return null;
-        }
-      
-        this.tokenData = this.authService['extractData'](token);
-        this.userData = this.authService['extractUser'](this.request, this.response, () => new Promise(() => console.log('path')), this.tokenData)
+        this.userData = this.authService['extractUser'](this.context);
         
         return this.userData;      
     }

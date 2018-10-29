@@ -23,9 +23,10 @@ export class AuthLoader implements ILoader{
 
             let authInstance: CoreAuth<any,any> = await this.options.dependencyComposer.instanciateClassType(classType);
             
+            /*
             authInstance['secret'] = defaults.secret;
             authInstance['expiration'] = defaults.expiration;
-            authInstance['container'] = defaults.containerAlias;
+            authInstance['container'] = defaults.containerAlias;*/
 
             this.options.dependencyComposer.putById('auth', authInstance);           
             this.options.dependencyComposer.put(classType, authInstance, typeId);

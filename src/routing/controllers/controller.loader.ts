@@ -26,10 +26,7 @@ export interface LoaderOptions {
     dependencyComposer: DependencyComposer
 }
 
-const AsyncFunction: Function = (async () => {}).constructor;
-
 export class ControllersLoader implements ILoader {
-    private auth: CoreAuth < any, any >;
 
     constructor(readonly options: LoaderOptions) {
         this.bindHandler.bind(this);
@@ -37,11 +34,12 @@ export class ControllersLoader implements ILoader {
 
 
     public processBase(): RFunction {
-        this.auth = this.options.dependencyComposer.getById('auth');
+        const auth = this.options.dependencyComposer.getById('auth');
 
         return async (classType: any) => {
             const ctrlMeta = metadata(classType);            
-            const target = await this.options.dependencyComposer.instanciateClassType(classType);
+            const target: IController = await this.options.dependencyComposer.instanciateClassType(classType);
+            target['authService'] = auth;
 
             const base: ControllerMeta = ctrlMeta.getMetadata(keys.CONTROLLER);
             const middlware: MiddlewareFunction[] = ctrlMeta.getMetadata(keys.ROUTE_MIDDLEWARE) || [];

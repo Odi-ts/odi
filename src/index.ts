@@ -1,7 +1,8 @@
 import 'reflect-metadata'
 
 export { Core } from './core/server'
-export { CoreAuth, UserData } from './auth/local/auth.interface'
+export { CoreAuth } from './auth/local/auth.interface'
+export { UserData } from './auth/local/auth.container'
 
 export * from './auth/local/auth.decorator'
 
