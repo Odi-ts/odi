@@ -11,6 +11,11 @@ export interface ComponentEntry<T extends Class> {
     props?: Partial<ValuedProps<InstanceType<T>>>
 }
 
+export interface TypelessComponentEntry<T extends Class> {
+    constructorArgs?: Partial<ConstructorParameters<T>>,
+    props?: Partial<ValuedProps<InstanceType<T>>>
+}
+
 export interface ComponentSettings<T extends Class> {
     [index: string]: ComponentEntry<T>;
 }
