@@ -193,6 +193,18 @@ define(Pet)
         props: {...},
         type: 'scoped'
     });
+    
+//Or
+
+define(Pet)
+    .setSingleton('default', {
+        constructorArgs: [...],        
+        props: {...}      
+    })
+    .setScoped('special', {
+        constructorArgs: [...],        
+        props: {...}
+    });
 ```
 
 {% hint style="success" %}
@@ -200,6 +212,12 @@ Other methods \(ways\) of definition will be added in next major release.
 {% endhint %}
 
 Unlimited instance types can be defined using this way. Each instance is defined by `id` \(this id can be passed into `@Autowired` and/or `@Inject` decorators for proper instance type injection\).
+
+### Shorthands
+
+There are 2 shorthands for omitting type during definition:
+
+`setSingleton(id: string, ...)`  and  `setScoped(id: string, ...)`
 
 ### Details
 
