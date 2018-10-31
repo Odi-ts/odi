@@ -4,17 +4,13 @@ import { AUTH, AUTH_MIDDLEWARE } from "../../definitions";
 export interface AuthDefaults<T>{
     secret : string,
     expiration : string | number,
-    containerAlias : string
+    header?: string
 }
 
 export function Authentication<T>(options?: AuthDefaults<T>): ClassDecorator{
-    return (target: any) => {
-        Reflect.defineMetadata(AUTH, options, target)
-    }
+    return (target: any) => Reflect.defineMetadata(AUTH, options, target)
 }
 
 export function Auth(options?: any): PropertyDecorator{
-    return (target: any, propertyKey: string | symbol ) => {
-        Reflect.defineMetadata(AUTH_MIDDLEWARE, options, target, propertyKey);
-    };
+    return (target: any, propertyKey: string | symbol ) => Reflect.defineMetadata(AUTH_MIDDLEWARE, options, target, propertyKey);
 }

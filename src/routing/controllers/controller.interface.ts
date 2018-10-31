@@ -1,16 +1,16 @@
-import { CoreAuth } from "../../auth/local/auth.interface";
-import { IRouterContext } from "koa-router";
 import { Context } from "koa";
 import { SetOption } from "cookies";
+import { IRouterContext } from "koa-router";
+
 import { Request, Response } from "../../aliases";
+import { CoreAuth } from "../../auth/local/auth.interface";
 import { UserData } from "../../auth/local/auth.container";
 
-type UDD<T> = T extends UserData<infer D, infer U> ? { D: D, U: U }: never;
-
+import { Decoding, User } from "./controller.types";
 
 export class IController<T = any>{ 
-    private authService: CoreAuth<UDD<T>['D'], UDD<T>['U']>;    
-    private userData: UserData<UDD<T>['D'], UDD<T>['U']>;
+    private authService: CoreAuth<Decoding<T>, User<T>>;    
+    private userData: UserData<Decoding<T>, User<T>>;
 
     protected context: Context;
 

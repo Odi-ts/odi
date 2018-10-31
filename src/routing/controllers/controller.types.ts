@@ -1,3 +1,6 @@
+import { CoreAuth } from "../../auth/local/auth.interface";
+import { type } from "os";
+
 export enum Method {
     GET = "get",
     POST = "post",
@@ -6,3 +9,8 @@ export enum Method {
     DELETE = "del",
     PATCH = "path",
 }
+
+export type UDD<T> = T extends CoreAuth<infer D, infer U> ? { D: D, U: U }: never;
+
+export type Decoding<T> = UDD<T>['D'];
+export type User<T> = UDD<T>['U'];

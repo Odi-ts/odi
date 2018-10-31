@@ -9,7 +9,7 @@ import { createServer, Server as HttpServer } from 'http';
 import { Connection, ConnectionOptions, createConnection } from "typeorm";
 import { CoreAuth } from '../auth/local/auth.interface';
 import { DB_CONNECTION } from '../definitions';
-import { DependencyClassifier } from '../dependency/dependency.classifier';
+import { DependencyClassifier } from '../dependency/dependency.processor';
 import DependencyComposer from '../dependency/dependency.composer';
 
 

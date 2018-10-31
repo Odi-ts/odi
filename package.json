@@ -1,6 +1,6 @@
 {
   "name": "odi",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "🌪🌌 Opinionated, Declarative, Idiomatic framework for building scalable, supportable, enterprise-grade applications.",
   "main": "lib/src/index.js",
   "homepage": "https://github.com/Odi-ts/Odi#readme",
@@ -36,14 +36,11 @@
     "@types/koa-views": "^2.0.3",
     "@types/koa__cors": "^2.2.3",
     "@types/lodash": "^4.14.117",
-    "@types/nanoid": "^1.2.0",
     "@types/node": "^10.12.0",
     "@types/passport": "^0.4.6",
     "@types/reflect-metadata": "^0.1.0",
     "@types/shortid": "0.0.29",
     "@types/socket.io": "^1.4.38",
-    "@types/strip-json-comments": "0.0.30",
-    "@types/uniqid": "^4.1.2",
     "autocannon": "^3.1.0"
   },
   "dependencies": {

@@ -1,6 +1,6 @@
-import { Request, Response, Context } from "koa";
+import { Context } from "koa";
 import { CoreAuth } from "./auth.interface";
-import { SignOptions } from "jsonwebtoken";
+import { SignOptions, VerifyOptions, DecodeOptions } from "./auth.types";
 
 export class UserData<Decoding extends object, User>{     
     private _decoding: Decoding | null;
@@ -11,20 +11,24 @@ export class UserData<Decoding extends object, User>{
         private readonly authService: CoreAuth<Decoding, User>
     ) {}
 
-
-    get decoding(): Decoding | null {
+        
+    load(options?: DecodeOptions) {
+        return this.authService.deserialize(this.decode(options));
+    }    
+    
+    decode(options?: DecodeOptions) {
         if(!this._decoding) {
-            this._decoding = this.authService.decodeToken(this.token);
+            this._decoding = this.authService.decodeToken(this.token, options);
         }
 
         return this._decoding;
     }
 
-    verify() {
+    verify(options?: VerifyOptions) {
         let result: [ Decoding | null, Error | null];
 
         try {
-            result = [ this.authService.verifyToken(this.token), null ];
+            result = [ this.authService.verifyToken(this.token, options), null ];
         } catch (err) {
             result = [ null, (err as Error)];
         }
@@ -32,12 +36,13 @@ export class UserData<Decoding extends object, User>{
         return result;
     }
  
-    assign(data: Decoding, options?: SignOptions): string {
-        return this.authService.createToken(data, options)
+    assign(user: User, options?: SignOptions): string {
+        return this.authService.createToken(this.authService.serialize(user), options)
     }
 
-
-    //abstract requestStrategy(name: string, options? :any): void;
-    //abstract acceptStrategy(name: string, options?: any): Promise<any>;
+    /*
+    abstract requestStrategy(name: string, options? :any): void;
+    abstract acceptStrategy(name: string, options?: any): Promise<any>;
+    */
 }
    

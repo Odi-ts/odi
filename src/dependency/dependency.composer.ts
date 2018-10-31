@@ -1,7 +1,7 @@
 import { INJECT_ID, SERVICE, DB_CONNECTION, AUTOWIRED, INJECT } from "../definitions";
 import { reflectParameters, reflectOwnProperties, reflectType } from "../utils/directory.loader";
 import { Connection } from "typeorm";
-import { isServiceRepo } from "./dependency.classifier";
+import { isServiceRepo } from "./dependency.processor";
 import { autowiredPropsStore, onInit } from "./dependency.utils";
 import { isObject } from "util";
 import { defaultEntry, ComponentEntry } from "./dependency.decorators";
