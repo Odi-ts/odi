@@ -38,8 +38,8 @@ export abstract class CoreAuth<T extends object, U>{
 
     private extractToken(ctx: Context, container: string = this.container = "authorization"){  
         const header = ctx.get(container);
+        
         let def;
-
         if(header){
             const parts = header.split(' ');
             if(parts.length == 2){
