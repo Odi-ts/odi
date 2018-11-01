@@ -10,7 +10,7 @@ import * as passport from 'passport';
 
 export abstract class CoreAuth<T extends object, U>{  
     protected secret: string;
-    protected container: string;
+    protected container: string | undefined;
     protected expiration: string | number;    
 
     private jsonwebtoken: any;
@@ -36,8 +36,8 @@ export abstract class CoreAuth<T extends object, U>{
         return container;
     }
 
-    private extractToken(ctx: Context, container: string = this.container){  
-        const header = ctx.get('authorization');
+    private extractToken(ctx: Context, container: string = this.container = "authorization"){  
+        const header = ctx.get(container);
         let def;
 
         if(header){
