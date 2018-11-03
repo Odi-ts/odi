@@ -5,7 +5,7 @@ import * as bodyparser from 'koa-bodyparser';
 import { createServer, Server as HttpServer } from 'http';
 
 /* Koa modules */
-import { Connection, ConnectionOptions, createConnection } from "typeorm";
+import { ConnectionOptions } from "typeorm";
 import { CoreAuth } from '../auth/local/auth.interface';
 import { DB_CONNECTION } from '../definitions';
 import { DependencyClassifier } from '../dependency/dependency.processor';
@@ -36,8 +36,9 @@ export class Core{
     private dependencyComposer: DependencyComposer;
     private dependencyLoader: DependencyClassifier;
 
+    /* Treat like Connection */
+    protected database: any;
 
-    protected database: Connection;
     protected options: CoreOptions;
     protected server: HttpServer;
     protected app: Koa;
@@ -74,8 +75,15 @@ export class Core{
         this.app.use(bodyparser());
     }
 
-    protected setDatabase(): Promise<Connection> {
-        return createConnection(this.options.database!);
+    protected async setDatabase(): Promise<any> {
+        try {
+            const typeorm = await import("typeorm");
+            
+            return typeorm.createConnection(this.options.database!);
+        } catch (error) {
+            console.error(error);
+            process.exit();
+        }
     }
 
     private async loadDependencies(): Promise<void>{
