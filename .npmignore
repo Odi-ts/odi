@@ -4,3 +4,5 @@
 /.gitbook.yaml
 /docs
 /lib/test
+tsconfig.json
+tslint.json
