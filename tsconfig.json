@@ -9,7 +9,7 @@
     // "checkJs": true,                       /* Report errors in .js files. */
     "jsx": "react",                           /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */
     "jsxFactory": "Settings.create",          
-    //"declaration": true,                    /* Generates corresponding '.d.ts' file. */
+    "declaration": true,                    /* Generates corresponding '.d.ts' file. */
     // "sourceMap": true,                     /* Generates corresponding '.map' file. */
     // "outFile": "./",                       /* Concatenate and emit output to single file. */
     "outDir": "./lib",                        /* Redirect output structure to the directory. */
