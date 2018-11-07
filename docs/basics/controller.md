@@ -257,8 +257,6 @@ There are few other methods
 
 Check **views** docs for more details:
 
-{% page-ref page="views.md" %}
-
 And property for user
 
 *  `user` - return user instance class

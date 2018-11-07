@@ -12,7 +12,6 @@
   * [Dependency Injection](../basics/dependency-injection.md)
   * [Authentication](../basics/authentication.md)
   * [Web Sockets](../basics/web-sockets.md)
-  * [Views](../basics/views.md)
   * [Database](../basics/database/README.md)
     * [Repository](../basics/database/repository.md)
     * [Model](../basics/database/model.md)
