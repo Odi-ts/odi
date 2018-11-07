@@ -57,7 +57,7 @@
     "lodash": "^4.17.11",
     "passport": "^0.4.0",
     "reflect-metadata": "^0.1.12",
-    "shortid": "^2.2.13"
+    "shortid": "^2.2.14"
   },
   "optionalDependencies": {
     "jsonwebtoken": "^8.3.0",
