@@ -1,6 +1,5 @@
 import * as Koa from 'koa';
 import * as bodyparser from 'koa-bodyparser';
-import * as compress from 'koa-compress';
 
 
 import { createServer, Server as HttpServer } from 'http';
@@ -72,7 +71,6 @@ export class Core{
     protected afterDependeciesLoad(){};
     
     protected setMiddleware(): void{
-        this.app.use(compress());
         this.app.use(bodyparser());
     }
 
