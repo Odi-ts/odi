@@ -45,7 +45,6 @@
     "koa-bodyparser": "^4.2.1",
     "koa-router": "^7.4.0",
     "lodash": "^4.17.11",
-    "passport": "^0.4.0",
     "reflect-metadata": "^0.1.12",
     "shortid": "^2.2.14"
   },
