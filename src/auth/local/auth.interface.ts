@@ -3,11 +3,6 @@ import { UserData } from './auth.container';
 import { onInit } from '../../dependency/dependency.utils';
 import { SignOptions, VerifyOptions, DecodeOptions } from './auth.types';
 
-/* 
-import { Strategy } from 'passport';
-import * as passport from 'passport';
-*/
-
 export abstract class CoreAuth<T extends object, U>{  
     protected secret: string;
     protected container: string | undefined;
