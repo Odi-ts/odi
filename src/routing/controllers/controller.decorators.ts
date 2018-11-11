@@ -1,7 +1,6 @@
 import 'reflect-metadata';
 import * as keys from '../../definitions'
 import { IController } from './controller.interface';
-import { ObjectType } from 'typeorm';
 import { StrictObjectType } from '../../utils/object.reflection';
 import { Method } from './controller.types';
 

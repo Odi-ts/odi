@@ -1,6 +1,5 @@
 import { INJECT_ID, SERVICE, DB_CONNECTION, AUTOWIRED, INJECT } from "../definitions";
 import { reflectParameters, reflectOwnProperties, reflectType } from "../utils/directory.loader";
-import { Connection } from "typeorm";
 import { isServiceRepo } from "./dependency.processor";
 import { autowiredPropsStore, onInit } from "./dependency.utils";
 import { isObject } from "util";
@@ -172,8 +171,10 @@ export default class DependencyComposer{
     }
 
     private serviceRepository(target: any, depency: any): any{
-        if(this.get(DB_CONNECTION)){
-            return (<Connection>this.get(DB_CONNECTION)).getRepository(Reflect.getMetadata(SERVICE, target));
+        const dbConnection = this.getById(DB_CONNECTION);
+
+        if(dbConnection){
+            return dbConnection.getRepository(Reflect.getMetadata(SERVICE, target));
         }
 
         return null;

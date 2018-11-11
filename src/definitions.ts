@@ -1,5 +1,3 @@
-import { Connection } from "typeorm";
-
 const naming = '__Odi';
 
 /* Basic controller metadata */
@@ -41,4 +39,4 @@ export const AUTH_MIDDLEWARE = `${naming}_auth_middleware`
 export const MAIN_COMPONENTS = [CONTROLLER, SOCKET, SERVICE, AUTH];
 
 
-export const DB_CONNECTION = Connection;
+export const DB_CONNECTION = `#${naming}_db_connection_default`;

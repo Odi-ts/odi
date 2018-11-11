@@ -2,7 +2,7 @@ import DependencyComposer from '../dependency/dependency.composer';
 
 import { RFunction, ILoader } from '../utils/directory.loader';
 import { INJECT_ID } from '../definitions';
-import { getConnection, Repository } from 'typeorm';
+import { getConnection } from 'typeorm';
 
 
 

@@ -59,7 +59,7 @@ export class Core{
             this.database = await this.setDatabase();
         }
 
-        this.dependencyComposer.put(DB_CONNECTION, this.database, 'default');
+        this.dependencyComposer.putById(DB_CONNECTION, this.database);
         
 
         this.setMiddleware();
