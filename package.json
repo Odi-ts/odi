@@ -19,7 +19,7 @@
   ],
   "typings": "lib/src/index.d.ts",
   "scripts": {
-    "test": "mocha -r ts-node/register test/**/test.ts",
+    "test": "mocha -r ts-node/register test/**/*.test.ts",
     "bench": "node benchmark/bench"
   },
   "author": "Dan Tsekhmastryuk",
