@@ -1,6 +1,6 @@
 import { Context } from '../../aliases';
 import { UserData } from './auth.container';
-import { onInit } from '../../dependency/dependency.utils';
+import { Hook } from '../../dependency/dependency.utils';
 import { SignOptions, VerifyOptions, DecodeOptions } from './auth.types';
 
 export abstract class CoreAuth<T extends object, U>{  
@@ -14,7 +14,7 @@ export abstract class CoreAuth<T extends object, U>{
         this.configure();
     }
    
-    private async [onInit] () {
+    private async [Hook()] () {
         try{
             this.jsonwebtoken = require("jsonwebtoken");
         } catch {

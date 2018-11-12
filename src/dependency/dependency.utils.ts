@@ -45,3 +45,7 @@ export function define<T extends Class> (classType: T) {
 
     return methods;
 }
+
+export function Hook() {
+    return onInit;
+}

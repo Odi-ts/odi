@@ -77,7 +77,7 @@ export class IController<T = any>{
     }
 
     render(template: string, params = {}){
-        return this.context.render(template, params);
+        return (this.context as any).render(template, params);
     }
 
 
