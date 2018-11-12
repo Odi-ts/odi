@@ -19,12 +19,20 @@
   ],
   "typings": "lib/src/index.d.ts",
   "scripts": {
-    "test": "tsc && node lib/test/index.js",
+    "test": "mocha -r ts-node/register test/**/test.ts",
     "bench": "node benchmark/bench"
   },
   "author": "Dan Tsekhmastryuk",
   "license": "MIT",
   "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.5",
+    "autocannon": "^3.1.0",
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
+    "ts-node": "^7.0.1"
+  },
+  "dependencies": {
     "@types/ajv": "^1.0.0",
     "@types/glob": "^7.1.1",
     "@types/jsonwebtoken": "^7.2.8",
@@ -35,9 +43,6 @@
     "@types/reflect-metadata": "^0.1.0",
     "@types/shortid": "0.0.29",
     "@types/socket.io": "^1.4.38",
-    "autocannon": "^3.1.0"
-  },
-  "dependencies": {
     "ajv": "^6.5.5",
     "chalk": "^2.4.1",
     "glob": "^7.1.3",
