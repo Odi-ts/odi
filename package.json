@@ -30,7 +30,8 @@
     "autocannon": "^3.1.0",
     "chai": "^4.2.0",
     "mocha": "^5.2.0",
-    "ts-node": "^7.0.1"
+    "ts-node": "^7.0.1",
+    "typescript": "^3.1.6"
   },
   "dependencies": {
     "@types/ajv": "^1.0.0",
