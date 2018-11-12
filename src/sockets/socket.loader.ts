@@ -1,6 +1,5 @@
 import *  as io from  "socket.io"
 
-import { Server } from "http";
 import { RFunction, inject, reflectProperties, ILoader } from "../utils/directory.loader";
 import { Namespace, Event } from "./socket.decorator";
 import { SOCKET, SOCKET_EVENT } from "../definitions";
