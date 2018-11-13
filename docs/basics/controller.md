@@ -253,9 +253,6 @@ Information about request/response objects persist like a properties of class in
 There are few other methods
 
 * `redirect(url: string)` - redirect request to another url 
-* `render(template: string, params = {})` - render view. Params will be pathed to templating engine 
-
-Check **views** docs for more details:
 
 And property for user
 
