@@ -1,44 +1,45 @@
 import *  as io from  "socket.io"
 
-import { RFunction, inject, reflectProperties, ILoader } from "../utils/directory.loader";
-import { Namespace, Event } from "./socket.decorator";
+import { RFunction, reflectProperties, ILoader } from "../utils/directory.loader";
+import { Namespace } from "./socket.decorator";
 import { SOCKET, SOCKET_EVENT } from "../definitions";
 import { ISocket } from "./socket.interfaces";
 import { StrictObjectType } from "../utils/object.reflection";
+import DependencyComposer from "../dependency/dependency.composer";
 
 
 export interface LoaderOptions{
     directory : string,
-    socketServer : SocketIO.Server
+    socketServer : SocketIO.Server,
+    dependencyComposer: DependencyComposer
 }
 
 export default class ScoketLoader implements ILoader{
 
-    constructor(readonly options: LoaderOptions){
-        this.load();
-    }
+    constructor(readonly options: LoaderOptions) {}
 
-
-    public load(){
-        inject(this.options.directory, this.processBase());
-    }
-
-    public processBase(): RFunction{
-        return (classType: StrictObjectType<ISocket>) => {
-            const instance = new classType();
+    public processBase(): RFunction {
+        return async (classType: StrictObjectType<ISocket>) => {
+            const instance: ISocket = await this.options.dependencyComposer.instanciateClassType(classType);
             const base: Namespace = Reflect.getMetadata(SOCKET, instance['constructor']);      
       
             instance['nsp'] = this.options.socketServer.of(base);            
             instance['nsp'].on('connection', (socket: SocketIO.Socket): void => {
-                /* Events handlers should go there */
-                
+                const handler: ISocket = this.bindController(instance); 
+                handler['socket'] = socket;
+
+
                 
             });        
         } 
     }
 
+    private bindController(target: ISocket){
+        return Object.assign(Object.create(Object.getPrototypeOf(target)), target);
+    }
 
-    private mapHandlers(instance : any): Map<string, { handler: Function, userFor?: boolean }>{
+
+    private bindHandlers(instance : ISocket) {
         let map: Map<string, { handler: Function, userFor?: boolean }> = new Map();
 
         for(let method of reflectProperties(instance)){

@@ -10,7 +10,7 @@ export abstract class ISocket{
 
     protected onReconnect(): void {};
 
-
+    
     emit(event: string | symbol, ...args: any[]) {
         this.nsp.emit(event, ...args);
     }

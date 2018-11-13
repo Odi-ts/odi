@@ -1,38 +1,19 @@
-import { Context } from "koa";
-import { SetOption } from "cookies";
-import { IRouterContext } from "koa-router";
-
 import { Request, Response } from "../../aliases";
 import { CoreAuth } from "../../auth/local/auth.interface";
 import { UserData } from "../../auth/local/auth.container";
 
 import { Decoding, User } from "./controller.types";
+import { CookieOptions } from "express";
 
 export class IController<T = any>{ 
     private authService: CoreAuth<Decoding<T>, User<T>>;    
     private userData: UserData<Decoding<T>, User<T>>;
 
-    protected context: Context;
+    /* Express request and response */
+    protected request: Request;
+    protected response: Response;
 
-    /* Koa request and response */
-    get request(): Request{
-        return this.context.request;
-    }
-
-    get response(): Response{
-        return this.context.response;
-    }
-
-    /* Raw Http request and response */
-    get httpRequest(){
-        return this.context.req;
-    }
-
-    get httpResponse(){
-        return this.context.res;
-    }
-
-
+    
     /* Complex objects */
     getHeaders(){
         return this.request.headers;
@@ -45,39 +26,39 @@ export class IController<T = any>{
 
     /* Single get */
     getQueryParam(key: string) {
-        return this.context.query[key];
+        return this.request.query[key];
     }
 
     getCookie(key: string) {
-        return this.context.cookies.get(key);
+        return this.request.cookies[key];
     }
 
     getParam(key: string) {
-        return this.context.params[key];
+        return this.request.params[key];
     }
 
     getHeader(key: string) {
-        return this.context.get(key);
+        return this.request.get(key);
     }
 
 
    /* Single set */
-    setCookie(key: string, value: string, options?: SetOption): void{
-        this.context.cookies.set(key, value, options);
+    setCookie(key: string, value: string, options: CookieOptions = {}): void{
+        this.response.cookie(key, value, options);
     }
 
     setHeader(key: string, value: string){
-        this.context.set(key, value);
+        this.response.set(key, value);
     }
 
 
     /* Useful actions */
     redirect(url: string){      
-        return this.context.redirect(url)
+        return this.response.redirect(url)
     }
 
     render(template: string, params = {}){
-        return (this.context as any).render(template, params);
+        return this.response.render(template, params);
     }
 
 
@@ -93,13 +74,15 @@ export class IController<T = any>{
             return this.userData;
         }
 
-        this.userData = this.authService['extractUser'](this.context);
+        this.userData = this.authService['extractUser'](this.request);
         
         return this.userData;      
     }
 
-    private applyContext(context: IRouterContext){
-        this.context = context;
+    private applyContext(req: Request, res: Response){
+        this.request = req;
+        this.response = res;
+
         return this;
     }
 

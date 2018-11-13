@@ -1,4 +1,4 @@
-import * as Koa from "koa";
+import { Application } from "express";
 
 import { AuthLoader } from "../auth/local/auth.loader";
 import { AUTH, CONTROLLER, REPOSITORY, SERVICE, SOCKET } from "../definitions";
@@ -20,7 +20,7 @@ enum DepType{
 
 export interface Options{
     rootPath : string
-    app : Koa,   
+    app : Application,   
     dependencyComposer: DependencyComposer
 }
 

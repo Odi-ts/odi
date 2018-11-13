@@ -1,4 +1,4 @@
-import { Context } from '../../aliases';
+import { Request, Context } from '../../aliases';
 import { UserData } from './auth.container';
 import { Hook } from '../../dependency/dependency.utils';
 import { SignOptions, VerifyOptions, DecodeOptions } from './auth.types';
@@ -24,14 +24,14 @@ export abstract class CoreAuth<T extends object, U>{
     }
 
 
-    private extractUser(ctx: Context): UserData<T, U>{
+    private extractUser(ctx: Request): UserData<T, U>{
         const container = new UserData<T, U>(ctx, this);
         container.token = this.extractToken(ctx);
 
         return container;
     }
 
-    private extractToken(ctx: Context, container: string = this.container = "authorization"){  
+    private extractToken(ctx: Request, container: string = this.container = "authorization"){  
         const header = ctx.get(container);
         
         let def;
@@ -42,7 +42,7 @@ export abstract class CoreAuth<T extends object, U>{
             }
         }
 
-        return def || ctx.cookies.get(container);
+        return def || ctx.cookies[container];
     }
 
 
@@ -65,7 +65,7 @@ export abstract class CoreAuth<T extends object, U>{
 
 
     /* Abstract Methods */
-    public abstract authenticate(data: UserData<T,U>): boolean;
+    public authenticate(context: Context, data: UserData<T,U>): Promise<boolean> | boolean | void {};
     
     public abstract deserialize(decoding: T | null): U;
 

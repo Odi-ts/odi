@@ -1,10 +1,11 @@
-import * as Koa from 'koa';
-import * as bodyparser from 'koa-bodyparser';
+import * as express from 'express';
 
+import * as bodyparser from 'body-parser';
+import * as cookieparser from 'cookie-parser';
 
+import { Application } from 'express';
 import { createServer, Server as HttpServer } from 'http';
 
-/* Koa modules */
 import { ConnectionOptions } from "typeorm";
 import { CoreAuth } from '../auth/local/auth.interface';
 import { DB_CONNECTION } from '../definitions';
@@ -41,7 +42,7 @@ export class Core{
 
     protected options: CoreOptions;
     protected server: HttpServer;
-    protected app: Koa;
+    protected app: Application;
 
 
     protected auth: typeof CoreAuth;
@@ -51,7 +52,7 @@ export class Core{
         this.options = options;
         this.dependencyComposer = new DependencyComposer();
         
-        this.app = new Koa();      
+        this.app = express();      
     }   
 
     private async setUp(): Promise<any>{
@@ -66,13 +67,14 @@ export class Core{
         await this.loadDependencies();        
         this.afterDependeciesLoad();
 
-        this.server = createServer(this.app.callback());
+        this.server = createServer(this.app);
     }
 
     protected afterDependeciesLoad(){};
     
     protected setMiddleware(): void{
-        this.app.use(bodyparser());
+        this.app.use(bodyparser({ extended: true }));
+        this.app.use(cookieparser());
     }
 
     protected async setDatabase(): Promise<any> {

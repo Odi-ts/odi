@@ -5,6 +5,7 @@ import { AuthDefaults } from "./auth.decorator";
 
 import DependencyComposer from "../../dependency/dependency.composer";
 import { CoreAuth } from "./auth.interface";
+import shortid = require("shortid");
 
 
 export interface Options{
@@ -23,8 +24,8 @@ export class AuthLoader implements ILoader{
 
             let authInstance: CoreAuth<any,any> = await this.options.dependencyComposer.instanciateClassType(classType);
             
-            authInstance['secret'] = defaults.secret;
-            authInstance['expiration'] = defaults.expiration;
+            authInstance['secret'] = defaults.secret || shortid();
+            authInstance['expiration'] = defaults.expiration || '1 hour';
             authInstance['container'] = defaults.header;
 
             this.options.dependencyComposer.putById('auth', authInstance);           

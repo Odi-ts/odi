@@ -2,8 +2,8 @@ import 'reflect-metadata'
 import { AUTH, AUTH_MIDDLEWARE } from "../../definitions";
 
 export interface AuthDefaults<T>{
-    secret : string,
-    expiration : string | number,
+    secret? : string,
+    expiration? : string | number,
     header?: string
 }
 

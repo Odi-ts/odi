@@ -1,4 +1,4 @@
-import { Context } from "koa";
+import { Request } from "express";
 import { CoreAuth } from "./auth.interface";
 import { SignOptions, VerifyOptions, DecodeOptions } from "./auth.types";
 
@@ -7,7 +7,7 @@ export class UserData<Decoding extends object, User>{
     public token: string;
     
     constructor(
-        private readonly ctx: Context,
+        private readonly ctx: Request,
         private readonly authService: CoreAuth<Decoding, User>
     ) {}
 
@@ -25,12 +25,12 @@ export class UserData<Decoding extends object, User>{
     }
 
     verify(options?: VerifyOptions) {
-        let result: [ Decoding | null, Error | null];
+        let result: [ Error | null, Decoding | null];
 
         try {
-            result = [ this.authService.verifyToken(this.token, options), null ];
+            result = [ null, this.authService.verifyToken(this.token, options) ];
         } catch (err) {
-            result = [ null, (err as Error)];
+            result = [ (err as Error), null];
         }
 
         return result;

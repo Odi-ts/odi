@@ -1,16 +1,13 @@
 import * as keys from '../../definitions'
 
-import * as Koa from 'koa';
-import * as Router from 'koa-router';
+import { Application, Router, RequestHandler, NextFunction, Request as ERequest, Response as EResponse } from 'express';
 
 import * as Ajv from 'ajv';
 
 import DependencyComposer from '../../dependency/dependency.composer';
 
-import { IRouterContext } from 'koa-router'
 import { RouteMetadata, isRouteHandler, ControllerMeta } from './controller.decorators'
 import { RFunction, ILoader, reflectOwnProperties } from '../../utils/directory.loader';
-import { CoreAuth } from '../../auth/local/auth.interface';
 import { getFunctionArgs, FunctionParam } from '../../utils/function.reflection';
 import { MiddlewareFunction } from '../middleware/middleware.decorators';
 import { metadata } from '../../utils/metadata.utils';
@@ -22,7 +19,7 @@ import { DtoSchemaStorage } from '../../dto/dto.storage';
 
 export type AuthMetadata = any;
 export interface LoaderOptions {
-    app: Koa
+    app: Application
     dependencyComposer: DependencyComposer
 }
 
@@ -42,10 +39,12 @@ export class ControllersLoader implements ILoader {
             target['authService'] = auth;
 
             const base: ControllerMeta = ctrlMeta.getMetadata(keys.CONTROLLER);
-            const middlware: MiddlewareFunction[] = ctrlMeta.getMetadata(keys.ROUTE_MIDDLEWARE) || [];
+            const middlware: RequestHandler[] = ctrlMeta.getMetadata(keys.ROUTE_MIDDLEWARE) || [];
 
-            const router = new Router({ prefix: base.path });
-            router.use(...middlware);
+            const router = Router();
+
+            if(middlware.length > 0)
+                router.use(...middlware);
 
             for (let propertyKey of [...reflectOwnProperties(target)]) {               
                 if (isRouteHandler(target, propertyKey)) {       
@@ -55,7 +54,7 @@ export class ControllersLoader implements ILoader {
                     const params = getFunctionArgs(target, propertyKey);
 
                     const auMeta: AuthMetadata =  meta.getMetadata(keys.AUTH_MIDDLEWARE);                   
-                    const mdMeta: MiddlewareFunction[] = meta.getMetadata(keys.ROUTE_MIDDLEWARE) || [];
+                    const mdMeta: RequestHandler[] = meta.getMetadata(keys.ROUTE_MIDDLEWARE) || [];
                     
                     const isProtected = meta.hasMetadata(keys.AUTH_MIDDLEWARE);
 
@@ -65,32 +64,34 @@ export class ControllersLoader implements ILoader {
 
           
             this.options.app
-                .use(router.routes())
-                .use(router.allowedMethods());
+                .use(base.path, router);
         }
     }
 
     public bindHandler(target: IController, property: string, rawParams: FunctionParam[]) {        
         const validate = DtoSchemaStorage.get(this.getDto(rawParams))!;
 
-        return async (ctx: IRouterContext, next: () => Promise<any>) => {
-            const ctrl = this.bindController(target)['applyContext'](ctx);
+        return async (req: ERequest, res: EResponse, next: NextFunction) => {
+            const ctrl = this.bindController(target)['applyContext'](req, res);
             
             try {    
                 if(validate)  
-                    await validate(ctx.request.body);
+                    await validate(req.body);
 
-                const params = await this.bindParams(ctx, rawParams);
+                const params = await this.bindParams(req, rawParams);
+                const result = await ctrl[property].call(ctrl, ...params);
 
-                ctx.body = await ctrl[property].call(ctrl, ...params);
+                if(!res.headersSent)
+                    return res.send(result);
+
             } catch (error) {
                 
                 if(error instanceof IHttpError){
-                    ctx.throw(error.getHttpCode(), error.message);
+                    return res.status(error.getHttpCode()).send(error.message);
 
                 //@ts-ignore
                 } else if(error instanceof Ajv.ValidationError) {
-                    ctx.body = error.errors;
+                    return res.send(error.errors);
                 } else {
                     throw error;
                 }
@@ -99,16 +100,16 @@ export class ControllersLoader implements ILoader {
         }
     }
 
-    private async bindParams(ctx: IRouterContext, rawParams: FunctionParam[]) {
+    private async bindParams(req: ERequest, rawParams: FunctionParam[]) {
         const params = [];
         
         for(const param of rawParams) {
             if(param.type.name === 'String') {
-                params.push(ctx.params[param.name]);
+                params.push(req.params[param.name]);
 
             /* Treat like constructor */
             } else if(typeof param.type === 'function' && Reflect.hasMetadata(keys.DATA_CLASS, param.type)) { 
-                params.push(await plainToClass(param.type, ctx.request.body));  
+                params.push(await plainToClass(param.type, req.body));  
             } else {
                 params.push(undefined);
             }
