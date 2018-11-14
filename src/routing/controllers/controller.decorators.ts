@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import * as keys from '../../definitions'
 import { IController } from './controller.interface';
-import { StrictObjectType } from '../../utils/object.reflection';
+import { StrictObjectType } from '../../utils/reflection/object.reflection';
 import { Method } from './controller.types';
 
 export type BasePath = string;

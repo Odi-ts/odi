@@ -1,4 +1,4 @@
-import { reflectParameters } from "./directory.loader";
+import { reflectParameters } from "../directory.loader";
 
 const COMMENTS_REG = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
 const ARGUMENTS_REG = /([^\s,]+)/g;

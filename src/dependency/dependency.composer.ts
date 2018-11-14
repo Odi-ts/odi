@@ -4,7 +4,7 @@ import { autowiredPropsStore, onInit } from "./dependency.utils";
 import { isObject } from "util";
 import { defaultEntry, ComponentEntry } from "./dependency.decorators";
 
-import { Class } from "../utils/object.reflection";
+import { Class } from "../utils/reflection/object.reflection";
 import { isNull } from "../utils/object.utils";
 import { metadata } from "../utils/metadata.utils";
 import { ComponentSettingsStorage } from "./dependency.manager";

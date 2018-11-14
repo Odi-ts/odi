@@ -2,7 +2,7 @@ import 'reflect-metadata';
 
 import { AUTOWIRED, INJECT } from "../definitions";
 
-import { Class } from "../utils/object.reflection";
+import { Class } from "../utils/reflection/object.reflection";
 import { isFunction } from "../utils/directory.loader";
 import { autowiredPropsStore } from "./dependency.utils";
 import { ValuedProps, ConstructorParameters } from "./dependency.manager";

@@ -23,7 +23,7 @@ export interface CoreOptions{
         proxy?: boolean
     },
     sources: string,
-    database?: ConnectionOptions
+    database?: ConnectionOptions | 'ormconfig'
     /*
         dependencies  : {
             controllers: string,
@@ -79,7 +79,7 @@ export class Core{
 
     protected async setDatabase(): Promise<any> {
         const typeorm = await import("typeorm");
-        const config = await typeorm.getConnectionOptions() || this.options.database;    
+        const config = this.options.database === 'ormconfig' ? await typeorm.getConnectionOptions() : this.options.database!;    
 
         return typeorm.createConnection(config);        
     }

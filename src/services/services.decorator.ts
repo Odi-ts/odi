@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 
 import { INJECT_ID, SERVICE } from '../definitions';
-import { ObjectType } from '../utils/object.reflection';
+import { ObjectType } from '../utils/reflection/object.reflection';
 
 export function Service<T>(model?: ObjectType<T>): ClassDecorator{
     return (target: any) => {

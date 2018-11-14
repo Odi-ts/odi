@@ -8,7 +8,7 @@ import DependencyComposer from '../../dependency/dependency.composer';
 
 import { RouteMetadata, isRouteHandler, ControllerMeta } from './controller.decorators'
 import { RFunction, ILoader, reflectOwnProperties } from '../../utils/directory.loader';
-import { getFunctionArgs, FunctionParam } from '../../utils/function.reflection';
+import { getFunctionArgs, FunctionParam } from '../../utils/reflection/function.reflection';
 import { MiddlewareFunction } from '../middleware/middleware.decorators';
 import { metadata } from '../../utils/metadata.utils';
 import { IController } from './controller.interface';

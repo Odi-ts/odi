@@ -1,5 +1,5 @@
 
-import { Class } from "../utils/object.reflection";
+import { Class } from "../utils/reflection/object.reflection";
 import { ComponentEntry, TypelessComponentEntry } from "./dependency.decorators";
 import { ComponentSettingsStorage } from "./dependency.manager";
 

@@ -4,7 +4,7 @@ import { RFunction, reflectProperties, ILoader } from "../utils/directory.loader
 import { Namespace } from "./socket.decorator";
 import { SOCKET, SOCKET_EVENT } from "../definitions";
 import { ISocket } from "./socket.interfaces";
-import { StrictObjectType } from "../utils/object.reflection";
+import { StrictObjectType } from "../utils/reflection/object.reflection";
 import DependencyComposer from "../dependency/dependency.composer";
 
 

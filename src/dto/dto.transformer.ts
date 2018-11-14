@@ -1,4 +1,4 @@
-import { StrictObjectType } from "../utils/object.reflection";
+import { StrictObjectType } from "../utils/reflection/object.reflection";
 import { getDtoProps, DtoPropsTypes } from "./dto.storage";
 import { reflectType } from "../utils/directory.loader";
 
