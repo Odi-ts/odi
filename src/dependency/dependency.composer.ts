@@ -150,7 +150,8 @@ export default class DependencyComposer{
                        metadata(dependency).getMetadata(INJECT_ID) || 
                        depId;
             
-            const settings = ComponentSettingsStorage.get(dependency)![id];
+            const depSettings = ComponentSettingsStorage.get(dependency);
+            const settings = depSettings ? depSettings[id] || {} : {};
 
             if(!this.contain(dependency, id)){
                 await this.instanciateClassType(dependency, { id, ...settings });
