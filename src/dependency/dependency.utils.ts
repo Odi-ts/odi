@@ -33,11 +33,11 @@ export function define<T extends Class> (classType: T) {
 
             return methods;
         },
-        setSingleton(id: string, settings: TypelessComponentEntry<T>) {
+        setSingleton(id: string = 'default', settings: TypelessComponentEntry<T> = {}) {
             shortSet(classType, id, "singleton", settings);
             return methods;
         },
-        setScoped(id: string, settings: TypelessComponentEntry<T>) {
+        setScoped(id: string = 'default', settings: TypelessComponentEntry<T> = {}) {
             shortSet(classType, id, "scoped", settings);
             return methods;
         }
