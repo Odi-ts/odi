@@ -1,5 +1,4 @@
 import { CoreAuth } from "../../auth/local/auth.interface";
-import { type } from "os";
 
 export enum Method {
     GET = "get",

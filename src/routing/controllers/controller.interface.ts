@@ -61,6 +61,10 @@ export class IController<T = any>{
         return this.response.render(template, params);
     }
 
+    /* Set status */
+    setStatus(status: number) {
+        return this.response.status(status);
+    }
 
 
 
