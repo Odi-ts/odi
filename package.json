@@ -43,7 +43,7 @@
     "@types/glob": "^7.1.1",
     "@types/jsonwebtoken": "^7.2.8",
     "@types/lodash": "^4.14.118",
-    "@types/node": "^10.12.5",
+    "@types/node": "^10.12.9",
     "@types/reflect-metadata": "^0.1.0",
     "@types/shortid": "0.0.29",
     "@types/socket.io": "^1.4.38",
