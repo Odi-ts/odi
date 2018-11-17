@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 import { uniq } from "lodash";
 
 import { reflectType } from "../utils/directory.loader";
@@ -52,7 +54,6 @@ export function buildSchema(target: any) {
 
         if(schema.isOptional === true) {
             requiredProperties = requiredProperties.filter(elem => elem !== propertyKey);
-
             delete schema.isOptional;
         }
 
@@ -72,4 +73,5 @@ export function buildSchema(target: any) {
     };
   
     DtoSchemaStorage.set(target, GAJV.compile(schema));
+    return schema;
 }

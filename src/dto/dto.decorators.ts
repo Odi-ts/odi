@@ -16,14 +16,20 @@ export function Data(): ClassDecorator {
     }
 }
 
-function validationFactory(object: any): PropertyDecorator {
+export function validationFactory(object: any): PropertyDecorator {
     return (target: any, propertyKey: string | symbol) => {
         const prev = Reflect.getMetadata(DATA_VALIDATION_PROP, target, propertyKey) || {};
         Reflect.defineMetadata(DATA_VALIDATION_PROP, { ...prev, ...object }, target, propertyKey);
         
-        DtoPropsStorage.has(target) ? 
-            DtoPropsStorage.get(target)!.push(propertyKey):
+        if(DtoPropsStorage.has(target)) {
+            const props = DtoPropsStorage.get(target)!;
+           
+            if(!props.includes(propertyKey))
+                props.push(propertyKey);
+                
+        } else {
             DtoPropsStorage.set(target, [propertyKey]);
+        }
     }
 }
 
