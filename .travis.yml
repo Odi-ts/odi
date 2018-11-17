@@ -3,7 +3,7 @@ node_js:
   - "10"
   - "11"
 
-scripts:
+before_install:
   - npm install codecov -g
 after_success:
   - codecov
