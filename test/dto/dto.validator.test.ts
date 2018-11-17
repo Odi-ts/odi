@@ -1,10 +1,10 @@
 import { expect } from 'chai';
 
 import { buildSchema } from "../../src/dto/dto.validator";
-import { Data, IsEmail, Maximum, IsUrl, Nested, ArrayOf, MaxItems, IsOptional } from "../../src/dto/index";
+import { Data, IsEmail, Maximum, IsUrl, Nested, ArrayOf, MaxItems, IsOptional, Const } from "../../src/dto/index";
 
 @Data()
-class DtoSampleNested {
+class DtoLocalSampledNested {
     
     @IsUrl()
     prop1: string;
@@ -13,7 +13,7 @@ class DtoSampleNested {
 
 // Decorator disabled for auto schema build
 //@Data()
-class DtoSample {
+class DtoLocalSampled {
     
     @IsEmail()
     prop1: string;
@@ -25,13 +25,19 @@ class DtoSample {
     prop4: number[];
 
     @Nested()
-    nested: DtoSampleNested;
+    nested: DtoLocalSampledNested;
  
-    @ArrayOf(DtoSampleNested)
-    nesteds: DtoSampleNested[];
+    @ArrayOf(DtoLocalSampledNested)
+    nesteds: DtoLocalSampledNested[];
 
     @IsOptional()
     prop3: number;
+
+    @IsOptional()
+    date: Date;
+
+    @Const(true)
+    bool: boolean;
 
 }
 
@@ -40,9 +46,6 @@ const schema = {
         "prop1": {
             "type": "string",
             "format": "email"
-        },
-        "prop3": { 
-            "type": "number"
         },
         "prop2": {
             "type": "number",
@@ -68,6 +71,17 @@ const schema = {
         "nesteds": {
             "type": "array",
             "items": {}
+        },
+        "prop3": {
+            "type": "number"
+        },
+        "date": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "bool": {
+            "type": "boolean",
+            "const": true
         }
     },
     "$async": true,
@@ -76,12 +90,12 @@ const schema = {
         "prop2",
         "prop4",
         "nested",
-        "nesteds"
+        "nesteds",
+        "bool"
     ]
 };
 
 describe('DTOs Validators', () => {
-    const schema = buildSchema(DtoSample);
-
-    describe('#buildSchema(...)', () => it('should build correct schema', () => expect(schema).to.deep.eq(schema)));
+    const result = buildSchema(DtoLocalSampled);
+    describe('#buildSchema(...)', () => it('should build correct schema', () => expect(result).to.deep.eq(schema)));
 });

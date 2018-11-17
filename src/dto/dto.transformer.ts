@@ -35,9 +35,6 @@ function processProperty<T>(instance: T, propertyKey: string, objectPart: any, p
     else if(typeof type === "function")
         value = processClass(type, sourceValue);
 
-    else 
-        value = sourceValue;
-
     return value;
 }
 

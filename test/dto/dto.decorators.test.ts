@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 
 import { expect } from 'chai';
-import { Data, validationFactory } from '../../src/dto/dto.decorators';
+import { Data, validationFactory, CustomValidation } from '../../src/dto/dto.decorators';
 import { DATA_CLASS, DATA_VALIDATION_PROP } from '../../src/definitions';
 import { DtoPropsStorage } from '../../src/dto/dto.storage';
 
@@ -10,6 +10,8 @@ class DtoMock {
     prop1: string;
 
     prop2: string;
+
+    prop3: string;
 }
 
 describe('DTOs Decorators', () => {
@@ -45,6 +47,12 @@ describe('DTOs Decorators', () => {
             validationFactory({ maximum: 2 })(DtoMock, 'prop2');
             expect(DtoPropsStorage.get(DtoMock)).to.deep.equal(['prop1', 'prop2']);
         });
+    });
+
+    describe('#CustomValidation (...)', () => {
+        CustomValidation(() => true)(DtoMock, 'prop3');
+
+        it('should emit metadata on class property', () => expect(Reflect.hasMetadata(DATA_VALIDATION_PROP, DtoMock, 'prop3')).to.be.eq(true));    
     });
 
 });
