@@ -49,10 +49,11 @@ describe('DTOs Decorators', () => {
         });
     });
 
-    describe('#CustomValidation (...)', () => {
-        CustomValidation(() => true)(DtoMock, 'prop3');
-
-        it('should emit metadata on class property', () => expect(Reflect.hasMetadata(DATA_VALIDATION_PROP, DtoMock, 'prop3')).to.be.eq(true));    
+    describe('#CustomValidation (...)', () => {  
+        it('should emit metadata on class property', () =>  { 
+            CustomValidation(() => true)(DtoMock, 'prop3');
+            expect(Reflect.hasMetadata(DATA_VALIDATION_PROP, DtoMock, 'prop3')).to.be.eq(true)
+        });    
     });
 
 });
