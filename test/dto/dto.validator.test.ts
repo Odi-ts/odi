@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
-import { buildSchema } from "../../../src/dto/dto.validator";
-import { Data, IsEmail, Maximum, IsUrl, Nested, ArrayOf, MaxItems, IsOptional } from "../../../src/dto/index";
+import { buildSchema } from "../../src/dto/dto.validator";
+import { Data, IsEmail, Maximum, IsUrl, Nested, ArrayOf, MaxItems, IsOptional } from "../../src/dto/index";
 
 @Data()
 class DtoSampleNested {

@@ -1,9 +1,9 @@
 import 'reflect-metadata';
 
 import { expect } from 'chai';
-import { Data, validationFactory } from '../../../src/dto/dto.decorators';
-import { DATA_CLASS, DATA_VALIDATION_PROP } from '../../../src/definitions';
-import { DtoPropsStorage } from '../../../src/dto/dto.storage';
+import { Data, validationFactory } from '../../src/dto/dto.decorators';
+import { DATA_CLASS, DATA_VALIDATION_PROP } from '../../src/definitions';
+import { DtoPropsStorage } from '../../src/dto/dto.storage';
 
 class DtoMock {
 

@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
-import { plainToClass } from "../../../src/dto/dto.transformer"
-import { Data, IsEmail, Maximum, IsUrl, Nested, ArrayOf, MaxItems} from "../../../src/dto";
+import { plainToClass } from "../../src/dto/dto.transformer"
+import { Data, IsEmail, Maximum, IsUrl, Nested, ArrayOf, MaxItems} from "../../src/dto";
 
 @Data()
 class DtoSampleNested {

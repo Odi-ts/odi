@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { getDtoProps, getSchema } from '../../../src/dto/dto.storage';
-import { Data, Minimum } from '../../../src';
+import { getDtoProps, getSchema } from '../../src/dto/dto.storage';
+import { Data, Minimum } from '../../src';
 
 @Data()
 class DtoSample {
