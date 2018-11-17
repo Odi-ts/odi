@@ -19,7 +19,8 @@
   ],
   "typings": "lib/src/index.d.ts",
   "scripts": {
-    "test": "mocha -r ts-node/register test/**/*.test.ts",
+    "test": "nyc mocha test/**/*.test.ts",
+    "posttest": "nyc report --reporter=json",
     "bench": "node benchmark/bench"
   },
   "author": "Dan Tsekhmastryuk",
@@ -31,6 +32,8 @@
     "chai": "^4.2.0",
     "istanbul": "^0.4.5",
     "mocha": "^5.2.0",
+    "nyc": "^13.1.0",
+    "source-map-support": "^0.5.9",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
     "tslint-eslint-rules": "^5.4.0",
@@ -62,5 +65,20 @@
     "jsonwebtoken": "^8.3.0",
     "socket.io": "^2.1.1",
     "typeorm": "^0.2.8"
+  },
+  "nyc": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx"
+    ],
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "sourceMap": true,
+    "instrument": true
   }
 }
