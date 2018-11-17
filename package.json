@@ -20,7 +20,7 @@
   "typings": "lib/src/index.d.ts",
   "scripts": {
     "test": "nyc mocha test/**/*.test.ts",
-    "posttest": "mkdir coverage && nyc report --reporter=json >> coverage/coverage.json",
+    "posttest": "mkdir coverage && nyc report --reporter=text-lcov > coverage/coverage.lcov",
     "bench": "node benchmark/bench"
   },
   "author": "Dan Tsekhmastryuk",
