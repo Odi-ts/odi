@@ -99,10 +99,10 @@ export class Core{
         await this.dependencyLoader.compose();
     }
 
-    public async listen(){
+    public async listen(fnc?: any){
         await this.setUp();
 
-        this.server.listen(this.options.server.port, (port: any) => console.log(`Server was successfully started on - ${this.options.server.port} port`));
+        this.server.listen(this.options.server.port, fnc);
     }
     
 }
