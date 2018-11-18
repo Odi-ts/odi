@@ -91,7 +91,7 @@ export class ControllersLoader implements ILoader {
 
                 //@ts-ignore
                 } else if(error instanceof Ajv.ValidationError) {
-                    return res.send(error.errors);
+                    return res.status(400).send(error.errors);
                 } else {
                     throw error;
                 }
