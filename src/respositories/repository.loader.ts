@@ -16,9 +16,9 @@ export class RepositoryLoader implements ILoader{
     
     public processBase(): RFunction{
         return (classType: any) => {
-            let id = Reflect.getMetadata(INJECT_ID, classType) || 'default';
+            let id = Reflect.getMetadata(INJECT_ID, classType);
 
-            if(this.options.dependencyComposer.contain(id)){
+            if(this.options.dependencyComposer.contain(classType, id)) {
                 return;
             }
 

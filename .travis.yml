@@ -5,5 +5,15 @@ node_js:
 
 before_install:
   - npm install codecov -g
+
+before_script:
+  - psql -c "CREATE DATABASE testing_db;" -U postgres
+ 
+script:
+  - tsc
+
 after_success:
   - codecov
+
+services:
+  - postgresql
