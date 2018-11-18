@@ -6,7 +6,7 @@ export enum Method {
     ALL = "all",
     PUT = "put",
     DELETE = "delete",
-    PATCH = "path",
+    PATCH = "patch",
 }
 
 export type UDD<T> = T extends CoreAuth<infer D, infer U> ? { D: D, U: U }: never;
