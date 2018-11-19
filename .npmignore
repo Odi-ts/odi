@@ -6,3 +6,7 @@
 /lib/test
 tsconfig.json
 tslint.json
+
+.nyc_output
+/coverage
+.travis.yaml
