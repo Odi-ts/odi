@@ -1,6 +1,6 @@
 {
   "name": "odi",
-  "version": "0.1.32",
+  "version": "0.1.33",
   "description": "🌪🌌 Opinionated, Declarative, Idiomatic framework for building scalable, supportable, enterprise-grade applications.",
   "main": "lib/src/index.js",
   "homepage": "https://github.com/Odi-ts/Odi#readme",
@@ -30,8 +30,7 @@
     "@types/mocha": "^5.2.5",
     "autocannon": "^3.1.0",
     "chai": "^4.2.0",
-    "istanbul": "^0.4.5",
-    "jsonwebtoken": "^8.4.0",
+    "istanbul": "^0.4.5",   
     "mocha": "^5.2.0",
     "node-mocks-http": "^1.7.3",
     "nyc": "^13.1.0",
@@ -66,7 +65,8 @@
   },
   "optionalDependencies": {
     "socket.io": "^2.1.1",
-    "typeorm": "^0.2.8"
+    "typeorm": "^0.2.8",
+    "jsonwebtoken": "^8.4.0"
   },
   "nyc": {
     "include": [
