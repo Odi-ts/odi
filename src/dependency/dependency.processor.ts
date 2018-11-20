@@ -9,7 +9,7 @@ import { ILoader, inject } from "../utils/directory.loader";
 import DependencyComposer from "./dependency.composer";
 
 
-enum DepType{ 
+export enum DepType{ 
     Controller = 1,
     Service = 2,
     Repository = 3,
