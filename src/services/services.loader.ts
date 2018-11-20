@@ -13,7 +13,8 @@ export class ServicesLoader implements ILoader{
     
     public processBase(): RFunction{
         return async (classType: any) => {
-            const id = Reflect.getMetadata(INJECT_ID, classType) || 'default';
+            /* Because singleton */
+            const id = 'default';
 
             if(this.options.dependencyComposer.contain(classType, id)){
                 return;
