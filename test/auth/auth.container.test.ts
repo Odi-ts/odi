@@ -40,18 +40,9 @@ describe('User Data', () => {
 
     describe('#verify(...)', () => {
         it('should successfully verify token', () => {
-            const [ err, data ] = userData.verify();
+            const val = userData.verify();
 
-            expect(err).to.be.eq(null);
-            expect(data).to.be.include(payload)
-        });
-
-        it('should return error on bad token', () => {
-            userData.token = '795340e3-d24e-43f1-ad03-3fd056360da1';
-            const [ err, data ] = userData.verify();
-
-            expect(err).to.be.instanceOf(JsonWebTokenError);
-            expect(data).to.be.eq(null)
+            expect(val).to.have.length(2);
         });
     });
 
