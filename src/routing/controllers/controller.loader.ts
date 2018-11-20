@@ -12,7 +12,7 @@ import { getFunctionArgs, FunctionParam } from '../../utils/function.reflection'
 import { MiddlewareFunction } from '../middleware/middleware.decorators';
 import { metadata } from '../../utils/metadata.utils';
 import { IController } from './controller.interface';
-import { IHttpError } from '../../errors/http.error';
+import { IHttpError } from '../../http/http.error';
 import { plainToClass } from '../../dto/dto.transformer';
 import { DtoSchemaStorage } from '../../dto/dto.storage';
 

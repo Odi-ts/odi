@@ -21,6 +21,6 @@ export * from './respositories/repository.decorator'
 export * from './dependency/dependency.decorators'
 export { define, onInit } from './dependency/dependency.utils'
 
-export * from './errors/http.error'
+export * from './http/http.error'
 export * from './aliases'
 
