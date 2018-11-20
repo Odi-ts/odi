@@ -9,26 +9,28 @@ import DependencyComposer from '../dependency/dependency.composer';
 
 let dependencyComposer: DependencyComposer;
 
+before(async () => {    
+    await createConnection({
+        type: "postgres",
+        host: "localhost",
+        port: 5432,
+        username: "postgres",
+        password: "",
+        database: "test_db",
+        entities: [ FooModel ],
+        synchronize: true
+    });
+});
+
 describe('Repository Loader', () => {    
     describe('#RepositoryLoader', async () => {      
         let loader; 
         let processor: Function;
 
-        before(async () => {
+        before(() => {
             dependencyComposer = getDependencyComposer();
             loader = new RepositoryLoader({ dependencyComposer });
             processor = loader.processBase();
-
-            await createConnection({
-                type: "postgres",
-                host: "localhost",
-                port: 5432,
-                username: "postgres",
-                password: "",
-                database: "test_db",
-                entities: [ FooModel ],
-                synchronize: true
-            });
         });
        
         it('should return processing function', () => expect(processor).to.be.instanceOf(Function));

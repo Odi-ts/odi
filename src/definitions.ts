@@ -36,7 +36,7 @@ export const DATA_VALIDATION_PROP = `${naming}_data_validation`
 export const AUTH = `${naming}_auth_defaults`
 export const AUTH_MIDDLEWARE = `${naming}_auth_middleware`
 
-export const MAIN_COMPONENTS = [CONTROLLER, SOCKET, SERVICE, AUTH];
+export const MAIN_COMPONENTS = [CONTROLLER, SOCKET, SERVICE, AUTH, REPOSITORY];
 
 
 export const DB_CONNECTION = `#${naming}_db_connection_default`;

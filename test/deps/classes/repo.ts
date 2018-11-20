@@ -1,4 +1,5 @@
-import { Controller, IController } from "../../../src/index";
+import { EntityRepository } from "../../../src/index";
+import { FooModel } from "../../utils/db.utils";
 
-@Controller()
-export class ControllerMock extends IController{} 
+@EntityRepository(FooModel)
+export class RepositoryMock{} 

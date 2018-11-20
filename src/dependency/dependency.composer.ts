@@ -1,6 +1,5 @@
 import { INJECT_ID, SERVICE, DB_CONNECTION, AUTOWIRED, INJECT } from "../definitions";
 import { reflectParameters, reflectOwnProperties, reflectType } from "../utils/directory.loader";
-import { isServiceRepo } from "./dependency.processor";
 import { autowiredPropsStore, onInit } from "./dependency.utils";
 import { isObject } from "util";
 import { defaultEntry, ComponentEntry } from "./dependency.decorators";
@@ -78,7 +77,7 @@ export default class DependencyComposer{
     }
 
     private async injectByParams(target: any, propertyKey?: any){        
-        const ids = metadata(target, propertyKey).getMetadata(INJECT);
+        const ids = metadata(target, propertyKey).getMetadata(INJECT) || [];
         const reflect = reflectParameters(target, propertyKey);
 
         if(!reflect){
@@ -86,14 +85,10 @@ export default class DependencyComposer{
         }
 
         const dependencies = [];
-        for(const [index, dependency] of reflect.entries()){
-            if(!dependency){
-                throw Error(`DI points to undefined reference into "${target.name}" constructor.`)
-            }
-            
+        for(const [index, dependency] of reflect.entries()) {                       
             const processed = await this.proccessDependency(target, dependency, ids[index]);
-            dependencies.push(processed);
             
+            dependencies.push(processed);            
         }
         
         return dependencies;
@@ -164,21 +159,7 @@ export default class DependencyComposer{
     }
 
     private proccessUnexpected(target: any, dependency: any): any{
-        if(isServiceRepo(target, dependency)){
-            return this.serviceRepository(target, dependency);
-        }
-        
         return new dependency;
-    }
-
-    private serviceRepository(target: any, depency: any): any{
-        const dbConnection = this.getById(DB_CONNECTION);
-
-        if(dbConnection){
-            return dbConnection.getRepository(Reflect.getMetadata(SERVICE, target));
-        }
-
-        return null;
     }
 
     private getInjectableProps(prototype: any): any[]{

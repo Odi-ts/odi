@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 import { AUTOWIRED, INJECT } from "../definitions";
 
 import { Class } from "../utils/object.reflection";
@@ -31,10 +33,10 @@ export const defaultSettings: ComponentSettings<any> = {
 };
 
 
-export const Autowired = (id?: string) => (target: any, propertyKey: string | symbol) => {
+export const Autowired = (id?: string) => (target: any, propertyKey: string | symbol, descriptor?: PropertyDescriptor) => {
     Reflect.defineMetadata(AUTOWIRED, id || "default", target, propertyKey);
 
-    if(isFunction(target,propertyKey)){
+    if(descriptor) {
         return;
     }
 
@@ -44,7 +46,7 @@ export const Autowired = (id?: string) => (target: any, propertyKey: string | sy
         autowiredPropsStore.set(target, [propertyKey]);
 }
 
-export const Inject = (id?: string) => (target: any, propertyKey: string | symbol, index: number) => {
+export const Inject = (id: string = 'default') => (target: any, propertyKey: string | symbol, index: number) => {
     const prev = Reflect.getMetadata(INJECT, target, propertyKey) || {};
     
     Reflect.defineMetadata(INJECT, { ...prev, [index]: id }, target, propertyKey);

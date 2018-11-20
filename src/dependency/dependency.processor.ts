@@ -75,7 +75,6 @@ export class DependencyClassifier{
             [DepType.Auth]: new AuthLoader({ dependencyComposer }),
             [DepType.Service]: new ServicesLoader({ dependencyComposer }),
             [DepType.Repository]: new RepositoryLoader({ dependencyComposer }),
-
             [DepType.Controller]: new ControllersLoader({  dependencyComposer, app })
         });
     }
@@ -84,10 +83,9 @@ export class DependencyClassifier{
         return {
             [DepType.Auth]: [],
             [DepType.Service]: [],
-            [DepType.Repository]: [],
             [DepType.Controller]: [],
-            [DepType.Socket]: [],
-            [DepType.Custom]: []
+            [DepType.Repository]: [],
+            [DepType.Socket]: []
         }
     }
 
@@ -117,8 +115,4 @@ export class DependencyClassifier{
         return (identifier: string) => Reflect.hasMetadata(identifier, target)
     }
 
-}
-
-export function isServiceRepo(target: any, dependency: any){
-    return Reflect.hasMetadata(SERVICE, target) && dependency.name === "Repository";
 }
