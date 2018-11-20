@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { createRequest, createResponse } from 'node-mocks-http';
 import { IController, UserData } from '../../src/index';
-import { AuthService } from '../integration/auth.service';
+import { AuthService } from '../auth/auth.interface.test';
 
 class SampleController extends IController {}
 

@@ -4,7 +4,7 @@ import { createRequest } from 'node-mocks-http';
 import { CoreAuth } from '../../src/auth/local/auth.interface';
 import { UserData } from '../../src/auth/local/auth.container';
 
-class AuthService extends CoreAuth<any, any> {
+export class AuthService extends CoreAuth<any, any> {
 
     serialize(data: any) {
         return data;
