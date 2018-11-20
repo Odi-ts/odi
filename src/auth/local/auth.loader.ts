@@ -28,7 +28,7 @@ export class AuthLoader implements ILoader{
             authInstance['expiration'] = defaults.expiration || '1 hour';
             authInstance['container'] = defaults.header;
 
-            this.options.dependencyComposer.putById('auth', authInstance);           
+            this.options.dependencyComposer.putById('auth', authInstance);  
             this.options.dependencyComposer.put(classType, authInstance, typeId);
         }
     }

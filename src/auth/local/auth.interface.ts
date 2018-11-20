@@ -1,6 +1,5 @@
 import { Request, Context } from '../../aliases';
 import { UserData } from './auth.container';
-import { Hook } from '../../dependency/dependency.utils';
 import { SignOptions, VerifyOptions, DecodeOptions } from './auth.types';
 
 export abstract class CoreAuth<T extends object, U>{  
@@ -14,16 +13,6 @@ export abstract class CoreAuth<T extends object, U>{
         this.configure();
     }
    
-    private async [Hook()] () {
-        try{
-            this.jsonwebtoken = require("jsonwebtoken");
-        } catch {
-            console.error("Can't find 'jsonwebtoken' package. Run npm install jsonwebtoken");
-            process.exit();
-        }        
-    }
-
-
     private extractUser(ctx: Request): UserData<T, U>{
         const container = new UserData<T, U>(ctx, this);
         container.token = this.extractToken(ctx);
@@ -73,6 +62,8 @@ export abstract class CoreAuth<T extends object, U>{
 
 
     /* Hooks */    
-    protected configure() {};
+    protected configure() {
+        this.jsonwebtoken = require("jsonwebtoken");
+    }
 
 }

@@ -7,7 +7,7 @@ export interface AuthDefaults<T>{
     header?: string
 }
 
-export function Authentication<T>(options?: AuthDefaults<T>): ClassDecorator{
+export function Authentication<T>(options: AuthDefaults<T> = {}): ClassDecorator{
     return (target: any) => Reflect.defineMetadata(AUTH, options, target)
 }
 
