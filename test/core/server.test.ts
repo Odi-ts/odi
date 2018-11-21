@@ -3,7 +3,6 @@ import { expect } from 'chai';
 import { Core } from '../src/core/server';
 import { resolve } from 'path';
 import DependencyComposer from '../src/dependency/dependency.composer';
-import { Connection, getConnection } from 'typeorm';
 import { DependencyClassifier } from '../src/dependency/dependency.processor';
 
 describe('Core', () => {
