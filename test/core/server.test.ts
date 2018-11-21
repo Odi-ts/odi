@@ -1,9 +1,9 @@
-import { FooModel } from './utils/db.utils';
+import { FooModel } from '../utils/db.utils';
 import { expect } from 'chai';
-import { Core } from '../src/core/server';
+import { Core } from '../../src/core/server';
 import { resolve } from 'path';
-import DependencyComposer from '../src/dependency/dependency.composer';
-import { DependencyClassifier } from '../src/dependency/dependency.processor';
+import DependencyComposer from '../../src/dependency/dependency.composer';
+import { DependencyClassifier } from '../../src/dependency/dependency.processor';
 
 describe('Core', () => {
     const core = new Core({
