@@ -4,10 +4,14 @@ import { Core } from '../../src/core/server';
 import { resolve } from 'path';
 import DependencyComposer from '../../src/dependency/dependency.composer';
 import { DependencyClassifier } from '../../src/dependency/dependency.processor';
-import { Connection } from 'typeorm';
+import { Connection, getConnection } from 'typeorm';
 
+
+let core: Core;
 describe('Core', () => {
-    const core = new Core({
+    let connection: Connection;
+
+    core = new Core({
         server: { port: 8080 },
         sources: resolve(__dirname, './deps/classes'),
         database: {
@@ -16,10 +20,9 @@ describe('Core', () => {
             port: 5432,
             username: "postgres",
             password: "",
-            database: "test_db",
+            database: "test_db_2",
             entities: [ FooModel ],
-            synchronize: true,
-            dropSchema: true
+            synchronize: true
         }
     });
 
@@ -34,9 +37,12 @@ describe('Core', () => {
 
 
     describe('#setDatabase(..)', async () => {
-        const db = await core['setDatabase']();
+        if(core['database'])
+            await core['database'].close();
 
-        it('should return typeorm connection', () => expect(db).to.be.instanceOf(Connection));
+        connection = await core['setDatabase']();
+
+        it('should return typeorm connection', () => expect(connection).to.be.instanceOf(Connection));
     });
 
     describe('#setMiddleware(..)', async () => {
@@ -52,4 +58,31 @@ describe('Core', () => {
         it('should create deps loader', () => expect(core['dependencyLoader']).to.be.instanceOf(DependencyClassifier))
 
     });
+
+    describe('#setUp(...)', async () => {
+        if(core['database'])
+            await core['database'].close();
+
+        await core['setUp']();
+
+        it('should create deps loader', () => expect(core['dependencyLoader']).to.be.instanceOf(DependencyClassifier));
+        it('should return typeorm connection', () => expect(core['database']).to.be.instanceOf(Connection));
+        it('should set at least 2 default middlewares', () => expect(core['app']._router.stack.length).to.be.greaterThan(3));
+    });
+
+    describe('#setUp(...)', async () => {  
+
+        it('should run whole application without errors', async () => {
+            if(core['database'])
+                await core['database'].close();
+
+            if(getConnection())
+                await getConnection().close();
+
+            await core.listen();            
+        });
+
+    });
 });
+
+after((done) => core['server'].close(() =>  done()));
