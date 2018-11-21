@@ -20,21 +20,24 @@ import { createConnection, getConnection, getConnectionManager } from 'typeorm';
 
 describe('Dependency Classifier', () => {
     before(async () => {  
-        const connection = getConnectionManager().get('default');
+        try {
+            const connection = getConnectionManager().get('default');
 
-        if(connection && connection.isConnected)
-            return;
-            
-        await createConnection({
-            type: "postgres",
-            host: "localhost",
-            port: 5432,
-            username: "postgres",
-            password: "",
-            database: "test_db",
-            entities: [ FooModel ],
-            synchronize: true
-        });
+            if(connection && connection.isConnected)
+                return;
+                
+        } catch {
+            await createConnection({
+                type: "postgres",
+                host: "localhost",
+                port: 5432,
+                username: "postgres",
+                password: "",
+                database: "test_db",
+                entities: [ FooModel ],
+                synchronize: true
+            });
+        }
     });
  
     const dependencyComposer = getDependencyComposer();
@@ -110,5 +113,11 @@ describe('Dependency Classifier', () => {
         });      
     });
 
-    after(async () => await getConnection().close());
+    after(async () => {
+        try {
+            await getConnection().close()
+        } catch {
+            return;
+        }
+    });
 });

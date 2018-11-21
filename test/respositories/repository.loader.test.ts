@@ -11,21 +11,24 @@ let dependencyComposer: DependencyComposer;
 
 describe('Repository Loader', () => {    
     before(async () => {  
-        const connection = getConnectionManager().get('default');
+        try {
+            const connection = getConnectionManager().get('default');
 
-        if(connection && connection.isConnected)
-            return;
+            if(connection && connection.isConnected)
+                return;
+        } catch {
 
-        await createConnection({
-            type: "postgres",
-            host: "localhost",
-            port: 5432,
-            username: "postgres",
-            password: "",
-            database: "test_db",
-            entities: [ FooModel ],
-            synchronize: true
-        });
+            await createConnection({
+                type: "postgres",
+                host: "localhost",
+                port: 5432,
+                username: "postgres",
+                password: "",
+                database: "test_db",
+                entities: [ FooModel ],
+                synchronize: true
+            });
+        }
     });
 
     describe('#RepositoryLoader', async () => {      
