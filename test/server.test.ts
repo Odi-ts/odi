@@ -31,11 +31,12 @@ describe('Core', () => {
         it('should create dependency composer', () => expect(core['dependencyComposer']).to.be.instanceOf(DependencyComposer));
     });
 
+    /*
     describe('#setDatabase(..)', async () => {
         const db = await core['setDatabase']();
 
         it('should return typeorm connection', () => expect(db).to.be.instanceOf(Connection));
-    });
+    });*/
 
     describe('#setMiddleware(..)', async () => {
         core['setMiddleware']();
