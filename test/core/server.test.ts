@@ -18,7 +18,8 @@ describe('Core', () => {
             password: "",
             database: "test_db",
             entities: [ FooModel ],
-            synchronize: true
+            synchronize: true,
+            dropSchema: true
         }
     });
 
