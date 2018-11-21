@@ -4,6 +4,7 @@ import { Core } from '../../src/core/server';
 import { resolve } from 'path';
 import DependencyComposer from '../../src/dependency/dependency.composer';
 import { DependencyClassifier } from '../../src/dependency/dependency.processor';
+import { Connection } from 'typeorm';
 
 describe('Core', () => {
     const core = new Core({
@@ -30,12 +31,12 @@ describe('Core', () => {
         it('should create dependency composer', () => expect(core['dependencyComposer']).to.be.instanceOf(DependencyComposer));
     });
 
-    /*
+
     describe('#setDatabase(..)', async () => {
         const db = await core['setDatabase']();
 
         it('should return typeorm connection', () => expect(db).to.be.instanceOf(Connection));
-    });*/
+    });
 
     describe('#setMiddleware(..)', async () => {
         core['setMiddleware']();
