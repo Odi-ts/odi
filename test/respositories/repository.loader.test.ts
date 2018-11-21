@@ -11,7 +11,9 @@ let dependencyComposer: DependencyComposer;
 
 describe('Repository Loader', () => {    
     before(async () => {  
-        if(getConnectionManager().get('default').isConnected)
+        const connection = getConnectionManager().get('default');
+
+        if(connection && connection.isConnected)
             return;
 
         await createConnection({

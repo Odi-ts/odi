@@ -20,9 +20,11 @@ import { createConnection, getConnection, getConnectionManager } from 'typeorm';
 
 describe('Dependency Classifier', () => {
     before(async () => {  
-        if(getConnectionManager().get('default').isConnected)
-            return;
+        const connection = getConnectionManager().get('default');
 
+        if(connection && connection.isConnected)
+            return;
+            
         await createConnection({
             type: "postgres",
             host: "localhost",
