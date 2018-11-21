@@ -19,27 +19,6 @@ import { createConnection, getConnection, getConnectionManager } from 'typeorm';
 
 
 describe('Dependency Classifier', () => {
-    before(async () => {  
-        try {
-            const connection = getConnectionManager().get('default');
-
-            if(connection && connection.isConnected)
-                return;
-                
-        } catch {
-            await createConnection({
-                type: "postgres",
-                host: "localhost",
-                port: 5432,
-                username: "postgres",
-                password: "",
-                database: "test_db",
-                entities: [ FooModel ],
-                synchronize: true
-            });
-        }
-    });
- 
     const dependencyComposer = getDependencyComposer();
     const app = express();
     const rootPath = resolve(__dirname, './classes');
@@ -111,13 +90,5 @@ describe('Dependency Classifier', () => {
             expect(dependencyComposer.contain(AuthMock)).to.be.eq(true);
             expect(dependencyComposer.contain(ServiceMock)).to.be.eq(true);
         });      
-    });
-
-    after(async () => {
-        try {
-            await getConnection().close()
-        } catch {
-            return;
-        }
     });
 });

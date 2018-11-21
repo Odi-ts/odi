@@ -50,6 +50,4 @@ describe('Core', () => {
         it('should create deps loader', () => expect(core['dependencyLoader']).to.be.instanceOf(DependencyClassifier))
 
     });
-
-    after(async () => await getConnection().close())
 });
