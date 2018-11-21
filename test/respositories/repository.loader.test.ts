@@ -3,26 +3,29 @@ import { expect } from 'chai';
 import { RepositoryLoader } from "../../src/respositories/repository.loader";
 import { getDependencyComposer } from "../utils/di.utils";
 import { RepoMock } from './repository.decorator.test';
-import { createConnection } from 'typeorm';
+import { createConnection, getConnectionManager } from 'typeorm';
 import { FooModel } from '../utils/db.utils';
 import DependencyComposer from '../dependency/dependency.composer';
 
 let dependencyComposer: DependencyComposer;
 
-before(async () => {    
-    await createConnection({
-        type: "postgres",
-        host: "localhost",
-        port: 5432,
-        username: "postgres",
-        password: "",
-        database: "test_db",
-        entities: [ FooModel ],
-        synchronize: true
-    });
-});
-
 describe('Repository Loader', () => {    
+    before(async () => {  
+        if(getConnectionManager().get('default').isConnected)
+            return;
+
+        await createConnection({
+            type: "postgres",
+            host: "localhost",
+            port: 5432,
+            username: "postgres",
+            password: "",
+            database: "test_db",
+            entities: [ FooModel ],
+            synchronize: true
+        });
+    });
+
     describe('#RepositoryLoader', async () => {      
         let loader; 
         let processor: Function;

@@ -13,10 +13,28 @@ import { ServiceMock } from './classes/service';
 import { Custom } from './classes/custom';
 import { SocketMock } from './classes/socket';
 import { resolve } from 'path';
+import { FooModel } from '../utils/db.utils';
+import { createConnection, getConnection, getConnectionManager } from 'typeorm';
 
 
 
 describe('Dependency Classifier', () => {
+    before(async () => {  
+        if(getConnectionManager().get('default').isConnected)
+            return;
+
+        await createConnection({
+            type: "postgres",
+            host: "localhost",
+            port: 5432,
+            username: "postgres",
+            password: "",
+            database: "test_db",
+            entities: [ FooModel ],
+            synchronize: true
+        });
+    });
+ 
     const dependencyComposer = getDependencyComposer();
     const app = express();
     const rootPath = resolve(__dirname, './classes');
@@ -89,4 +107,6 @@ describe('Dependency Classifier', () => {
             expect(dependencyComposer.contain(ServiceMock)).to.be.eq(true);
         });      
     });
+
+    after(async () => await getConnection().close());
 });
