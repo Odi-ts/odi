@@ -38,7 +38,7 @@ const requestPayload = {
     body: { title: 'Odi-ts' }
 };
 
-describe('Controller Loader', () => {
+describe('Controller Loader', async () => {
     const app = express();
     const dependencyComposer = getDependencyComposer();
     const loader = new ControllersLoader({ dependencyComposer, app });
@@ -46,6 +46,22 @@ describe('Controller Loader', () => {
     const controller = new SampleController();    
     const args = getFunctionArgs(controller, '/smth/:id/:name');
     const request = createRequest(requestPayload);   
+
+    describe('#bindParams(...)', () => {
+        
+        it('should return correct array of params', async () => { 
+            const binded = await loader['bindParams'](request, args);
+
+            expect(binded).to.be.instanceOf(Array);
+            expect(binded).to.have.length(4);
+            expect(binded).to.deep.eq([
+                '916a26a2-c5e7-4ac8-be62-da0aecb93dc0',
+                'Odi', 
+                undefined, 
+                await plainToClass(SampleControllerDto, request.body)
+            ]);
+        });
+    });
 
     describe('#processBase(...)', async () => {      
             
@@ -61,24 +77,7 @@ describe('Controller Loader', () => {
 
         it('should create copy of controller', () => expect(loader['bindController'](controller)).to.deep.eq(controller));
 
-    });
-
-    describe('#bindParams(...)', async () => {
-        const binded = await loader['bindParams'](request, args);
-
-        it('should return array', () => expect(binded).to.be.instanceOf(Array));
-        
-        it('should return same number of args in array', () => expect(binded).to.have.length(4));
-       
-        it('should return parsed and available values', async () => {
-            expect(binded).to.deep.eq([
-                '916a26a2-c5e7-4ac8-be62-da0aecb93dc0',
-                'Odi', 
-                undefined, 
-                await plainToClass(SampleControllerDto, request.body)
-            ]);
-        });
-    });
+    }); 
 
     describe('#bindHandler(...)', async () => {
         const handler = loader.bindHandler(controller, '/smth/:id/:name', args);

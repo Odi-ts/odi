@@ -8,25 +8,26 @@ import { Connection, getConnection } from 'typeorm';
 
 
 let core: Core;
-describe('Core', () => {
+describe('Core', async () => {
+
     let connection: Connection;
 
     core = new Core({
         server: { port: 8080 },
         sources: resolve(__dirname, './deps/classes'),
         database: {
+            name: "scoped",
             type: "postgres",
             host: "localhost",
             port: 5432,
             username: "postgres",
             password: "",
             database: "test_db_2",
-            entities: [ FooModel ],
             synchronize: true
         }
     });
 
-    describe('#constuctor', () => {
+    describe('#constuctor', async () => {
 
         it('should path options to field ', () => expect(core['options']).to.be.a('object'));
 
@@ -48,15 +49,15 @@ describe('Core', () => {
     describe('#setMiddleware(..)', async () => {
         core['setMiddleware']();
 
-        /* Probably 2 middlewares body-parser and cookie-parser produces 4 funcs */
+        // Probably 2 middlewares body-parser and cookie-parser produces 4 funcs 
         it('should set at least 2 default middlewares', () => expect(core['app']._router.stack.length).to.be.greaterThan(3));
     });
 
     describe('#loadDependencies(...)', async () => {
-        await core['loadDependencies']();
-
-        it('should create deps loader', () => expect(core['dependencyLoader']).to.be.instanceOf(DependencyClassifier))
-
+        it('should create deps loader', async () => {
+            await core['loadDependencies']();
+            expect(core['dependencyLoader']).to.be.instanceOf(DependencyClassifier)
+        });
     });
 
     describe('#setUp(...)', async () => {

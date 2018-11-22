@@ -73,7 +73,7 @@ export class Core{
     protected afterDependeciesLoad(){};
     
     protected setMiddleware(): void{
-        this.app.use(bodyparser({ extended: true }));
+        this.app.use(bodyparser.json(), bodyparser.urlencoded({ extended: true }));
         this.app.use(cookieparser());
     }
 
