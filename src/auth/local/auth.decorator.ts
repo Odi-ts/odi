@@ -11,6 +11,11 @@ export function Authentication<T>(options: AuthDefaults<T> = {}): ClassDecorator
     return (target: any) => Reflect.defineMetadata(AUTH, options, target)
 }
 
-export function Auth(options?: any): PropertyDecorator{
-    return (target: any, propertyKey: string | symbol ) => Reflect.defineMetadata(AUTH_MIDDLEWARE, options, target, propertyKey);
+export function Auth(options?: any) {
+    return (target: any, propertyKey?: string | symbol ) => {
+        if(propertyKey)
+            return Reflect.defineMetadata(AUTH_MIDDLEWARE, options, target, propertyKey);
+
+        Reflect.defineMetadata(AUTH_MIDDLEWARE, options, target);
+    } 
 }
