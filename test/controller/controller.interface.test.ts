@@ -91,7 +91,7 @@ describe('Controller Interface Test', () => {
 
         expect(controller['user']).to.be.instanceOf(UserData);
 
-        const userData = new UserData(request, controller['authService']);        
+        const userData = new UserData('86851f53-6bc5-492d-8709-f5289f0910f6', controller['authService']);        
         controller['userData'] = userData;
 
         expect(controller['user']).to.be.deep.eq(userData);

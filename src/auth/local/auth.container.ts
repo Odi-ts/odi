@@ -3,13 +3,15 @@ import { CoreAuth } from "./auth.interface";
 import { SignOptions, VerifyOptions, DecodeOptions } from "./auth.types";
 
 export class UserData<Decoding extends object, User>{     
-    private _decoding: Decoding | null;
+    private _decoding: Decoding;
     public token: string;
     
     constructor(
-        private readonly ctx: Request,
+        token: string,
         private readonly authService: CoreAuth<Decoding, User>
-    ) {}
+    ) {
+        this.token = token;
+    }
 
         
     load(options?: DecodeOptions) {
@@ -18,7 +20,7 @@ export class UserData<Decoding extends object, User>{
     
     decode(options?: DecodeOptions) {
         if(!this._decoding) {
-            this._decoding = this.authService.decodeToken(this.token, options);
+            this._decoding = (this.authService.decodeToken(this.token, options) as Decoding);
         }
 
         return this._decoding;

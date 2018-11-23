@@ -15,6 +15,7 @@ import { IController } from './controller.interface';
 import { IHttpError } from '../../http/http.error';
 import { plainToClass } from '../../dto/dto.transformer';
 import { DtoSchemaStorage } from '../../dto/dto.storage';
+import { bindAuthMiddleware } from '../middleware/middleware.functions';
 
 
 export type AuthMetadata = any;
@@ -56,7 +57,8 @@ export class ControllersLoader implements ILoader {
                     const auMeta: AuthMetadata =  meta.getMetadata(keys.AUTH_MIDDLEWARE);                   
                     const mdMeta: RequestHandler[] = meta.getMetadata(keys.ROUTE_MIDDLEWARE) || [];
                     
-                    const isProtected = meta.hasMetadata(keys.AUTH_MIDDLEWARE);
+                    if(auMeta)
+                        mdMeta.push(bindAuthMiddleware(auMeta, auth));
 
                     router[method](path, ...mdMeta, this.bindHandler(target, propertyKey, params));                    
                 }
@@ -73,7 +75,10 @@ export class ControllersLoader implements ILoader {
 
         return async (req: ERequest, res: EResponse, next: NextFunction) => {
             const ctrl = this.bindController(target)['applyContext'](req, res);
-            
+
+            //@ts-ignore;          
+            ctrl['userData'] = req.locals ? req.locals.user : null;
+
             try {    
                 if(validate)  
                     await validate(req.body);
@@ -86,15 +91,15 @@ export class ControllersLoader implements ILoader {
 
             } catch (error) {
                 
-                if(error instanceof IHttpError){
+                if(error instanceof IHttpError)
                     return res.status(error.getHttpCode()).send(error.message);
 
                 //@ts-ignore
-                } else if(error instanceof Ajv.ValidationError) {
+                else if(error instanceof Ajv.ValidationError)
                     return res.status(400).send(error.errors);
-                } else {
+                else 
                     throw error;
-                }
+                
                 
             }
         }

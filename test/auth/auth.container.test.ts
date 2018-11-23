@@ -30,9 +30,7 @@ describe('User Data', () => {
     const token = auth.createToken(payload, { expiresIn: '10 sec' });
     const req = createRequest({ headers: { authorization: token }});
 
-    const userData = new UserData(req, auth);
-    userData.token = token;
-
+    const userData = new UserData(token, auth);
 
     describe('#decode(...)', () => {
         it('should decode token', () => expect(userData.decode()).to.be.include(payload));

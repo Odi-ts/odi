@@ -14,10 +14,7 @@ export abstract class CoreAuth<T extends object, U>{
     }
    
     private extractUser(ctx: Request): UserData<T, U>{
-        const container = new UserData<T, U>(ctx, this);
-        container.token = this.extractToken(ctx);
-
-        return container;
+        return new UserData<T, U>(this.extractToken(ctx), this);
     }
 
     private extractToken(ctx: Request, container: string = this.container = "authorization"){  
@@ -54,7 +51,7 @@ export abstract class CoreAuth<T extends object, U>{
 
 
     /* Abstract Methods */
-    public authenticate(context: Context, data: UserData<T,U>): Promise<boolean> | boolean | void {};
+    public authenticate(context: Context, data: UserData<T,U>, options: any): Promise<boolean> | boolean | void {};
     
     public abstract deserialize(decoding: T | null): U;
 
