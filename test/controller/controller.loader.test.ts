@@ -1,7 +1,7 @@
 import * as express from 'express';
 import { expect } from 'chai';
 import { createRequest, createResponse } from 'node-mocks-http';
-import { IController, Controller, Post, Data, MinLength, IHttpError, Middleware, CMiddleware } from "../../src";
+import { IController, Controller, Post, Data, MinLength, IHttpError, Middleware } from "../../src";
 import { ControllersLoader } from "../../src/routing/controllers/controller.loader"
 import { getDependencyComposer } from "../utils/di.utils";
 import { getFunctionArgs } from '../../src/utils/function.reflection';
@@ -14,7 +14,7 @@ class SampleControllerDto {
     title: string;
 }
 
-@CMiddleware((req,res, next) => {
+@Middleware((req,res, next) => {
     req.query = 'hello';
     next();
 })
