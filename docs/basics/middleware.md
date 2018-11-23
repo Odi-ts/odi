@@ -36,12 +36,9 @@ export class SampleController extends IController {
 
 ## Decorators
 
-There are 2 different decorators for middleware purposes. 
+There are only 1 decorator for middleware purposes. 
 
-* `@CMiddleware(...functions: MiddlewareFunction[])` - set middleware for whole controller. Accepts unlimited number of middleware functions. 
-* `@Middleware(...functions: MiddlewareFunction[]` - set middleware for only one path. Accepts 
-
-  unlimited number of middleware functions. 
+* `@Middleware(...functions: MiddlewareFunction[]` - set middleware for only one path, or set middleware for whole controller. Accepts unlimited number of middleware functions. 
 
 Don't forget about function context. You should set it manually or use lambda functions instead.
 
