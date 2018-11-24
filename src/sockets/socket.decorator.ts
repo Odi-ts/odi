@@ -10,7 +10,7 @@ export function Sockets(path: Namespace): ClassDecorator{
 }
 
 export function Event<T>(name: Event): MethodDecorator{
-    return <T>(target: any, propertyKey: string | symbol) => {
+    return (target: any, propertyKey: string | symbol) => {
         Reflect.defineMetadata(SOCKET_EVENT, name, target, propertyKey)
     }
 }
