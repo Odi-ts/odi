@@ -13,5 +13,5 @@ export function Forbidden(subMessage?: string) {
 }
 
 export function NotFound(body?: any) {
-    return createMessage(403, body);
+    return createMessage(404, body);
 }
