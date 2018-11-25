@@ -1,7 +1,7 @@
-import * as fs from 'fs'
+import 'reflect-metadata';
+
 import * as path from 'path'
 import * as glob from 'glob'
-import * as lodash from 'lodash'
 
 import { MAIN_COMPONENTS } from '../definitions';
 import { isPrimitive } from 'util';
@@ -17,7 +17,7 @@ export interface ILoader{
 export function inject(pattern: string, reworker: RFunction){
     glob.sync(pattern+'/**/*.{js,ts}').forEach(drpath => {           
         let imp: any = require(path.relative(__dirname, drpath));       
-        let typeClass: any = imp.default || findExport(imp);
+        let typeClass: any = findExport(imp);
          
         if(typeClass)
             reworker(typeClass);
@@ -55,19 +55,25 @@ export const isFunction = (target: any, propertyKey: string | symbol) => (proper
 
 
 function findExport(imp: any): any{
+    if(imp.default && isMainComponent(imp.default)) 
+        return imp.default;
+
     for (const key in imp) {    
   
-        if(isPrimitive(imp[key])){    
+        if(isPrimitive(imp[key])) 
             continue;            
-        }        
 
-        let metadata = Reflect.getMetadataKeys(imp[key]); 
-        let selected = lodash.intersection(metadata, MAIN_COMPONENTS);
-        
-        
-        if(selected.length != 0)
+        if(isMainComponent(imp[key]))
             return imp[key];
     }
 
     return null;
+}
+
+function isMainComponent(target: any) {
+    for(const componentKey of MAIN_COMPONENTS)
+        if(Reflect.hasMetadata(componentKey, target))
+            return true;
+
+    return false;
 }
