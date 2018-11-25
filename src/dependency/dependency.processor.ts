@@ -47,15 +47,15 @@ export class DependencyClassifier{
     }
 
     public async compose(): Promise<void>{
-        await this.processPart(DepType.Auth);
-        // Log.completion(`${this.queues[DepType.Auth].length} Auth was successfully loaded`);
-
         await this.processPart(DepType.Repository);
         // Log.completion(`${this.queues[DepType.Auth].length} Repositories was successfully loaded`);
         
         await this.processPart(DepType.Service);
         // Log.completion(`${this.queues[DepType.Service].length} Services were successfully loaded`);
         
+        await this.processPart(DepType.Auth);
+        // Log.completion(`${this.queues[DepType.Auth].length} Auth was successfully loaded`);
+
         await this.processPart(DepType.Controller);       
         // Log.completion(`${this.queues[DepType.Controller].length} Controllers were successfully loaded`);       
     }

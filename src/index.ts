@@ -24,3 +24,4 @@ export { define, onInit } from './dependency/dependency.utils'
 export * from './http/http.error'
 export * from './aliases'
 
+export * from './http'
