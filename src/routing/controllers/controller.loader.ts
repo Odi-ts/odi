@@ -16,6 +16,7 @@ import { IHttpError } from '../../http/http.error';
 import { plainToClass } from '../../dto/dto.transformer';
 import { DtoSchemaStorage } from '../../dto/dto.storage';
 import { bindAuthMiddleware } from '../middleware/middleware.functions';
+import { HttpMessage } from '../../http/http.message';
 
 
 export type AuthMetadata = any;
@@ -85,6 +86,13 @@ export class ControllersLoader implements ILoader {
 
                 const params = await this.bindParams(req, rawParams);
                 const result = await ctrl[property].call(ctrl, ...params);
+
+                if(result instanceof HttpMessage) {
+                    res.statusMessage = result.message;
+                    res.status(result.code);
+
+                    return;
+                }
 
                 if(!res.headersSent)
                     return res.send(result);
