@@ -14,18 +14,6 @@ script:
   - tsc
   - npm test
 
-before_deploy:
-  - tsc
-
-deploy:
-  skip_cleanup: true
-  provider: npm
-  email: $NPM_EMAIL
-  api_key: $NPM_TOKEN
-  tag: next
-  on:
-    tags: true
-
 after_success:
   - codecov
 
