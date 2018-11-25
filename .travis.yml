@@ -18,6 +18,7 @@ before_deploy:
   - tsc
 
 deploy:
+  skip_cleanup: true
   provider: npm
   email: $NPM_EMAIL
   api_key: $NPM_TOKEN
