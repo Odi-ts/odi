@@ -7,7 +7,7 @@
 Controller example
 
 ```typescript
-import { Get, Post, Controller, IController, Autowired } from "odi":
+import { Get, Post, Controller, IController, Autowired, Auth } from "odi":
 import { UserService } from "./user.service";
 import { AuthService } from "./auth.service";
 import { SigninDTO } from "./dto/signin.dto";
@@ -26,7 +26,8 @@ export class TodoController extends IController<AuthService> {
         
         this.user.assign(user);
     }
-
+    
+    @Auth()
     @Get user() {
         return this.user.decode();
     }

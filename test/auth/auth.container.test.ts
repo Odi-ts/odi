@@ -45,17 +45,17 @@ describe('User Data', () => {
     });
 
     describe('#load(...)', () => {
-        it('should call deserialize and return result', () => {
+        it('should call deserialize and return result', async () => {
             userData.token = token;
-            const { data } = userData.load();
+            const { data } = await userData.load();
 
             expect(data).to.be.include(payload)
         });
     });
 
     describe('#assing(...)', () => {
-        it('should call serialize and return new token', () => {;
-            const token = userData.assign(payload);
+        it('should call serialize and return new token', async () => {;
+            const token = await userData.assign(payload);
 
             expect(token).to.be.a('string');
            

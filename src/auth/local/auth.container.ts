@@ -14,7 +14,7 @@ export class UserData<Decoding extends object, User>{
     }
 
         
-    load(options?: DecodeOptions) {
+    async load(options?: DecodeOptions) {
         return this.authService.deserialize(this.decode(options));
     }    
     
@@ -38,8 +38,8 @@ export class UserData<Decoding extends object, User>{
         return result;
     }
  
-    assign(user: User, options?: SignOptions): string {
-        return this.authService.createToken(this.authService.serialize(user), options)
+    async assign(user: User, options?: SignOptions): Promise<string> {
+        return this.authService.createToken(await this.authService.serialize(user), options)
     }
 
     /*
