@@ -18,6 +18,6 @@ export function bindAuthMiddleware(options: any, auth: CoreAuth<any,any>): Middl
         if(result === true)
             return next();
         else   
-            return response.status(401).send(); 
+            return response.status(403).send(); 
     }
 }
