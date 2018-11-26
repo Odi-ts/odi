@@ -58,16 +58,18 @@ export class ControllersLoader implements ILoader {
                     const auMeta: AuthMetadata =  meta.getMetadata(keys.AUTH_MIDDLEWARE);                   
                     const mdMeta: RequestHandler[] = meta.getMetadata(keys.ROUTE_MIDDLEWARE) || [];
                     
-                    if(auMeta)
+                    if(meta.hasMetadata(keys.AUTH_MIDDLEWARE))
                         mdMeta.push(bindAuthMiddleware(auMeta, auth));
 
                     router[method](path, ...mdMeta, this.bindHandler(target, propertyKey, params));                    
                 }
             }
 
+            if(ctrlMeta.hasMetadata(keys.AUTH_MIDDLEWARE))
+                middlware.push(bindAuthMiddleware(ctrlMeta.getMetadata(keys.AUTH_MIDDLEWARE), auth));
           
             this.options.app
-                .use(base.path, router);
+                .use(base.path, ...middlware, router);
         }
     }
 
