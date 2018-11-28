@@ -1,19 +1,17 @@
-import { HttpMessage } from "./http.message";
-import { HttpStatus } from "./http.statuses";
-import { defaults } from "./http.defaults";
+import { createMessage } from "./http.message.factory";
 
-export function Ok(body: string) {
-    return new HttpMessage(200, HttpStatus.Ok, body);
+export function Ok(body: any) {
+    return createMessage(200, body);
 }
 
-export function BadRequest(body: string) {
-    return new HttpMessage(400, HttpStatus.BadRequest, body);
+export function BadRequest(body: any) {
+    return createMessage(400, body);
 }
 
 export function Forbidden(subMessage: string) {
-    return new HttpMessage(403, HttpStatus.Forbidden, subMessage ? subMessage : defaults(HttpStatus.Forbidden));
+    return createMessage(403, subMessage);
 }
 
-export function NotFound(body: string) {
-    return new HttpMessage(404, HttpStatus.NotFound, body);
+export function NotFound(body: any) {
+    return createMessage(403, body);
 }
