@@ -17,5 +17,5 @@ const statusCodes: { [id: number]: ICode} = {
 };
 
 export function createMessage(code: number, body: any) {
-    return new HttpMessage(code, statusCodes[code].status, body ? JSON.stringify(body): statusCodes[code].message)
+    return new HttpMessage(code, statusCodes[code].status, body || statusCodes[code].message)
 }
