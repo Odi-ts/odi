@@ -56,6 +56,7 @@ export const IsUrl = () => validationFactory({ format: "url" });
 export const Enum = (enumrable: any[]) => validationFactory({ enum: enumrable });
 export const Const = (val: any) => validationFactory({ const: val });
 export const IsOptional = () => validationFactory({ isOptional: true });
+export const IsRequired = () => validationFactory({});
 export const Deafault = <T>(def: T) => validationFactory({ default: def });
 
 /* Array validaitons */
