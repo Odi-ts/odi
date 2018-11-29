@@ -91,7 +91,7 @@ export class ControllersLoader implements ILoader {
 
                 if(result instanceof HttpMessage) {
                     res.statusMessage = result.message;
-                    res.status(result.code).send();
+                    res.status(result.code).send(result.body);
 
                     return;
                 }
