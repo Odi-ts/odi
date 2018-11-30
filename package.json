@@ -35,7 +35,7 @@
     "mocha": "^5.2.0",
     "node-mocks-http": "^1.7.3",
     "nyc": "^13.1.0",
-    "pg": "^7.6.1",
+    "pg": "^7.7.1",
     "source-map-support": "^0.5.9",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
