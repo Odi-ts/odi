@@ -1,4 +1,4 @@
-import { FooModel } from '../utils/db.utils';
+import { FooModel } from '../../src/utils/db.utils';
 import { expect } from 'chai';
 import { Core } from '../../src/core/server';
 import { resolve } from 'path';

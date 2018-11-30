@@ -4,7 +4,7 @@ import { createRequest, createResponse } from 'node-mocks-http';
 import { IController, Controller, Post, Data, MinLength, IHttpError, Middleware } from "../../src";
 import { ControllersLoader } from "../../src/routing/controllers/controller.loader"
 import { getDependencyComposer } from "../utils/di.utils";
-import { getFunctionArgs } from '../utils/reflection/function.reflection';
+import { getFunctionArgs } from '../../src/utils/reflection/function.reflection';
 import { plainToClass } from '../../src/dto/dto.transformer';
 
 @Data()

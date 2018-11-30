@@ -13,7 +13,7 @@ import { ServiceMock } from './classes/service';
 import { Custom } from './classes/custom';
 import { SocketMock } from './classes/socket';
 import { resolve } from 'path';
-import { FooModel } from '../utils/db.utils';
+import { FooModel } from '../../src/utils/db.utils';
 import { createConnection, getConnection, getConnectionManager } from 'typeorm';
 
 
