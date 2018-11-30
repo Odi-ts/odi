@@ -53,7 +53,7 @@
     "@types/reflect-metadata": "^0.1.0",
     "@types/shortid": "0.0.29",
     "@types/socket.io": "^1.4.38",
-    "ajv": "^6.5.5",
+    "ajv": "^6.6.1",
     "body-parser": "^1.18.3",
     "chalk": "^2.4.1",
     "cookie-parser": "^1.4.3",
