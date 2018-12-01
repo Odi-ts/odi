@@ -18,6 +18,7 @@ class SampleControllerDto {
     req.query = 'hello';
     next();
 })
+
 @Controller('/custom')
 class SampleController extends IController{
 
