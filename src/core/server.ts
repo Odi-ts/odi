@@ -79,8 +79,9 @@ export class Core{
 
     protected async setDatabase(): Promise<any> {
         const typeorm = await import("typeorm");
-            
-        return typeorm.createConnection(this.options.database!);        
+        const config = await typeorm.getConnectionOptions() || this.options.database;    
+
+        return typeorm.createConnection(config);        
     }
 
     private async loadDependencies(): Promise<void>{
