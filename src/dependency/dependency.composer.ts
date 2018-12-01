@@ -25,7 +25,7 @@ export default class DependencyComposer{
     public async instanciateClassType<T extends Class>(classType: T, { id, constructorArgs, props = {}, type = "singleton" }: ComponentEntry<T> & { id?: string } = defaultEntry){
         const target = new classType(...await this.injectByConstructor(classType, constructorArgs));  
 
-        Object.keys(props).forEach(prop => target[prop] = props![prop]);
+        Object.keys(props).forEach(prop => target[prop] = (props as any)![prop]);
 
         if(target[onInit]){
            await target[onInit](); 
