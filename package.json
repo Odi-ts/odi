@@ -28,7 +28,7 @@
   "devDependencies": {
     "@types/chai": "^4.1.7",
     "@types/mocha": "^5.2.5",
-    "autocannon": "^3.1.0",
+    "autocannon": "^3.2.0",
     "chai": "^4.2.0",
     "fastify": "^1.13.1",
     "istanbul": "^0.4.5",
