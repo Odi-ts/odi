@@ -1,21 +1,24 @@
 import 'reflect-metadata';
 import * as keys from '../../definitions'
-import { IController } from './controller.interface';
-import { StrictObjectType } from '../../utils/reflection/object.reflection';
+
 import { Method } from './controller.types';
+import { IController } from './controller.interface';
+import { normalizeRoutePath } from './controller.utils';
+import { StrictObjectType } from '../../utils/reflection/object.reflection';
 
 export type BasePath = string;
 export type RouteHandler = (...args: any[]) => any | void;
+
 export enum ControllerType{
     Rest,
     Render
 } 
-export interface ControllerMeta{
+export interface ControllerMeta {
     path: string,  
     type? : ControllerType
 }
 
-export enum Returning{
+export enum Returning {
     Void
 }
 
@@ -28,43 +31,34 @@ export interface RouteMetadata {
     args: string[]
 }
 
-export function isRouteHandler(target: any, propertyKey: string){
+export function isRouteHandler(target: any, propertyKey: string) {
     return Reflect.hasMetadata(keys.ROUTE, target, propertyKey) || Reflect.hasMetadata(keys.RAW_ROUTE, target, propertyKey);
 }
 
-export function handlerFactory(method: string): PropertyDecorator{
+// Factories
+export function controllerFactory(route?: BasePath, options? : object) {
+    const path = normalizeRoutePath(route || '', true);   
+
+    return <T extends IController>(target: StrictObjectType<T>) => Reflect.defineMetadata(keys.CONTROLLER, { path, ...options }, target);
+}
+
+export function handlerFactory(method: string): PropertyDecorator {
     return (target: any, propertyKey: string | symbol) => {
-        let path = propertyKey.toString();
-
-        if(path === 'index') 
-            path = '/';
-
-        if(path.charAt(0) !== '/')
-            path = '/' + path;
+        const path = normalizeRoutePath(propertyKey.toString());
         
         Reflect.defineMetadata(keys.ROUTE, { method, path }, target, propertyKey);
     };
 }
 
-function controllerFactory(path?: BasePath, options? : object) {
-    let fmtdPath = !path || path === '/' ? '' : path;
+// Decorators
+export function Route(method: Method, route: string = '/') {
+    const path = normalizeRoutePath(route); 
 
-    if((fmtdPath !== '') && fmtdPath.charAt(0) !== '/') {
-        throw new Error(`Controller Parsing Error : ${path}. '/' should be at the beginning of the path.`);
-    }
-
-    if(fmtdPath.charAt(fmtdPath.length - 1) === '/')
-        fmtdPath = fmtdPath.substring(0, fmtdPath.length - 1);
-    
-    return <T extends IController>(target: StrictObjectType<T>) => Reflect.defineMetadata(keys.CONTROLLER, { path: fmtdPath, ...options}, target);
-}
-
-export function Controller<T>(path? : BasePath){ 
-    return controllerFactory(path, { type : ControllerType.Rest });    
-}
-
-export function Route(method: Method, path: string = '/') {
     return (target: any, propertyKey: string | symbol) => Reflect.defineMetadata(keys.RAW_ROUTE, { method, path }, target, propertyKey);
+}
+
+export function Controller(path? : BasePath ) { 
+    return controllerFactory(path, { type : ControllerType.Rest });    
 }
 
 

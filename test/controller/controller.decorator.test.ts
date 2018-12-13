@@ -18,13 +18,11 @@ class SampleController extends IController{
 }
 
 describe('Controller Decorators', () => {
-
     describe('#Controller, RenderController, ...', () => {
         Controller()(SampleController);
         
         expect(Reflect.getMetadata(CONTROLLER, SampleController)).to.be.deep.eq({ path: '', type: ControllerType.Rest});
     });
-
 
     describe('#Get, Post, ...', () => {
         it('should emmit correct metadata', () => {
@@ -46,19 +44,19 @@ describe('Controller Decorators', () => {
 
     describe('#RouteGet, RoutePost, ...', () => {
         it('should emmit correct metadata', () => {
-            RouteGet('/raw/get')(SampleController, 'get');
-            RoutePost('/raw/post')(SampleController, 'post');
+            RouteGet('raw/get')(SampleController, 'get');
+            RoutePost('/raw/{post}')(SampleController, 'post');
             RoutePatch('/raw/patch')(SampleController, 'patch');
             RouteDel('/raw/del')(SampleController, 'del');
             RoutePut('/raw/put')(SampleController, 'put');
-            RouteAll('/raw/all')(SampleController, 'all');
+            RouteAll('{smth}')(SampleController, 'all');
 
             expect(Reflect.getMetadata(RAW_ROUTE, SampleController, 'get')).to.be.deep.eq({ method: 'get', path: '/raw/get' })
-            expect(Reflect.getMetadata(RAW_ROUTE, SampleController, 'post')).to.be.deep.eq({ method: 'post', path: '/raw/post' })
+            expect(Reflect.getMetadata(RAW_ROUTE, SampleController, 'post')).to.be.deep.eq({ method: 'post', path: '/raw/:post' })
             expect(Reflect.getMetadata(RAW_ROUTE, SampleController, 'patch')).to.be.deep.eq({ method: 'patch', path: '/raw/patch' })
             expect(Reflect.getMetadata(RAW_ROUTE, SampleController, 'del')).to.be.deep.eq({ method: 'delete', path: '/raw/del' })
             expect(Reflect.getMetadata(RAW_ROUTE, SampleController, 'put')).to.be.deep.eq({ method: 'put', path: '/raw/put' })
-            expect(Reflect.getMetadata(RAW_ROUTE, SampleController, 'all')).to.be.deep.eq({ method: 'all', path: '/raw/all' })
+            expect(Reflect.getMetadata(RAW_ROUTE, SampleController, 'all')).to.be.deep.eq({ method: 'all', path: '/:smth' })
         });
     });
 });
