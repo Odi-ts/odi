@@ -1,7 +1,7 @@
 import * as express from 'express';
 
 import { expect } from 'chai';
-import { DependencyClassifier, DepType  } from '../../src/dependency/dependency.processor';
+import { DependencyManager, DepType  } from '../../src/dependency/dependency.manager';
 import { getDependencyComposer } from '../utils/di.utils';
 import { REPOSITORY, CONTROLLER } from '../../src/definitions';
 
@@ -13,10 +13,6 @@ import { ServiceMock } from './classes/service';
 import { Custom } from './classes/custom';
 import { SocketMock } from './classes/socket';
 import { resolve } from 'path';
-import { FooModel } from '../../src/utils/db.utils';
-import { createConnection, getConnection, getConnectionManager } from 'typeorm';
-
-
 
 describe('Dependency Classifier', () => {
     const dependencyComposer = getDependencyComposer();
@@ -24,10 +20,10 @@ describe('Dependency Classifier', () => {
     const rootPath = resolve(__dirname, './classes');
     const types = Object.values(DepType).filter(elem => typeof elem !== 'string');
 
-    let dep: DependencyClassifier;
+    let dep: DependencyManager;
 
     describe('#constructor', () => {
-        dep = new DependencyClassifier({ dependencyComposer, app, rootPath });
+        dep = new DependencyManager({ dependencyComposer, app, rootPath });
 
         it('should init queues for main components', () => {
             expect(dep['queues']).to.be.a('object');

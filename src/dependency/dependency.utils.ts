@@ -1,7 +1,7 @@
 
 import { Class } from "../utils/reflection/object.reflection";
 import { ComponentEntry, TypelessComponentEntry } from "./dependency.decorators";
-import { ComponentSettingsStorage } from "./dependency.manager";
+import { ComponentSettingsStorage } from "./dependency.store";
 
 export const onInit = Symbol('onInit');
 

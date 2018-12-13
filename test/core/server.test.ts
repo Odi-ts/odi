@@ -3,8 +3,8 @@ import { expect } from 'chai';
 import { Core } from '../../src/core/server';
 import { resolve } from 'path';
 import DependencyComposer from '../../src/dependency/dependency.composer';
-import { DependencyClassifier } from '../../src/dependency/dependency.processor';
-import { Connection, getConnection } from 'typeorm';
+import { DependencyManager } from '../../src/dependency/dependency.manager';
+import { Connection, getConnection, getManager } from 'typeorm';
 
 
 let core: Core;
@@ -38,12 +38,13 @@ describe('Core', async () => {
 
 
     describe('#setDatabase(..)', async () => {
-        if(core['database'])
-            await core['database'].close();
+        it('should return typeorm connection', async () => {
+            if(core['database'])
+                await core['database'].close();
 
-        connection = await core['setDatabase']();
-
-        it('should return typeorm connection', () => expect(connection).to.be.instanceOf(Connection));
+            connection = await core['setDatabase']();
+            expect(connection).to.be.instanceOf(Connection);            
+        });
     });
 
     describe('#setMiddleware(..)', async () => {
@@ -56,22 +57,27 @@ describe('Core', async () => {
     describe('#loadDependencies(...)', async () => {
         it('should create deps loader', async () => {
             await core['loadDependencies']();
-            expect(core['dependencyLoader']).to.be.instanceOf(DependencyClassifier)
+            expect(core['dependencyLoader']).to.be.instanceOf(DependencyManager)
         });
     });
 
     describe('#setUp(...)', async () => {
-        if(core['database'])
-            await core['database'].close();
 
-        await core['setUp']();
+        before(async () => {
+            const manager = getManager('scoped');
 
-        it('should create deps loader', () => expect(core['dependencyLoader']).to.be.instanceOf(DependencyClassifier));
+            if(manager && manager.connection.isConnected)
+                await manager.connection.close();
+
+            await core['setUp']();
+        });       
+
+        it('should create deps loader', () => expect(core['dependencyLoader']).to.be.instanceOf(DependencyManager));
         it('should return typeorm connection', () => expect(core['database']).to.be.instanceOf(Connection));
         it('should set at least 2 default middlewares', () => expect(core['app']._router.stack.length).to.be.greaterThan(3));
     });
 
-    describe('#setUp(...)', async () => {  
+    describe('#listen(...)', async () => {  
 
         it('should run whole application without errors', async () => {
             if(core['database'])

@@ -9,7 +9,7 @@ import { createServer, Server as HttpServer } from 'http';
 import { ConnectionOptions } from "typeorm";
 import { CoreAuth } from '../auth/local/auth.interface';
 import { DB_CONNECTION } from '../definitions';
-import { DependencyClassifier } from '../dependency/dependency.processor';
+import { DependencyManager } from '../dependency/dependency.manager';
 import DependencyComposer from '../dependency/dependency.composer';
 
 
@@ -35,7 +35,7 @@ export interface CoreOptions{
 
 export class Core{
     private dependencyComposer: DependencyComposer;
-    private dependencyLoader: DependencyClassifier;
+    private dependencyLoader: DependencyManager;
 
     /* Treat like Connection */
     protected database: any;
@@ -85,7 +85,7 @@ export class Core{
     }
 
     private async loadDependencies(): Promise<void>{
-        this.dependencyLoader = new DependencyClassifier({
+        this.dependencyLoader = new DependencyManager({
             dependencyComposer: this.dependencyComposer,
             rootPath: this.options.sources,
             app: this.app            

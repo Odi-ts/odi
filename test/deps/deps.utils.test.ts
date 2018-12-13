@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { Hook, define, onInit } from '../../src/dependency/dependency.utils';
 import { Custom } from './classes/custom';
-import { ComponentSettingsStorage } from '../../src/dependency/dependency.manager';
+import { ComponentSettingsStorage } from '../../src/dependency/dependency.store';
 
 describe('Dependency Utils', () => {
 

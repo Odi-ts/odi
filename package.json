@@ -1,6 +1,6 @@
 {
   "name": "odi",
-  "version": "0.1.56",
+  "version": "0.1.57",
   "description": "🌪🌌 Opinionated, Declarative, Idiomatic framework for building scalable, supportable, enterprise-grade applications.",
   "main": "lib/src/index.js",
   "homepage": "https://github.com/Odi-ts/Odi#readme",
@@ -21,6 +21,7 @@
   "scripts": {
     "test": "nyc mocha test/**/*.test.ts",
     "posttest": "mkdir coverage && nyc report --reporter=text-lcov > coverage/coverage.lcov",
+    "pack": "rm -rf ./build && tsc && npm pack",
     "bench": "node benchmark/bench"
   },
   "author": "Dan Tsekhmastryuk",

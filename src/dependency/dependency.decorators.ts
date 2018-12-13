@@ -5,7 +5,7 @@ import { AUTOWIRED, INJECT } from "../definitions";
 import { Class } from "../utils/reflection/object.reflection";
 import { isFunction } from "../utils/directory.loader";
 import { autowiredPropsStore } from "./dependency.utils";
-import { ValuedProps, ConstructorParameters } from "./dependency.manager";
+import { ValuedProps, ConstructorParameters } from "./dependency.store";
 
 export interface ComponentEntry<T extends Class> {
     type?: 'singleton' | 'scoped',
