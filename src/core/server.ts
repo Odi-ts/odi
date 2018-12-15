@@ -9,6 +9,7 @@ import { CoreAuth } from '../auth/local/auth.interface';
 import { DB_CONNECTION } from '../definitions';
 import { DependencyManager } from '../dependency/dependency.manager';
 import DependencyComposer from '../dependency/dependency.composer';
+import { GAJV } from '../dto/dto.storage';
 
 
 export interface CoreOptions{
@@ -50,7 +51,10 @@ export class Core{
         this.options = options;
         this.dependencyComposer = new DependencyComposer();
         
-        this.app = fastify();      
+        this.app = fastify();   
+        
+        // Explicitly set AJV as schema compiler 
+        this.app.setSchemaCompiler(shema => GAJV.compile(shema))
     }   
 
     private async setUp(): Promise<any>{
