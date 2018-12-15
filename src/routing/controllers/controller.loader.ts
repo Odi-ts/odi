@@ -57,9 +57,6 @@ export class ControllersLoader implements ILoader {
                         mdMeta.push(bindAuthMiddleware(auMeta, auth));
 
 
-                    
-
-
                     app[method](path, { 
                         schema: {
                             ...this.getSchemaDescriptor(params)

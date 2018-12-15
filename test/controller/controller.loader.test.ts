@@ -1,4 +1,5 @@
-import * as express from 'express';
+import * as fastify from 'fastify';
+
 import { expect } from 'chai';
 import { createRequest, createResponse } from 'node-mocks-http';
 import { IController, Controller, Post, Data, MinLength, IHttpError, Middleware } from "../../src";
@@ -6,6 +7,7 @@ import { ControllersLoader } from "../../src/routing/controllers/controller.load
 import { getDependencyComposer } from "../utils/di.utils";
 import { getFunctionArgs } from '../../src/utils/reflection/function.reflection';
 import { plainToClass } from '../../src/dto/dto.transformer';
+
 
 @Data()
 class SampleControllerDto {
@@ -40,7 +42,7 @@ const requestPayload = {
 };
 
 describe('Controller Loader', async () => {
-    const app = express();
+    const app = fastify();
     const dependencyComposer = getDependencyComposer();
     const loader = new ControllersLoader({ dependencyComposer, app });
     const processor = loader.processBase();
@@ -51,7 +53,7 @@ describe('Controller Loader', async () => {
     describe('#bindParams(...)', () => {
         
         it('should return correct array of params', async () => { 
-            const binded = await loader['bindParams'](request, args);
+            const binded = await loader['bindParams'](request as any, args);
 
             expect(binded).to.be.instanceOf(Array);
             expect(binded).to.have.length(4);
@@ -89,28 +91,20 @@ describe('Controller Loader', async () => {
             const { params, body } = requestPayload; 
             const response = createResponse();
 
-            await handler(request, response, () => {});
+            // As using async in declaration, reference to actual result
+            const result = await handler(request as any, response as any);
     
-            expect(response._getData()).to.be.eq(`${params.id}, ${params.name}, ${body.title}`);
+            expect(result).to.be.eq(`${params.id}, ${params.name}, ${body.title}`);
         });
 
         it('should process request and return http status with message for throwing IHttpError', async () => { 
             const request = createRequest({ params: { id: '1', name: '1' }, body: requestPayload.body });
             const response = createResponse();
 
-            await handler(request, response, () => {});
+            await handler(request as any, response as any);
             
             expect(response._getStatusCode()).to.be.eq(400);
             expect(response._getData()).to.be.eq('wrong payload');
-        });
-
-        it('should process request and return ajv errors with 400 status for validation', async () => {  
-            const request = createRequest({ params: requestPayload.params, body: { title: '1' } })
-            const response = createResponse();
-            
-            await handler(request, response, () => {});
-            
-            expect(response._getStatusCode()).to.be.eq(400);
         });
 
         it('should throw error on unexpected throw', async () => {  
@@ -118,7 +112,7 @@ describe('Controller Loader', async () => {
             const response = createResponse();
             
             try {
-                await handler(request, response, () => {})
+                await handler(request as any, response as any,)
             } catch (err) {
                 expect(err).to.be.instanceOf(Error);
             }
