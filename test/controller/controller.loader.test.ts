@@ -92,9 +92,9 @@ describe('Controller Loader', async () => {
             const response = createResponse();
 
             // As using async in declaration, reference to actual result
-            const result = await handler(request as any, response as any);
+            await handler(request as any, response as any);
     
-            expect(result).to.be.eq(`${params.id}, ${params.name}, ${body.title}`);
+            expect(response._getData()).to.be.eq(`${params.id}, ${params.name}, ${body.title}`);
         });
 
         it('should process request and return http status with message for throwing IHttpError', async () => { 
