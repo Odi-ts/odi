@@ -31,7 +31,7 @@
     "@types/mocha": "^5.2.5",
     "autocannon": "^3.2.0",
     "chai": "^4.2.0",
-    "fastify": "^1.13.1",
+    "fastify": "^1.13.2",
     "istanbul": "^0.4.5",
     "mocha": "^5.2.0",
     "node-mocks-http": "^1.7.3",
