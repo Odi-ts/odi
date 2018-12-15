@@ -1,15 +1,11 @@
 import * as keys from '../../definitions'
-import * as Ajv from 'ajv';
-
 import DependencyComposer from '../../dependency/dependency.composer';
 
-import { FastifyInstance, FastifyMiddleware, RouteSchema } from 'fastify';
+import { FastifyInstance, RouteSchema } from 'fastify';
 
 import { RouteMetadata, isRouteHandler, ControllerMeta } from './controller.decorators'
 import { RFunction, ILoader, reflectOwnProperties } from '../../utils/directory.loader';
 import { getFunctionArgs, FunctionParam } from '../../utils/reflection/function.reflection';
-
-import { MiddlewareFunction } from '../middleware/middleware.decorators';
 
 import { metadata } from '../../utils/metadata.utils';
 import { IController } from './controller.interface';
@@ -18,7 +14,7 @@ import { plainToClass } from '../../dto/dto.transformer';
 import { DtoSchemaStorage } from '../../dto/dto.storage';
 import { bindAuthMiddleware } from '../middleware/middleware.functions';
 import { HttpMessage } from '../../http/http.message';
-import { RequestMiddleware, RequestHandler } from '../../aliases';
+import { RequestMiddleware, RequestHandler, Request } from '../../aliases';
 
 export type AuthMetadata = any;
 
@@ -66,7 +62,7 @@ export class ControllersLoader implements ILoader {
 
                     app[method](path, { 
                         schema: {
-                            body: params.
+                            ...this.getSchemaDescriptor(params)
                         },
                         beforeHandler: [...middlware, ...mdMeta] 
                     }, this.bindHandler(target, propertyKey, params));                    
@@ -80,8 +76,6 @@ export class ControllersLoader implements ILoader {
     }
 
     public bindHandler(target: IController, property: string, rawParams: FunctionParam[]): RequestHandler {        
-        const validate = DtoSchemaStorage.get(this.getDto(rawParams))!;
-
         return async (req, res) => {
             const ctrl = this.bindController(target)['applyContext'](req, res);
 
@@ -89,30 +83,19 @@ export class ControllersLoader implements ILoader {
             ctrl['userData'] = req.locals ? req.locals.user : null;
 
             try {    
-                if(validate)  
-                    await validate(req.body);
-
                 const params = await this.bindParams(req, rawParams);
                 const result = await ctrl[property].call(ctrl, ...params);
 
-                if(result instanceof HttpMessage) {
-                    res.statusMessage = result.message;
-                    res.status(result.code).send(result.body);
+                if(result instanceof HttpMessage) 
+                    res.status(result.code);
 
-                    return;
-                }
-
-                if(!res.headersSent)
-                    return res.send(result);
+                if(!res.sent)
+                    return result;
 
             } catch (error) {
                 
                 if(error instanceof IHttpError)
                     return res.status(error.getHttpCode()).send(error.message);
-
-                //@ts-ignore
-                else if(error instanceof Ajv.ValidationError)
-                    return res.status(400).send(error.errors);
                 else 
                     throw error;
                 
@@ -121,7 +104,7 @@ export class ControllersLoader implements ILoader {
         }
     }
 
-    private async bindParams(req: ERequest, rawParams: FunctionParam[]) {
+    private async bindParams(req: Request, rawParams: FunctionParam[]) {
         const params = [];
         
         for(const param of rawParams) {
