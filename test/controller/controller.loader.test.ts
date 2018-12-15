@@ -17,7 +17,7 @@ class SampleControllerDto {
 }
 
 @Middleware((req,res, next) => {
-    req.query = 'hello';
+    (req.query as any) = 'hello';
     next();
 })
 

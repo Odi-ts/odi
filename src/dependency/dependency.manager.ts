@@ -1,5 +1,3 @@
-import { Application } from "express";
-
 import { AuthLoader } from "../auth/local/auth.loader";
 import { AUTH, CONTROLLER, REPOSITORY, SERVICE, SOCKET } from "../definitions";
 import { RepositoryLoader } from "../respositories/repository.loader";
