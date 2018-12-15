@@ -47,38 +47,38 @@ describe('Core Auth Service', () => {
         it('should extarct token from header request', () => {
             const request = createRequest({ headers: { authorization: `Authorization: ${token}` }});
 
-            expect(auth['extractToken'](request)).to.be.eq(token);
+            expect(auth['extractToken'](request as any)).to.be.eq(token);
         });
 
         it('should return undefined if no token', () => {
             const request = createRequest();
 
-            expect(auth['extractToken'](request)).to.be.eq(undefined);
+            expect(auth['extractToken'](request as any)).to.be.eq(undefined);
         });
 
         it('should extarct token from cookies if no header', () => {
             const request = createRequest({ cookies: { authorization: token }});
 
-            expect(auth['extractToken'](request)).to.be.eq(token);
+            expect(auth['extractToken'](request as any)).to.be.eq(token);
         });
 
         it('should fallback if wrong header', () => {
             const request = createRequest({ headers: { authorization: token }});
 
-            expect(auth['extractToken'](request)).to.be.eq(undefined);
+            expect(auth['extractToken'](request as any)).to.be.eq(undefined);
         });
 
         it('should extarct token from custom cookie field if no header', () => {
             const request = createRequest({ cookies: { sample: token }});
 
-            expect(auth['extractToken'](request, 'sample')).to.be.eq(token);
+            expect(auth['extractToken'](request as any, 'sample')).to.be.eq(token);
         });
     });
 
     describe('#extractUser', () => {
         it('should return UserData instance with token', () => {
             const request = createRequest({ headers: { authorization: `Authorization: ${token}` }});
-            const userData = auth['extractUser'](request);
+            const userData = auth['extractUser'](request as any);
 
             expect(userData).to.be.instanceOf(UserData);
             expect(userData.token).to.be.eq(token);
