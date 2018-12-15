@@ -70,6 +70,6 @@ export function buildSchema(target: any) {
         required: requiredProperties
     };
   
-    DtoSchemaStorage.set(target, GAJV.compile(schema));
+    DtoSchemaStorage.set(target, schema);
     return schema;
 }

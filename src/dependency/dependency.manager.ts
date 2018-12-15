@@ -7,6 +7,7 @@ import { ControllersLoader } from "../routing/controllers/controller.loader";
 import { ServicesLoader } from "../services/services.loader";
 import { ILoader, inject } from "../utils/directory.loader";
 import DependencyComposer from "./dependency.composer";
+import { FastifyInstance } from "fastify";
 
 export enum DepType{ 
     Controller = 1,
@@ -19,7 +20,7 @@ export enum DepType{
 
 export interface Options{
     rootPath : string
-    app : Application,   
+    app : FastifyInstance,   
     dependencyComposer: DependencyComposer
 }
 
@@ -87,7 +88,6 @@ export class DependencyManager {
             [DepType.Socket]: []
         }
     }
-
 
     private getType(target: any): DepType{
         let belongsTo = this.getRefer(target);
