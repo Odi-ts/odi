@@ -3,7 +3,7 @@ import { CoreAuth } from "../../auth/local/auth.interface";
 import { UserData } from "../../auth/local/auth.container";
 
 import { Decoding, User } from "./controller.types";
-import { CookieSerializeOptions } from "fastify";
+import { CookieSerializeOptions, DefaultHeaders, DefaultQuery, FastifyReply } from "fastify";
 
 export class IController<T = any>{ 
     private authService: CoreAuth<Decoding<T>, User<T>>;    
@@ -15,11 +15,11 @@ export class IController<T = any>{
 
     
     /* Complex objects */
-    getHeaders(){
+    getHeaders(): DefaultHeaders{
         return this.request.headers;
     }
 
-    getQuery(){
+    getQuery(): DefaultQuery{
         return this.request.query;
     }
 
@@ -53,7 +53,7 @@ export class IController<T = any>{
 
 
     /* Useful actions */
-    redirect(url: string, code: number = 302){      
+    redirect(url: string, code: number = 302): FastifyReply<import('http').ServerResponse>{      
         return this.response.redirect(code, url)
     }
 

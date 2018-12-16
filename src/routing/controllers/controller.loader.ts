@@ -15,6 +15,7 @@ import { DtoSchemaStorage } from '../../dto/dto.storage';
 import { bindAuthMiddleware } from '../middleware/middleware.functions';
 import { HttpMessage } from '../../http/http.message';
 import { RequestMiddleware, RequestHandler, Request } from '../../aliases';
+import { concatinateBase } from '../../utils/url.utils';
 
 export type AuthMetadata = any;
 
@@ -56,8 +57,9 @@ export class ControllersLoader implements ILoader {
                     if(meta.hasMetadata(keys.AUTH_MIDDLEWARE))
                         mdMeta.push(bindAuthMiddleware(auMeta, auth));
 
+                    const route = concatinateBase(base.path, path);
 
-                    app[method](path, { 
+                    app[method](route, { 
                         schema: {
                             ...this.getSchemaDescriptor(params)
                         },
