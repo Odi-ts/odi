@@ -41,7 +41,7 @@ export class ControllersLoader implements ILoader {
             target['authService'] = auth;
 
             const base: ControllerMeta = ctrlMeta.getMetadata(keys.CONTROLLER);
-            const middlware: RequestMiddleware[] = ctrlMeta.getMetadata(keys.ROUTE_MIDDLEWARE) || [];
+            const ctrlMd: RequestMiddleware[] = ctrlMeta.getMetadata(keys.ROUTE_MIDDLEWARE) || [];
 
 
             for (let propertyKey of [...reflectOwnProperties(target)]) {               
@@ -52,13 +52,13 @@ export class ControllersLoader implements ILoader {
                     const params = getFunctionArgs(target, propertyKey);
 
                     const auMeta: AuthMetadata =  meta.getMetadata(keys.AUTH_MIDDLEWARE);                   
-                    const mdMeta: RequestMiddleware[] = meta.getMetadata(keys.ROUTE_MIDDLEWARE) || [];
+                    const routeMd: RequestMiddleware[] = meta.getMetadata(keys.ROUTE_MIDDLEWARE) || [];
                     
                     if(ctrlMeta.hasMetadata(keys.AUTH_MIDDLEWARE))
-                        middlware.push(bindAuthMiddleware(ctrlMeta.getMetadata(keys.AUTH_MIDDLEWARE), auth));
+                        ctrlMd.push(bindAuthMiddleware(ctrlMeta.getMetadata(keys.AUTH_MIDDLEWARE), auth));
 
                     if(meta.hasMetadata(keys.AUTH_MIDDLEWARE))
-                        mdMeta.push(bindAuthMiddleware(auMeta, auth));
+                        routeMd.push(bindAuthMiddleware(auMeta, auth));
 
                     const route = concatinateBase(base.path, path);
 
@@ -66,7 +66,7 @@ export class ControllersLoader implements ILoader {
                         schema: {
                             ...this.getSchemaDescriptor(params)
                         },
-                        beforeHandler: [...middlware, ...mdMeta] 
+                        beforeHandler: [...ctrlMd, ...routeMd] 
                     }, this.bindHandler(target, propertyKey, params));                    
                 }
             }
