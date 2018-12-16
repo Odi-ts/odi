@@ -54,6 +54,9 @@ export class ControllersLoader implements ILoader {
                     const auMeta: AuthMetadata =  meta.getMetadata(keys.AUTH_MIDDLEWARE);                   
                     const mdMeta: RequestMiddleware[] = meta.getMetadata(keys.ROUTE_MIDDLEWARE) || [];
                     
+                    if(ctrlMeta.hasMetadata(keys.AUTH_MIDDLEWARE))
+                        middlware.push(bindAuthMiddleware(ctrlMeta.getMetadata(keys.AUTH_MIDDLEWARE), auth));
+
                     if(meta.hasMetadata(keys.AUTH_MIDDLEWARE))
                         mdMeta.push(bindAuthMiddleware(auMeta, auth));
 
@@ -68,8 +71,7 @@ export class ControllersLoader implements ILoader {
                 }
             }
 
-            if(ctrlMeta.hasMetadata(keys.AUTH_MIDDLEWARE))
-                middlware.push(bindAuthMiddleware(ctrlMeta.getMetadata(keys.AUTH_MIDDLEWARE), auth));
+         
 
         }
     }
@@ -85,11 +87,16 @@ export class ControllersLoader implements ILoader {
                 const params = await this.bindParams(req, rawParams);
                 const result = await ctrl[property].call(ctrl, ...params);
 
-                if(result instanceof HttpMessage) 
-                    res.status(result.code);
+                if(res.sent)
+                    return;
+                    
+                if (result instanceof HttpMessage) {
+                    res.status(result.code).send(result.body);
 
-                if(!res.sent)
-                    res.send(result);
+                    return;
+                }
+
+                res.send(result);   
 
             } catch (error) {
                 
@@ -97,8 +104,6 @@ export class ControllersLoader implements ILoader {
                     return res.status(error.getHttpCode()).send(error.message);
                 else 
                     throw error;
-                
-                
             }
         }
     }
