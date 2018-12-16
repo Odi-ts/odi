@@ -1,19 +1,26 @@
 import * as shortid from 'shortid';
 
 import { ValidateFunction } from 'ajv';
-import { DATA_CLASS, DATA_VALIDATION_PROP } from "../definitions";
+import { DATA_CLASS, DATA_VALIDATION_PROP, QUERY_CLASS } from "../definitions";
 import { ValidatorFormat } from "./dto.type";
 import { buildSchema } from "./dto.validator";
 import { DtoPropsStorage, getSchema, GAJV, DtoPropsTypes } from "./dto.storage";
 
+function dtoFactory(key: string) {
+    return (target: any) => {
+        Reflect.defineMetadata(key, true, target);
+
+        // Build schema and write to global DTO
+        buildSchema(target);
+    };
+}
 
 export function Data(): ClassDecorator {
-    return (target: any) => {
-        Reflect.defineMetadata(DATA_CLASS, true, target);
+    return dtoFactory(DATA_CLASS);
+}
 
-        /* Build schema and write to global DTO */
-        buildSchema(target);
-    }
+export function Query(): ClassDecorator {
+    return dtoFactory(QUERY_CLASS);
 }
 
 export function validationFactory(object: any): PropertyDecorator {

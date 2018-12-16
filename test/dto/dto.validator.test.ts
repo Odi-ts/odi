@@ -63,7 +63,6 @@ const schema = {
                     "format": "url"
                 }
             },
-            "$async": true,
             "required": [
                 "prop1"
             ]
@@ -84,7 +83,6 @@ const schema = {
             "const": true
         }
     },
-    "$async": true,
     "required": [
         "prop1",
         "prop2",

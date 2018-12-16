@@ -1,8 +1,10 @@
 import { CoreAuth } from "../../auth/local/auth.interface";
-import { MiddlewareFunction } from "./middleware.decorators";
+import { RequestMiddleware } from "../../aliases";
 
-export function bindAuthMiddleware(options: any, auth: CoreAuth<any,any>): MiddlewareFunction {
+export function bindAuthMiddleware(options: any, auth: CoreAuth<any,any>): RequestMiddleware {
     return async (request, response, next) => {
+
+        
         const user = auth['extractUser'](request);
         const [ err, decoding ] = user.verify();
 

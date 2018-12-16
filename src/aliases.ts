@@ -1,7 +1,21 @@
-import { Response as ERes, Request as EReq } from 'express';
+import { Server, IncomingMessage, ServerResponse} from 'http'
 
-export { Request, Response, RequestHandler } from 'express';
-export type Context =  { 
-    request: EReq,
-    response: ERes 
-};
+import { 
+    FastifyRequest,
+    FastifyReply, 
+    RequestHandler as FastifyRequestHandler, 
+    FastifyMiddleware
+} from 'fastify';
+
+export type RequestHandler = FastifyRequestHandler<IncomingMessage, ServerResponse>;
+
+export type RequestMiddleware = FastifyMiddleware<Server, IncomingMessage, ServerResponse>;
+
+export type Request = FastifyRequest<IncomingMessage>;
+
+export type Response = FastifyReply<ServerResponse>;
+
+export interface Context {
+    request: Request;
+    response: Response;
+}

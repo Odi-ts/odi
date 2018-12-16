@@ -15,7 +15,6 @@ class DtoNotDecoratedSample {}
 
 
 const dtoSampleSchema = {
-    "$async": true,
     "properties": {
       "prop1": {
         "minimum": 2,

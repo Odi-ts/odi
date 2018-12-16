@@ -1,4 +1,4 @@
-import * as express from 'express';
+import * as fastify from 'fastify';
 
 import { expect } from 'chai';
 import { DependencyManager, DepType  } from '../../src/dependency/dependency.manager';
@@ -16,7 +16,7 @@ import { resolve } from 'path';
 
 describe('Dependency Classifier', () => {
     const dependencyComposer = getDependencyComposer();
-    const app = express();
+    const app = fastify();
     const rootPath = resolve(__dirname, './classes');
     const types = Object.values(DepType).filter(elem => typeof elem !== 'string');
 
