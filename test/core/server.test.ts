@@ -7,12 +7,8 @@ import { DependencyManager } from '../../src/dependency/dependency.manager';
 import { Connection, getConnection, getManager } from 'typeorm';
 
 
-let core: Core;
-describe('Core', async () => {
-
-    let connection: Connection;
-
-    core = new Core({
+function getCore() {
+    return new Core({
         server: { port: 8080 },
         sources: resolve(__dirname, './deps/classes'),
         database: {
@@ -25,7 +21,15 @@ describe('Core', async () => {
             database: "test_db_2",
             synchronize: true
         }
-    });
+    })
+}
+
+let core: Core;
+describe('Core', async () => {
+
+    let connection: Connection;
+
+    core = getCore();
 
     describe('#constuctor', async () => {
 
@@ -61,6 +65,8 @@ describe('Core', async () => {
     describe('#setUp(...)', async () => {
 
         before(async () => {
+            core = getCore();
+
             const manager = getManager('scoped');
 
             if(manager && manager.connection.isConnected)
@@ -71,6 +77,19 @@ describe('Core', async () => {
 
         it('should create deps loader', () => expect(core['dependencyLoader']).to.be.instanceOf(DependencyManager));
         it('should return typeorm connection', () => expect(core['database']).to.be.instanceOf(Connection));
+    });
+
+    describe('#listen(...)', () => {  
+        it('should run whole application without errors', async () => {
+            if(core['database'])
+                await core['database'].close();
+
+            if(getConnection())
+                await getConnection().close();
+            
+            core.listen();            
+        });
+
     });
 });
 
