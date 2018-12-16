@@ -12,10 +12,10 @@ For creating controller - you need to use `@Controller` decorator and `IControll
 import { Controller, IController, Get, Post, All, Route, Method } from "odi";
 import { SampleDTO } from "./sample.dto.ts";
 
-@Controller('/sample')
+@Controller('sample')
 export class SampleController extends IController {
 
-    @Get '/:id' (id: string) {
+    @Get '{id}' (id: string) {
         return `Your id is - ${id}`;
     }
 
@@ -23,7 +23,8 @@ export class SampleController extends IController {
         return `Hello world !`;
     }
     
-    @Post save(payload: SampleDTO) {
+    @RoutePost('save') 
+    saveSample(payload: SampleDTO) {
         return `Your sample name is - ${payload.name}`;
     }
 
@@ -32,7 +33,7 @@ export class SampleController extends IController {
     }
 
     /* Using @Route decorator */    
-    @Route(Method.GET, '/somewhere/hello')
+    @RouteGet(Method.GET, 'somewhere/hello')
     anyMethodName() {
         return `Hello from other route !`;
     }
@@ -41,7 +42,7 @@ export class SampleController extends IController {
 
 **SampleController** will be mapped to following routes:
 
-* /sample/:id
+* /sample/{id}
 * /sample
 * /sample/save
 * /sample/all
@@ -88,7 +89,19 @@ Also, there is available shorthand for `@Route` decorator, to omit _method_ para
 Note, if method was decorated by both **@Route** and **@Get** \(or others like Post, All, ..etc\). Metadata from **@Route** will be in priority during build time.
 {% endhint %}
 
-### 
+### Route definition
+
+In all routing decorators, leading slash can be omitted.
+
+`@RouteGet('foo')` is equals to `@RouteGet('/foo')` 
+
+
+
+Another thing is route params. **Odi** provides special syntax for it
+
+`@RouteGet('foo/{id}')` is equals to `@RouteGet('/foo/:id')`  
+
+There are no limitations, so both variants can be used and are valid for the build process.
 
 ### Data Injection
 
@@ -104,7 +117,8 @@ To inject route parameter, just specify parameter name. That will be enough. Onl
 For example, to get route parameter **id:**
 
 ```typescript
-@Get '/:id' (id: string) {
+@RouteGet('{id}')
+getSomething(id: string) {
     return `Your id is - ${id}`;
 }
 ```
@@ -136,10 +150,10 @@ Using **@All** decorator
 ```typescript
 import { Controller, IController, All } from "odi";
 
-@Controller('/todo')
+@Controller('todo')
 export class TodoController extends IController {
 
-    @All'/:id' (id: string) {
+    @All '{id}' (id: string) {
         const method = this.request.method;                  
         // Set your logic depending on method.
     }
@@ -152,7 +166,7 @@ Using short versions of **@Route** decorator
 ```typescript
 import { Controller, IController, RouteGet, RouteDel } from "odi";
 
-@Controller('/todo/:id')
+@Controller('todo/{id}')
 export class TodoController extends IController {
 
     @RouteGet()
@@ -173,7 +187,7 @@ Using only **@Route** decorator
 ```typescript
 import { Controller, IController, Route, Method } from "odi";
 
-@Controller('/todo/:id')
+@Controller('todo/{id}')
 export class TodoController extends IController {
 
     @Route(Method.Get)
@@ -193,7 +207,17 @@ export class TodoController extends IController {
 Note, in feature releases, new Controller API will be added, to handle such situations, easily.
 {% endhint %}
 
+## Actions
 
+There are 3 helper actions that can be used in controllers.
+
+* `Ok(body?: any)` - set status code to 200 and send body
+
+* `BadRequest(body?: any)` - set status code to 400 and send body
+
+* `NotFound(body?: any)` - set status code to 404 and send body
+
+*  `Forbidden(body?: any)` - set status code to 403 and send body
 
 ## Abstract Controller
 
@@ -233,7 +257,7 @@ There are 3 methods to work with **query:**
 
 There are only 1 method to work with **route parameters**:
 
-* `getQueryParam(key: string)` - return query parameter value by key
+* `getParam(key: string)` - return query parameter value by key
 
 But if you need full list or additional information, you can always reference to raw http request. Read below about it.
 
@@ -241,8 +265,6 @@ But if you need full list or additional information, you can always reference to
 
 Information about request/response objects persist like a properties of class instance.
 
-* `httpRequest` - raw Node.js http request 
-* `httpResponse` - raw Node.js http response 
 * `request` - wrapped http request 
 * `response` - wrapped http response
 
