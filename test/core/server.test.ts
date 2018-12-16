@@ -72,20 +72,6 @@ describe('Core', async () => {
         it('should create deps loader', () => expect(core['dependencyLoader']).to.be.instanceOf(DependencyManager));
         it('should return typeorm connection', () => expect(core['database']).to.be.instanceOf(Connection));
     });
-
-    describe('#listen(...)', async () => {  
-
-        it('should run whole application without errors', async () => {
-            if(core['database'])
-                await core['database'].close();
-
-            if(getConnection())
-                await getConnection().close();
-
-            await core.listen();            
-        });
-
-    });
 });
 
 after((done) => core['server'].close(() =>  done()));
