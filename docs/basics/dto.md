@@ -2,7 +2,7 @@
 
 ## General
 
-**DTO**\(_Data Transfer Object_\) __is used for parsing and validating data from request body. DTOs always used with **Controllers**.
+**DTO**\(_Data Transfer Object_\) __is used for parsing and validating data from request. DTOs always used with **Controllers**.
 
 ## Validation
 
@@ -62,7 +62,7 @@ And controller with some predefined service
 import { Controller, IController, Post, Autowired } from "odi";
 import TodoService from "./todo.service";
 
-@Controller('/todo')
+@Controller('todo')
 export class TodoController extends IController {
     
     @Autowired()
@@ -145,7 +145,7 @@ Following formats for `@Format` decorator available:
 
 * `@MinItems(minItems: number)` - array to be valid should not have more items than the `minItems`
 
-`@ArraoyOf` must be used, if array item type is another DTO class. As typescript does not provide reflection for complex types, type should be setted manually.
+`@ArraoyOf` can be used only if array item type is another DTO class. As typescript does not provide reflection for complex types, type should be setted manually.
 
 #### Others
 
@@ -197,10 +197,6 @@ Every controller method, that contains **DTO** class as argument will be automat
 ![](../.gitbook/assets/untitled-diagram-2.png)
 
 Only after transformation, DTO will be injected into method call. Under the hood [ajv](https://ajv.js.org) is used. Decorators is used to build schema.
-
-## 
-
-## 
 
 
 

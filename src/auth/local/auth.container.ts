@@ -1,4 +1,3 @@
-import { Request } from "express";
 import { CoreAuth } from "./auth.interface";
 import { SignOptions, VerifyOptions, DecodeOptions } from "./auth.types";
 

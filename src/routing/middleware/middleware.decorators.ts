@@ -1,9 +1,8 @@
 import 'reflect-metadata'
 import * as keys from '../../definitions';
-import { Request, Response } from 'express';
-import { NextFunction } from 'connect';
+import { Request, Response } from '../../aliases';
 
-export type MiddlewareFunction = (req: Request, res: Response, next: NextFunction) => void;
+export type MiddlewareFunction = (req: Request, res: Response, next: () => void) => void;
 
 export function Middleware(...functions: MiddlewareFunction[]) {
   return (target: any, propertyKey?: string | symbol) => {

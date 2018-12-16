@@ -4,6 +4,7 @@ import { reflectType } from "../utils/directory.loader";
 import { DATA_CLASS, DATA_VALIDATION_PROP } from "../definitions";
 import { DtoSchemaStorage, getSchema, GAJV, getDtoProps } from "./dto.storage";
 import { metadata } from "../utils/metadata.utils";
+import { Ajv } from 'ajv';
 
 
 function extractBase(type: any) {
@@ -64,12 +65,11 @@ export function buildSchema(target: any) {
         };
     }
     
-    const schema = { 
+    const schema: object  = { 
         properties, 
-        $async: true, 
         required: requiredProperties
     };
   
-    DtoSchemaStorage.set(target, GAJV.compile(schema));
+    DtoSchemaStorage.set(target, schema);
     return schema;
 }

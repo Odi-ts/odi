@@ -61,13 +61,13 @@ Controller class:
 import { Get, Controller, IController, Autowired } from "odi";
 import { OrderService } from "./order.service";
 
-@Controller('/orders')
+@Controller('orders')
 export class OrderController extends IController {
 
     @Autowired()
     orderService: OrderService;
 
-    @Get async '/:orderId' (orderId: string) {
+    @Get async '{orderId}' (orderId: string) {
         const multiplier = this.getQueryParam('multiplier');
         const discount = await this.orderService.getDiscount(orderId);
         

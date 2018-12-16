@@ -3,7 +3,7 @@ import { CoreAuth } from "../../auth/local/auth.interface";
 import { UserData } from "../../auth/local/auth.container";
 
 import { Decoding, User } from "./controller.types";
-import { CookieOptions } from "express";
+import { CookieSerializeOptions } from "fastify";
 
 export class IController<T = any>{ 
     private authService: CoreAuth<Decoding<T>, User<T>>;    
@@ -38,32 +38,28 @@ export class IController<T = any>{
     }
 
     getHeader(key: string) {
-        return this.request.get(key);
+        return this.request.headers[key];
     }
 
 
    /* Single set */
-    setCookie(key: string, value: string, options: CookieOptions = {}): void{
-        this.response.cookie(key, value, options);
+    setCookie(key: string, value: string, options: CookieSerializeOptions = {}): void{
+        this.response.setCookie(key, value, options);
     }
 
     setHeader(key: string, value: string){
-        this.response.set(key, value);
+        this.response.header(key, value);
     }
 
 
     /* Useful actions */
-    redirect(url: string){      
-        return this.response.redirect(url)
-    }
-
-    render(template: string, params = {}){
-        return this.response.render(template, params);
+    redirect(url: string, code: number = 302){      
+        return this.response.redirect(code, url)
     }
 
     /* Set status */
     setStatus(status: number) {
-        return this.response.status(status);
+        return this.response.code(status);
     }
 
 

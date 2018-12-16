@@ -63,7 +63,7 @@ export class TodoController extends IController {
         await this.todoService.save(toDo);
     }
     
-    @Get async '/:id' (id: string) {
+    @Get async '{id}' (id: string) {
         const todo = await this.todoService.find(id);
         
         if(!todo) 

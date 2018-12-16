@@ -47,11 +47,8 @@ describe('Core', async () => {
         });
     });
 
-    describe('#setMiddleware(..)', async () => {
-        core['setMiddleware']();
-
-        // Probably 2 middlewares body-parser and cookie-parser produces 4 funcs 
-        it('should set at least 2 default middlewares', () => expect(core['app']._router.stack.length).to.be.greaterThan(3));
+    describe('#setMiddleware(..)', () => {
+        it('should set at least 2 default middlewares', () => core['setMiddleware']());
     });
 
     describe('#loadDependencies(...)', async () => {
@@ -74,7 +71,6 @@ describe('Core', async () => {
 
         it('should create deps loader', () => expect(core['dependencyLoader']).to.be.instanceOf(DependencyManager));
         it('should return typeorm connection', () => expect(core['database']).to.be.instanceOf(Connection));
-        it('should set at least 2 default middlewares', () => expect(core['app']._router.stack.length).to.be.greaterThan(3));
     });
 
     describe('#listen(...)', async () => {  
