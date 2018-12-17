@@ -52,7 +52,7 @@
     "@types/reflect-metadata": "^0.1.0",
     "@types/shortid": "0.0.29",
     "@types/socket.io": "^1.4.38",
-    "ajv": "^6.6.1",
+    "ajv": "^6.6.2",
     "chalk": "^2.4.1",
     "fastify-cookie": "^2.1.4",
     "glob": "^7.1.3",
