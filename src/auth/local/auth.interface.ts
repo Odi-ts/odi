@@ -1,7 +1,6 @@
 import { Request, Context } from '../../aliases';
 import { UserData } from './auth.container';
 import { SignOptions, VerifyOptions, DecodeOptions } from './auth.types';
-
 export abstract class CoreAuth<T extends object, U>{  
     protected secret: string;
     protected container: string | undefined;
@@ -18,7 +17,7 @@ export abstract class CoreAuth<T extends object, U>{
     }
 
     private extractToken(ctx: Request, container: string = this.container = "authorization"){  
-        const header = ctx.get(container);
+        const header = ctx.headers[container];
         
         let def;
         if(header){

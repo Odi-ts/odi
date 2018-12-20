@@ -1,5 +1,3 @@
-import * as express from 'express';
-
 import { expect } from 'chai';
 import {AUTOWIRED, INJECT } from '../../src/definitions';
 

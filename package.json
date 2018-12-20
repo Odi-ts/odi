@@ -1,6 +1,6 @@
 {
   "name": "odi",
-  "version": "0.1.57",
+  "version": "0.2.12",
   "description": "🌪🌌 Opinionated, Declarative, Idiomatic framework for building scalable, supportable, enterprise-grade applications.",
   "main": "lib/src/index.js",
   "homepage": "https://github.com/Odi-ts/Odi#readme",
@@ -21,17 +21,17 @@
   "scripts": {
     "test": "nyc mocha test/**/*.test.ts",
     "posttest": "mkdir coverage && nyc report --reporter=text-lcov > coverage/coverage.lcov",
-    "pack": "rm -rf ./build && tsc && npm pack",
+    "pack": "rm -rf ./lib && tsc && npm pack",
     "bench": "node benchmark/bench"
   },
   "author": "Dan Tsekhmastryuk",
   "license": "MIT",
   "devDependencies": {
     "@types/chai": "^4.1.7",
+    "@types/express": "^4.16.0",
     "@types/mocha": "^5.2.5",
     "autocannon": "^3.2.0",
     "chai": "^4.2.0",
-    "fastify": "^1.13.1",
     "istanbul": "^0.4.5",
     "mocha": "^5.2.0",
     "node-mocks-http": "^1.7.3",
@@ -39,26 +39,22 @@
     "pg": "^7.7.1",
     "source-map-support": "^0.5.9",
     "ts-node": "^7.0.1",
-    "tslint": "^5.11.0",
+    "tslint": "^5.12.0",
     "tslint-eslint-rules": "^5.4.0",
     "tslint-microsoft-contrib": "^5.2.1",
-    "typescript": "^3.2.1"
+    "typescript": "^3.2.2"
   },
   "dependencies": {
     "@types/ajv": "^1.0.0",
-    "@types/cookie-parser": "^1.4.1",
-    "@types/express": "^4.16.0",
     "@types/glob": "^7.1.1",
     "@types/jsonwebtoken": "^7.2.8",
     "@types/node": "^10.12.15",
     "@types/reflect-metadata": "^0.1.0",
     "@types/shortid": "0.0.29",
     "@types/socket.io": "^1.4.38",
-    "ajv": "^6.6.1",
-    "body-parser": "^1.18.3",
+    "ajv": "^6.6.2",
     "chalk": "^2.4.1",
-    "cookie-parser": "^1.4.3",
-    "express": "^4.16.4",
+    "fastify-cookie": "^2.1.4",
     "glob": "^7.1.3",
     "reflect-metadata": "^0.1.12",
     "shortid": "^2.2.14"
@@ -66,7 +62,8 @@
   "optionalDependencies": {
     "socket.io": "^2.1.1",
     "typeorm": "^0.2.8",
-    "jsonwebtoken": "^8.4.0"
+    "jsonwebtoken": "^8.4.0",
+    "fastify": "^1.13.1"
   },
   "nyc": {
     "include": [

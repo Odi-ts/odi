@@ -1,15 +1,12 @@
 import * as keys from '../../definitions'
-
-import { Application, Router, RequestHandler, NextFunction, Request as ERequest, Response as EResponse } from 'express';
-
-import * as Ajv from 'ajv';
-
 import DependencyComposer from '../../dependency/dependency.composer';
+
+import { FastifyInstance, RouteSchema } from 'fastify';
 
 import { RouteMetadata, isRouteHandler, ControllerMeta } from './controller.decorators'
 import { RFunction, ILoader, reflectOwnProperties } from '../../utils/directory.loader';
 import { getFunctionArgs, FunctionParam } from '../../utils/reflection/function.reflection';
-import { MiddlewareFunction } from '../middleware/middleware.decorators';
+
 import { metadata } from '../../utils/metadata.utils';
 import { IController } from './controller.interface';
 import { IHttpError } from '../../http/http.error';
@@ -17,12 +14,14 @@ import { plainToClass } from '../../dto/dto.transformer';
 import { DtoSchemaStorage } from '../../dto/dto.storage';
 import { bindAuthMiddleware } from '../middleware/middleware.functions';
 import { HttpMessage } from '../../http/http.message';
-
+import { RequestMiddleware, RequestHandler, Request } from '../../aliases';
+import { concatinateBase } from '../../utils/url.utils';
 
 export type AuthMetadata = any;
+
 export interface LoaderOptions {
-    app: Application
-    dependencyComposer: DependencyComposer
+    app: FastifyInstance;
+    dependencyComposer: DependencyComposer;
 }
 
 export class ControllersLoader implements ILoader {
@@ -34,6 +33,7 @@ export class ControllersLoader implements ILoader {
 
     public processBase(): RFunction {
         const auth = this.options.dependencyComposer.getById('auth');
+        const { app } = this.options;
 
         return async (classType: any) => {
             const ctrlMeta = metadata(classType);            
@@ -41,12 +41,8 @@ export class ControllersLoader implements ILoader {
             target['authService'] = auth;
 
             const base: ControllerMeta = ctrlMeta.getMetadata(keys.CONTROLLER);
-            const middlware: RequestHandler[] = ctrlMeta.getMetadata(keys.ROUTE_MIDDLEWARE) || [];
+            const ctrlMd: RequestMiddleware[] = ctrlMeta.getMetadata(keys.ROUTE_MIDDLEWARE) || [];
 
-            const router = Router();
-
-            if(middlware.length > 0)
-                router.use(...middlware);
 
             for (let propertyKey of [...reflectOwnProperties(target)]) {               
                 if (isRouteHandler(target, propertyKey)) {       
@@ -56,66 +52,63 @@ export class ControllersLoader implements ILoader {
                     const params = getFunctionArgs(target, propertyKey);
 
                     const auMeta: AuthMetadata =  meta.getMetadata(keys.AUTH_MIDDLEWARE);                   
-                    const mdMeta: RequestHandler[] = meta.getMetadata(keys.ROUTE_MIDDLEWARE) || [];
+                    const routeMd: RequestMiddleware[] = meta.getMetadata(keys.ROUTE_MIDDLEWARE) || [];
                     
-                    if(meta.hasMetadata(keys.AUTH_MIDDLEWARE))
-                        mdMeta.push(bindAuthMiddleware(auMeta, auth));
+                    if(ctrlMeta.hasMetadata(keys.AUTH_MIDDLEWARE))
+                        ctrlMd.push(bindAuthMiddleware(ctrlMeta.getMetadata(keys.AUTH_MIDDLEWARE), auth));
 
-                    router[method](path, ...mdMeta, this.bindHandler(target, propertyKey, params));                    
+                    if(meta.hasMetadata(keys.AUTH_MIDDLEWARE))
+                        routeMd.push(bindAuthMiddleware(auMeta, auth));
+
+                    const route = concatinateBase(base.path, path);
+
+                    app[method](route, { 
+                        schema: {
+                            ...this.getSchemaDescriptor(params)
+                        },
+                        beforeHandler: [...ctrlMd, ...routeMd] 
+                    }, this.bindHandler(target, propertyKey, params));                    
                 }
             }
 
-            if(ctrlMeta.hasMetadata(keys.AUTH_MIDDLEWARE))
-                middlware.push(bindAuthMiddleware(ctrlMeta.getMetadata(keys.AUTH_MIDDLEWARE), auth));
-          
-            this.options.app
-                .use(base.path, ...middlware, router);
+         
+
         }
     }
 
-    public bindHandler(target: IController, property: string, rawParams: FunctionParam[]) {        
-        const validate = DtoSchemaStorage.get(this.getDto(rawParams))!;
-
-        return async (req: ERequest, res: EResponse, next: NextFunction) => {
+    public bindHandler(target: IController, property: string, rawParams: FunctionParam[]): RequestHandler {        
+        return async (req, res) => {
             const ctrl = this.bindController(target)['applyContext'](req, res);
 
             //@ts-ignore;          
             ctrl['userData'] = req.locals ? req.locals.user : null;
 
             try {    
-                if(validate)  
-                    await validate(req.body);
-
                 const params = await this.bindParams(req, rawParams);
                 const result = await ctrl[property].call(ctrl, ...params);
 
-                if(result instanceof HttpMessage) {
-                    res.statusMessage = result.message;
+                if(res.sent)
+                    return;
+                    
+                if (result instanceof HttpMessage) {
                     res.status(result.code).send(result.body);
 
                     return;
                 }
 
-                if(!res.headersSent)
-                    return res.send(result);
+                res.send(result);   
 
             } catch (error) {
                 
                 if(error instanceof IHttpError)
                     return res.status(error.getHttpCode()).send(error.message);
-
-                //@ts-ignore
-                else if(error instanceof Ajv.ValidationError)
-                    return res.status(400).send(error.errors);
                 else 
                     throw error;
-                
-                
             }
         }
     }
 
-    private async bindParams(req: ERequest, rawParams: FunctionParam[]) {
+    private async bindParams(req: Request, rawParams: FunctionParam[]) {
         const params = [];
         
         for(const param of rawParams) {
@@ -137,9 +130,13 @@ export class ControllersLoader implements ILoader {
         return Object.assign(Object.create(Object.getPrototypeOf(target)), target);
     }
 
-    private getDto(rawParams: FunctionParam[]) {
+    private getSchemaDescriptor(rawParams: FunctionParam[]) {
+        const schema: RouteSchema = {};
+
         for(const param of rawParams)
             if(typeof param.type === 'function' && Reflect.hasMetadata(keys.DATA_CLASS, param.type))
-                return param.type    
+                schema.body = DtoSchemaStorage.get(param.type);
+
+        return schema;
     }
 }

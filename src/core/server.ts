@@ -1,9 +1,7 @@
-import * as express from 'express';
+import * as fastify from 'fastify';
+import * as cookie from 'fastify-cookie'
 
-import * as bodyparser from 'body-parser';
-import * as cookieparser from 'cookie-parser';
-
-import { Application } from 'express';
+import { FastifyInstance } from 'fastify';
 import { createServer, Server as HttpServer } from 'http';
 
 import { ConnectionOptions } from "typeorm";
@@ -11,6 +9,7 @@ import { CoreAuth } from '../auth/local/auth.interface';
 import { DB_CONNECTION } from '../definitions';
 import { DependencyManager } from '../dependency/dependency.manager';
 import DependencyComposer from '../dependency/dependency.composer';
+import { GAJV } from '../dto/dto.storage';
 
 
 export interface CoreOptions{
@@ -42,7 +41,7 @@ export class Core{
 
     protected options: CoreOptions;
     protected server: HttpServer;
-    protected app: Application;
+    protected app: FastifyInstance;
 
 
     protected auth: typeof CoreAuth;
@@ -52,7 +51,10 @@ export class Core{
         this.options = options;
         this.dependencyComposer = new DependencyComposer();
         
-        this.app = express();      
+        this.app = fastify();   
+        
+        // Explicitly set AJV as schema compiler 
+        this.app.setSchemaCompiler(shema => GAJV.compile(shema))
     }   
 
     private async setUp(): Promise<any>{
@@ -67,14 +69,13 @@ export class Core{
         await this.loadDependencies();        
         this.afterDependeciesLoad();
 
-        this.server = createServer(this.app);
+        this.server = this.app.server;
     }
 
     protected afterDependeciesLoad(){};
     
     protected setMiddleware(): void{
-        this.app.use(bodyparser.json(), bodyparser.urlencoded({ extended: true }));
-        this.app.use(cookieparser());
+        this.app.register(cookie);
     }
 
     protected async setDatabase(): Promise<any> {
@@ -96,8 +97,7 @@ export class Core{
     }
 
     public async listen(fnc?: any){
-        await this.setUp();
-        this.server.listen(this.options.server.port, fnc);
+        this.app.listen(this.options.server.port, fnc);
     }
     
 }

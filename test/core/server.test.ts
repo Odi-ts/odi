@@ -7,12 +7,8 @@ import { DependencyManager } from '../../src/dependency/dependency.manager';
 import { Connection, getConnection, getManager } from 'typeorm';
 
 
-let core: Core;
-describe('Core', async () => {
-
-    let connection: Connection;
-
-    core = new Core({
+function getCore() {
+    return new Core({
         server: { port: 8080 },
         sources: resolve(__dirname, './deps/classes'),
         database: {
@@ -25,7 +21,15 @@ describe('Core', async () => {
             database: "test_db_2",
             synchronize: true
         }
-    });
+    })
+}
+
+let core: Core;
+describe('Core', async () => {
+
+    let connection: Connection;
+
+    core = getCore();
 
     describe('#constuctor', async () => {
 
@@ -47,11 +51,8 @@ describe('Core', async () => {
         });
     });
 
-    describe('#setMiddleware(..)', async () => {
-        core['setMiddleware']();
-
-        // Probably 2 middlewares body-parser and cookie-parser produces 4 funcs 
-        it('should set at least 2 default middlewares', () => expect(core['app']._router.stack.length).to.be.greaterThan(3));
+    describe('#setMiddleware(..)', () => {
+        it('should set at least 2 default middlewares', () => core['setMiddleware']());
     });
 
     describe('#loadDependencies(...)', async () => {
@@ -64,6 +65,8 @@ describe('Core', async () => {
     describe('#setUp(...)', async () => {
 
         before(async () => {
+            core = getCore();
+
             const manager = getManager('scoped');
 
             if(manager && manager.connection.isConnected)
@@ -74,19 +77,17 @@ describe('Core', async () => {
 
         it('should create deps loader', () => expect(core['dependencyLoader']).to.be.instanceOf(DependencyManager));
         it('should return typeorm connection', () => expect(core['database']).to.be.instanceOf(Connection));
-        it('should set at least 2 default middlewares', () => expect(core['app']._router.stack.length).to.be.greaterThan(3));
     });
 
-    describe('#listen(...)', async () => {  
-
+    describe('#listen(...)', () => {  
         it('should run whole application without errors', async () => {
             if(core['database'])
                 await core['database'].close();
 
             if(getConnection())
                 await getConnection().close();
-
-            await core.listen();            
+            
+            core.listen();            
         });
 
     });
