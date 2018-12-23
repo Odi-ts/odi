@@ -3,7 +3,8 @@ import { CoreAuth } from "../../auth/local/auth.interface";
 import { UserData } from "../../auth/local/auth.container";
 
 import { Decoding, User } from "./controller.types";
-import { CookieSerializeOptions, DefaultHeaders, DefaultQuery, FastifyReply } from "fastify";
+import { DefaultHeaders, DefaultQuery, FastifyReply } from "fastify";
+import { FastifyCookieOptions } from 'fastify-cookie'
 
 export class IController<T = any>{ 
     private authService: CoreAuth<Decoding<T>, User<T>>;    
@@ -43,7 +44,7 @@ export class IController<T = any>{
 
 
    /* Single set */
-    setCookie(key: string, value: string, options: CookieSerializeOptions = {}): void{
+    setCookie(key: string, value: string, options: FastifyCookieOptions = {}): void{
         this.response.setCookie(key, value, options);
     }
 

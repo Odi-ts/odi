@@ -34,6 +34,8 @@ function extractBase(type: any) {
                 type: "object",
                 ...(nestedSchema as object)
             };
+        } else {
+            base = { type: "object" };
         }
     }  
 
