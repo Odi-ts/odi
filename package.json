@@ -48,7 +48,7 @@
     "@types/ajv": "^1.0.0",
     "@types/glob": "^7.1.1",
     "@types/jsonwebtoken": "^7.2.8",
-    "@types/node": "^10.12.15",
+    "@types/node": "^10.12.18",
     "@types/reflect-metadata": "^0.1.0",
     "@types/shortid": "0.0.29",
     "@types/socket.io": "^1.4.38",
