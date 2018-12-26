@@ -2,9 +2,9 @@
 
 ## Routing
 
-Controllers is about routing. Methods of controller will be mapped to web server paths. Data from method`return` will be send as answer.
+Controllers serve as a simple yet powerful routing mechanism. Controller methods are mapped to webserver paths. The value returned by the method is sent as the response.
 
-For creating controller - you need to use `@Controller` decorator and `IController` class. Decorator sets component type, so DI composer can detect for what this class will be used.
+In order to create a Controller, you must use the `@Controller` decorator and inherit the `IController` class. The decorator sets the component type, so the DI (dependency injection) container can detect what the class will be used for.
 
 ### Overview
 
@@ -40,7 +40,7 @@ export class SampleController extends IController {
 }
 ```
 
-**SampleController** will be mapped to following routes:
+**SampleController** produces the following routes:
 
 * /sample/{id}
 * /sample
@@ -48,21 +48,17 @@ export class SampleController extends IController {
 * /sample/all
 * /sample/somewhere/hello
 
-So, as you see, method names participate in route building. Also, `@Controller` decorator accepts base path as argument. 
+As you can see, method names are taken into account when constructing the routing table. Also, the `@Controller` decorator accepts a base path as an argument.
 
-Information from request **body** or request **params** will be automatically injected in method, so you don't need to write any additional code for those purposes.
-
-
+Information from the request **body** and request **params** is automatically injected into the method via `this`, so no further declaration is necessary.
 
 ### Decorators
 
-There is fixed set of decorators for routing.
-
-* `@Controller(basePath: string = "/")` __- sets class as controller. Accepts only one optional argument - base path. \(I.E: prefix for all routes in controller\). 
-* `@Route(method: Method, path: string = "/")` -  sets method of controller as route handler. Accepts two arguments. HTTP method and path. But path also got default value - "/"
+* `@Controller(basePath: string = "/")` __- sets a class as a controller. Accepts only one optional argument: the base path, which prefixes all routes in a controller.
+* `@Route(method: Method, path: string = "/")` -  sets a method of a controller as a route handler. Accepts two arguments: the HTTP method and the path. The default path is "/".
 
 {% hint style="info" %}
-Note, **@Route** decorator got short version. Check it below.
+Note: There is an optional shorthand for the **@Route** decorator. Keeping reading to find out more.
 {% endhint %}
 
 And set of decorators for binding class methods of controller, to routes such as method name. Decorator name are similar to HTTP method. Method decorated by `@All` decorator accepts all HTTP methods.
