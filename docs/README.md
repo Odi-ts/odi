@@ -17,6 +17,7 @@ Features Overview:
 * [ ] CLI
 * [ ] AOP
 * [ ] SSR
+* [ ] GRPC
 
 For future updates check [Roadmap](https://github.com/Odi-ts/Odi/wiki/Roadmap)
 
