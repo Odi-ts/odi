@@ -14,10 +14,10 @@ Features Overview:
 * [x] WebSockets
 * [x] TypeORM integration
 * [ ] GraphQL
+* [ ] GRPC
 * [ ] CLI
 * [ ] AOP
 * [ ] SSR
-* [ ] GRPC
 
 For future updates check [Roadmap](https://github.com/Odi-ts/Odi/wiki/Roadmap)
 
