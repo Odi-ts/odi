@@ -3,19 +3,19 @@ node_js:
   - "10"
   - "11"
 
-before_install:
-  - npm install codecov -g
-
 before_script:
   - psql -c "CREATE DATABASE test_db;" -U postgres
   - psql -c "CREATE DATABASE test_db_2;" -U postgres
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
  
 script:
   - tsc
   - npm test
 
-after_success:
-  - codecov
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
 services:
   - postgresql

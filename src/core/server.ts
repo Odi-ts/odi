@@ -97,6 +97,7 @@ export class Core{
     }
 
     public async listen(fnc?: any){
+        await this.setUp();
         this.app.listen(this.options.server.port, fnc);
     }
     
