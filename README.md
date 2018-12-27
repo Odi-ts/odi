@@ -6,6 +6,9 @@
 	<img src="https://img.shields.io/depfu/Odi-ts/odi.svg" />
 	<img src="https://img.shields.io/github/last-commit/Odi-ts/Odi.svg" />
 	<img src="https://travis-ci.com/Odi-ts/odi.svg?branch=master" />
+	<a href="https://gitter.im/odiland/community" target="_blank">
+		<img src="https://img.shields.io/gitter/room/nwjs/nw.js.svg" />
+	</a>
 </p>
 
 TypeScript framework for creating enterprise-grade (web) applications with simple and minimalistic API, that allows you to focus on business logic. Based on declarative and imperative programming, inspiried by [ASP.NET](https://www.asp.net/) / [Spring](https://spring.io/). 
