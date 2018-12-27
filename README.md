@@ -1,6 +1,15 @@
 <p align="center"> <img src="https://i.imgur.com/4Zf3O35.png" height="94"/> </p>
 
 <p align="center"> 
+	<a href="https://codeclimate.com/github/Odi-ts/odi/maintainability">
+		<img src="https://api.codeclimate.com/v1/badges/5c736ec0fc59f431128c/maintainability" />
+	</a>
+	<a href="https://codeclimate.com/github/Odi-ts/odi/test_coverage">
+		<img src="https://api.codeclimate.com/v1/badges/5c736ec0fc59f431128c/test_coverage" />
+	</a>
+</p>
+
+<p align="center"> 
 	<img src="https://img.shields.io/npm/v/odi.svg" /> 
 	<img src="https://img.shields.io/github/license/Odi-ts/Odi.svg" /> 
 	<img src="https://img.shields.io/depfu/Odi-ts/odi.svg" />
