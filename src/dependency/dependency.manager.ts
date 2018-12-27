@@ -89,23 +89,24 @@ export class DependencyManager {
 
     private getType(target: any): DepType{
         let belongsTo = this.getRefer(target);
+        let result = DepType.Custom;
 
         if(belongsTo(REPOSITORY))
-            return DepType.Repository;
+            result = DepType.Repository;
 
-        if(belongsTo(SERVICE))
-            return DepType.Service;
+        else if(belongsTo(SERVICE))
+            result = DepType.Service;
             
-        if(belongsTo(CONTROLLER))
-            return DepType.Controller;    
+        else if(belongsTo(CONTROLLER))
+            result = DepType.Controller;    
         
-        if(belongsTo(SOCKET))
-            return DepType.Socket;
+        else if(belongsTo(SOCKET))
+            result = DepType.Socket;
 
-        if(belongsTo(AUTH))
-            return DepType.Auth
+        else if(belongsTo(AUTH))
+            result = DepType.Auth;
 
-        return DepType.Custom;
+        return result;
     }
 
     private getRefer(target: any): (key: string) => boolean {

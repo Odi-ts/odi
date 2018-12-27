@@ -43,7 +43,6 @@ export class ControllersLoader implements ILoader {
             const base: ControllerMeta = ctrlMeta.getMetadata(keys.CONTROLLER);
             const ctrlMd: RequestMiddleware[] = ctrlMeta.getMetadata(keys.ROUTE_MIDDLEWARE) || [];
 
-
             for (let propertyKey of [...reflectOwnProperties(target)]) {               
                 if (isRouteHandler(target, propertyKey)) {       
                     const meta = metadata(target, propertyKey);
@@ -70,8 +69,6 @@ export class ControllersLoader implements ILoader {
                     }, this.bindHandler(target, propertyKey, params));                    
                 }
             }
-
-         
 
         }
     }
