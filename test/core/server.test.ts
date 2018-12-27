@@ -80,15 +80,19 @@ describe('Core', async () => {
     });
 
     describe('#listen(...)', () => {  
-        it('should run whole application without errors', async () => {
+
+        before(async () => {
             if(core['database'])
                 await core['database'].close();
 
             if(getConnection())
                 await getConnection().close();
+
             
-            core.listen();            
-        });
+            core = getCore();
+        });  
+
+        it('should run whole application without errors', async () => core.listen());
 
     });
 });
