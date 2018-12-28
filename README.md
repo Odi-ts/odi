@@ -54,10 +54,9 @@ For future updates check [Roadmap](https://github.com/Odi-ts/Odi/wiki/Roadmap)
 	"experimentalDecorators":  true
 	```
 
-	
  ## 🌪 Example
  ```typescript
-import { Controller, IController, Post, Get, Autowired } from "odi";
+import { Controller, IController, Post, Get, Autowired, NotFound } from "odi";
 import { TodoService } from "./todo.service";
 import { TodoDTO } from "./todo.dto";
 
@@ -79,9 +78,17 @@ export class TodoController extends IController {
         const todo = await this.todoService.find(id);
         
         if(!todo) 
-          throw NotFound;
+          return NotFound();
         
         return todo;
     }
 }
  ```
+ 
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
