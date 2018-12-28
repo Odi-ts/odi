@@ -54,36 +54,129 @@ For future updates check [Roadmap](https://github.com/Odi-ts/Odi/wiki/Roadmap)
 	"experimentalDecorators":  true
 	```
 
- ## 🌪 Example
- ```typescript
-import { Controller, IController, Post, Get, Autowired, NotFound } from "odi";
-import { TodoService } from "./todo.service";
-import { TodoDTO } from "./todo.dto";
+## 🌪 Overview
 
-@Controller()
+### Controller
+Controllers serve as a simple yet powerful routing mechanism in a minimalistic style.
+
+```typescript
+@Controller('foo') 
+export class FooController extends IController {      
+        
+    @RoutePatch('{id}')     
+    bar(id: string, payload: FooDTO) {         
+        ...some updates..          
+        return Ok();     
+    } 
+
+    @Get index() {
+        return 'Foo';
+    }
+} 
+```
+
+So, as you see, there no need to provide any additional param decorators for injection data from the HTTP request. It's just a small controller overview, there are a lot of other possibilities.You can read more in [docs](https://odi.gitbook.io/core/basics/controller).
+
+
+### Dependency Injection
+Odi has powerful dependency injection mechanism out of the box. 
+(Let's imagine that we already have `FooRepository`)
+
+```typescript
+//foo.service.ts
+@Service()
+export class FooService {
+​
+    @Autowired()
+    repository: FooRepository;
+​
+    public getFoo(id: string) {
+        return this.repository.findOne(id);
+    }​
+}
+
+
+//foo.controller.ts
+@Controller('foo')
+export class OrderController extends IController {
+​
+    @Autowired()
+    fooService: OrderService;
+    
+    @Get async '{id}' (id: string) {
+        const foo = this.fooService.getFoo(id);
+        
+        if(!foo)
+            return NotFound();
+
+        return foo;
+    }​
+} 
+```
+
+As you can see, all dependencies will be automatically provided to all application components.
+
+Currently, Odi support 3 ways of injection: 
+* By constructor
+* By property
+* By method
+
+Classes that are not Odi components can participate in DI. You can simply define behaviour with preset properties and constructor args.
+
+```typescript
+class Pet {
+    ...
+}
+
+​define(Pet)
+    .set('default', {
+        constructorArgs: [...],        
+        props: {...},
+        type: 'singleton'
+    })
+    .set('special', {
+        constructorArgs: [...],        
+        props: {...},
+        type: 'scoped'
+    });
+```
+### DTO
+It's a common scenario when web server should validate data before processing. DTO can optimize and automate this process.
+
+```typescript
+@Data()
+export class TodoDTO {
+   
+    @MaxLength(80)
+    title: string;
+    
+    @IsOptional()
+    @MaxLength(255)
+    desctiption: string;
+}
+```
+
+Then, DTO class should be added as an argument for the controller method
+
+```typescript
+@Controller('todo')
 export class TodoController extends IController {
 
     @Autowired()
-    todoService: TodoService;
-
-    @Get index() {
-        return `Hello, ${this.request.ip}`;
-    }
-
-    @Post async save(toDo: TodoDTO) {
-        await this.todoService.save(toDo);
-    }
-    
-    @Get async '{id}' (id: string) {
-        const todo = await this.todoService.find(id);
-        
-        if(!todo) 
-          return NotFound();
-        
-        return todo;
-    }
+    todoService: TodoService;   
+     
+    @Post async index(payload: TodoDTO) {
+        ...
+    }​
 }
- ```
+```
+And it's all! Odi will automatically inject the validated request body in this argument. If there are some errors during validation, 400 status code will be sent with errors description.
+
+Odi provides a wide set for DTO description, supporting nested DTOs, arrays, enums and etc.
+
+### To Sum up
+It was a small overview of some features. If you interested in more, check the [Docs](https://odi.gitbook.io/core/).
+
  
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
