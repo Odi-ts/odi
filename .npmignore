@@ -9,4 +9,6 @@ tslint.json
 
 .nyc_output
 /coverage
-.travis.yaml
+
+.travis.yml
+/.vscode
