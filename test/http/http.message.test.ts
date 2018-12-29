@@ -1,8 +1,8 @@
 import { expect } from 'chai';
-import { createMessage } from '../../src/http/http.message.factory';
-import { HttpMessage } from '../../src/http/http.message';
-import { HttpStatus } from '../../src/http/http.statuses';
-import { Ok, BadRequest, Forbidden, NotFound } from '../../src/http/index';
+import { createMessage } from '../../src/http/message/http.message.factory';
+import { HttpMessage } from '../../src/http/message/http.message';
+import { HttpStatus } from '../../src/http/message/http.statuses';
+import { Ok, BadRequest, Forbidden, NotFound } from '../../src/http/message/index';
 
 describe('Http Message', () => {
     describe('#HttpMessage(...)', () => {

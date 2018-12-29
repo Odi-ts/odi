@@ -55,6 +55,13 @@ describe('Controller Interface Test', () => {
         expect('deposit indigo').to.deep.eq(response.getHeader(field));
     });
 
+    it("#setType(...)", () => {
+        controller.setType('text/html');
+        
+        //@ts-ignore
+        expect(controller['response'].getHeader('Content-Type')).to.deep.eq('text/html');
+    });
+
     it('#setCookie(...)', () => {
         // const field = 'Extended';
         // controller.setCookie(field,'deposit indigo');

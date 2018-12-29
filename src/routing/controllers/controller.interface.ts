@@ -52,6 +52,10 @@ export class IController<T = any>{
         this.response.header(key, value);
     }
 
+    setType(type: string) {
+        this.response.type(type);
+    }
+
 
     /* Useful actions */
     redirect(url: string, code: number = 302): FastifyReply<import('http').ServerResponse>{      

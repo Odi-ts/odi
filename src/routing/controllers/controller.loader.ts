@@ -9,11 +9,11 @@ import { getFunctionArgs, FunctionParam } from '../../utils/reflection/function.
 
 import { metadata } from '../../utils/metadata.utils';
 import { IController } from './controller.interface';
-import { IHttpError } from '../../http/http.error';
+import { IHttpError } from '../../http/error/http.error';
 import { plainToClass } from '../../dto/dto.transformer';
 import { DtoSchemaStorage } from '../../dto/dto.storage';
 import { bindAuthMiddleware } from '../middleware/middleware.functions';
-import { HttpMessage } from '../../http/http.message';
+import { HttpMessage } from '../../http/message/http.message';
 import { RequestMiddleware, RequestHandler, Request } from '../../aliases';
 import { concatinateBase } from '../../utils/url.utils';
 
