@@ -61,7 +61,7 @@ Information from the request **body** and request **params** is automatically in
 Note: There is an optional shorthand for the **@Route** decorator. Keeping reading to find out more.
 {% endhint %}
 
-And set of decorators for binding class methods of controller, to routes such as method name. Decorator name are similar to HTTP method. Method decorated by `@All` decorator accepts all HTTP methods.
+There is also a set of decorators for binding class methods of a controller to specific methods of routes. The decorator names are similar to the HTTP method names. Methods decorated by the `@All` decorator accept all HTTP methods.
 
 * `@All` 
 * `@Get`
@@ -72,7 +72,7 @@ And set of decorators for binding class methods of controller, to routes such as
 
 #### Route Shorthand
 
-Also, there is available shorthand for `@Route` decorator, to omit _method_ parameter. All those decorators accept path as a parameter. Default value is - "/". 
+There is a shorthand available for the `@Route` decorator which allows you to omit the _method_ parameter. All of the following decorators accept the path as a parameter. The default value is "/". 
 
 * `@RouteAll`
 * `@RouteGet`
@@ -82,35 +82,35 @@ Also, there is available shorthand for `@Route` decorator, to omit _method_ para
 * `@RoutePatch`
 
 {% hint style="warning" %}
-Note, if method was decorated by both **@Route** and **@Get** \(or others like Post, All, ..etc\). Metadata from **@Route** will be in priority during build time.
+Note: If a method is decorated with both the **@Route** and **@Get** headers \(or others like Post, All, etc.\), metadata from **@Route** will take priority at build time.
 {% endhint %}
 
 ### Route definition
 
-In all routing decorators, leading slash can be omitted.
+In all routing decorators, the leading slash can be omitted.
 
-`@RouteGet('foo')` is equals to `@RouteGet('/foo')` 
+`@RouteGet('foo')` is equivalent to `@RouteGet('/foo')` 
 
 
 
-Another thing is route params. **Odi** provides special syntax for it
+**Odi** provides special syntax for routing parameters.
 
-`@RouteGet('foo/{id}')` is equals to `@RouteGet('/foo/:id')`  
+`@RouteGet('foo/{id}')` is equivalent to `@RouteGet('/foo/:id')`  
 
-There are no limitations, so both variants can be used and are valid for the build process.
+There are no limitations and both variants can be used and are valid for the build process.
 
 ### Data Injection
 
-As you can see in Controller preview, you can directly inject data from request into route method as arguments.
+As you can see in the Controller preview, you can directly inject data from the request into the route method as arguments.
 
 Supported types of data:
 
-* Route parameter 
+* Route parameter
 * Request body
 
-To inject route parameter, just specify parameter name. That will be enough. Only `string` type is supported for now. You can inject unlimited number of route parameters.
+To inject a route parameter, simply specify the parameter name. Only the `string` type is supported for now. You can inject an unlimited number of route parameters.
 
-For example, to get route parameter **id:**
+For example, to get the route parameter **id:**
 
 ```typescript
 @RouteGet('{id}')
@@ -119,9 +119,9 @@ getSomething(id: string) {
 }
 ```
 
-To inject body, DTO class should be specified as argument. You can use any name for argument, but type of argument should be DTO class, that is decorated by **@Data** decorator.
+To inject the body, a DTO class should be specified as an argument. You can use any name for this argument, but the type of the argument should be a DTO class that is decorated by the **@Data** decorator.
 
-Probably, you can inject unlimited numbers of DTOs, but there is no reason to do it. As you get only one request body, there should be only one DTO.
+You could theoretically inject unlimited numbers of DTOs, but there is no reason to do so. As you get only one request body, there should be only one DTO.
 
 ```typescript
 @Post save(payload: SampleDTO) {
@@ -129,7 +129,7 @@ Probably, you can inject unlimited numbers of DTOs, but there is no reason to do
 }
 ```
 
-Check **DTO** docs for more details:
+Read the **DTO** docs for more details:
 
 {% page-ref page="dto.md" %}
 
@@ -137,11 +137,11 @@ Check **DTO** docs for more details:
 
 ### Tips and Techniques
 
-Decorators without arguments \(I.E: Get, Post, Put and etc.\) are preferred to use. But it's common situation, when you need to setup same routes for different HTTP methods. You can't do it via binding method by name directly, as method names should be unique. 
+Decorators without arguments \(e.g. Get, Post, Put\) are preferred. However, there is a common situation where multiple HTTP methods must be available for the same route. In this situation, you cannot bind the method by name, as method names should be unique.
 
-There are several ways to solve this situation:
+There are several ways to resolve this situation:
 
-Using **@All** decorator
+Using the **@All** decorator
 
 ```typescript
 import { Controller, IController, All } from "odi";
@@ -157,7 +157,7 @@ export class TodoController extends IController {
 }
 ```
 
-Using short versions of **@Route** decorator
+Using short versions of the **@Route** decorator
 
 ```typescript
 import { Controller, IController, RouteGet, RouteDel } from "odi";
@@ -178,7 +178,7 @@ export class TodoController extends IController {
 }
 ```
 
-Using only **@Route** decorator
+Using only the **@Route** decorator
 
 ```typescript
 import { Controller, IController, Route, Method } from "odi";
@@ -200,7 +200,7 @@ export class TodoController extends IController {
 ```
 
 {% hint style="info" %}
-Note, in feature releases, new Controller API will be added, to handle such situations, easily.
+Note: In feature releases, a new Controller API will be added to handle such situations easily.
 {% endhint %}
 
 ## Actions
@@ -217,7 +217,7 @@ There are 3 helper actions that can be used in controllers.
 
 ## Abstract Controller
 
-Every controller must be extended from **IController** class. It provides useful methods that can be used for interaction with request data, cookies and other http thing. Also there are methods, that allows to work with **user**.
+Every controller must extend the **IController** class. It provides useful methods that can be used for interaction with request data, cookies and other http thing. Also there are methods, that allows to work with **user**.
 
 ### Methods and props \(HTTP\) 
 
