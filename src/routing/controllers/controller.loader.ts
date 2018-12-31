@@ -135,8 +135,10 @@ export class ControllersLoader implements ILoader {
         for(const { type } of rawParams) {
             const md = metadata(type);
 
-            if(typeof type === 'function' &&  md.hasMetadata(keys.DATA_CLASS))
-                schema[md.getMetadata(keys.DATA_CLASS) === keys.BODY_DTO ? 'body' : 'querystring'] = DtoSchemaStorage.get(type);
+            if(typeof type === 'function' &&  md.hasMetadata(keys.DATA_CLASS)) {
+                const fieldName = md.getMetadata(keys.DATA_CLASS) === keys.BODY_DTO ? 'body' : 'querystring';
+                schema[fieldName] = DtoSchemaStorage.get(type);
+            }
         }
 
         return schema;
