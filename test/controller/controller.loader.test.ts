@@ -60,7 +60,7 @@ describe('Controller Loader', async () => {
             expect(binded).to.deep.eq([
                 '916a26a2-c5e7-4ac8-be62-da0aecb93dc0',
                 'Odi', 
-                undefined, 
+                NaN, 
                 await plainToClass(SampleControllerDto, request.body)
             ]);
         });

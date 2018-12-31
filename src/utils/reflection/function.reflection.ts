@@ -8,7 +8,10 @@ export interface FunctionParam {
 }
 
 export function fnArgsList(fn: Function): any[] {
-    const ast = parseScript(`function ${fn.toString()}`);
+    const script = fn.toString();
+    const normalized = script.replace(/(\".*\"\(|\'.*\'\()/g, 'function anonym(');
+    
+    const ast = parseScript(normalized.startsWith('function') ? normalized : `function ${normalized}`);
     const params = (ast.body[0] as ASTFunction).params;
 
     let patterCounter = 0;
