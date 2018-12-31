@@ -132,9 +132,12 @@ export class ControllersLoader implements ILoader {
     private getSchemaDescriptor(rawParams: FunctionParam[]) {
         const schema: RouteSchema = {};
 
-        for(const param of rawParams)
-            if(typeof param.type === 'function' && Reflect.hasMetadata(keys.DATA_CLASS, param.type))
-                schema.body = DtoSchemaStorage.get(param.type);
+        for(const { type } of rawParams) {
+            const md = metadata(type);
+
+            if(typeof type === 'function' &&  md.hasMetadata(keys.DATA_CLASS))
+                schema[md.getMetadata(keys.DATA_CLASS) === keys.BODY_DTO ? 'body' : 'querystring'] = DtoSchemaStorage.get(type);
+        }
 
         return schema;
     }
