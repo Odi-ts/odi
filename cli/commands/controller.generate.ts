@@ -1,4 +1,4 @@
-import { command, CommanderStatic } from 'commander';
+import { CommanderStatic } from 'commander';
 import { prompt, Questions } from 'inquirer';
 import { generateController } from '../generators/controller.generator';
 

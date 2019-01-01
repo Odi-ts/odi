@@ -56,10 +56,10 @@
     "@types/reflect-metadata": "^0.1.0",
     "@types/shortid": "0.0.29",
     "@types/socket.io": "^1.4.38",
-    
     "ajv": "^6.6.2",
     "chalk": "^2.4.1",
     "esprima": "^4.0.1",
+    "fastify": "^1.13.3",
     "fastify-cookie": "^2.1.4",
     "glob": "^7.1.3",
     "inquirer": "^6.2.1",
