@@ -65,7 +65,6 @@ function processController(controller: typeof IController): HandlerDescriptor[] 
 export function generateOpenAPI() {
     const controllers = readControllers('C:/Projects/VSCode/Addax/DMT/front-service/build/contollers');
     
-
     const document: OpenAPIV3.Document = {
         openapi:  "3.0.0",
         info: {

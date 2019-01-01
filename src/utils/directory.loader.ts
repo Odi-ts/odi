@@ -15,7 +15,7 @@ export interface ILoader{
 }
 
 export function inject(pattern: string | string[], reworker: RFunction) {
-    glob.sync(pattern).forEach(drpath => {           
+    glob.sync(pattern).forEach(drpath => {
         let imp: any = require(path.relative(__dirname, drpath));       
         let typeClass: any = findExport(imp);
          
