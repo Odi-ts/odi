@@ -7,3 +7,7 @@ export function capitalize(str: string) {
 function writeFile(filename: string, path: string, content: string) {
     return writeFileSync(path, content, { encoding: 'UTF-8' });
 }
+
+export function remotePath() {
+    
+}
