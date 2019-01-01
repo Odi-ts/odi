@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 
 import * as path from 'path'
-import * as glob from 'glob'
+import * as glob from 'globby'
 
 import { MAIN_COMPONENTS } from '../definitions';
 import { isPrimitive } from 'util';
@@ -14,8 +14,8 @@ export interface ILoader{
     processBase(...args: any[]): void | any; 
 }
 
-export function inject(pattern: string, reworker: RFunction){
-    glob.sync(pattern+'/**/*.{js,ts}').forEach(drpath => {           
+export function inject(pattern: string | string[], reworker: RFunction) {
+    glob.sync(pattern).forEach(drpath => {           
         let imp: any = require(path.relative(__dirname, drpath));       
         let typeClass: any = findExport(imp);
          

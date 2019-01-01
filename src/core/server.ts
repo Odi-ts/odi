@@ -86,14 +86,12 @@ export class Core{
     }
 
     private async loadDependencies(): Promise<void>{
-        this.dependencyLoader = new DependencyManager({
-            dependencyComposer: this.dependencyComposer,
-            rootPath: this.options.sources,
-            app: this.app            
-        });
+        const { sources } = this.options;
 
+        this.dependencyLoader = new DependencyManager({ sources });
         this.dependencyLoader.classify();        
-        await this.dependencyLoader.compose();
+
+        await this.dependencyLoader.compose(this.dependencyComposer, { app: this.app });
     }
 
     public async listen(fnc?: any){

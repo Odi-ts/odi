@@ -50,7 +50,7 @@
   "dependencies": {
     "@types/ajv": "^1.0.0",
     "@types/esprima": "^4.0.2",
-    "@types/glob": "^7.1.1",
+    "@types/globby": "^8.0.0",
     "@types/inquirer": "0.0.43",
     "@types/node": "^10.12.18",
     "@types/reflect-metadata": "^0.1.0",
@@ -61,7 +61,7 @@
     "esprima": "^4.0.1",
     "fastify": "^1.13.3",
     "fastify-cookie": "^2.1.4",
-    "glob": "^7.1.3",
+    "globby": "^8.0.1",
     "inquirer": "^6.2.1",
     "reflect-metadata": "^0.1.12",
     "shortid": "^2.2.14"
