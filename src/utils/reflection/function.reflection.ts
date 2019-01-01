@@ -1,17 +1,22 @@
 import { reflectParameters } from "../directory.loader";
-
-const COMMENTS_REG = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
-const ARGUMENTS_REG = /([^\s,]+)/g;
+import { parseScript } from 'esprima';
+import { Function as ASTFunction } from "estree";
 
 export interface FunctionParam {
   name: string;
   type: any;
 }
 
-export function fnArgsList(fn: Function): any[]{
-  let cleared = fn.toString().replace(COMMENTS_REG, '');
+export function fnArgsList(fn: Function): any[] {
+    const script = fn.toString();
+    const normalized = script.replace(/(\".*\"\(|\'.*\'\()/g, 'function anonym(');
+    
+    const ast = parseScript(normalized.startsWith('function') ? normalized : `function ${normalized}`);
+    const params = (ast.body[0] as ASTFunction).params;
 
-  return  cleared.substring(cleared.indexOf('(')+1, cleared.indexOf(')')).match(ARGUMENTS_REG) || [];
+    let patterCounter = 0;
+
+    return params.map((param,i) => param.type === 'Identifier' ? param.name : `objectPattern${++patterCounter}`);
 }
 
 export function getFunctionArgs(target: any, propertyKey: string | symbol): FunctionParam[] {

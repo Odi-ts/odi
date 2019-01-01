@@ -108,18 +108,20 @@ export class ControllersLoader implements ILoader {
     private async bindParams(req: Request, rawParams: FunctionParam[]) {
         const params = [];
         
-        for(const param of rawParams) {
-            if(param.type.name === 'String') {
-                params.push(req.params[param.name]);
+        for(const { name, type } of rawParams) {
+            const md = metadata(type);
 
-            /* Treat like constructor */
-            } else if(typeof param.type === 'function' && Reflect.hasMetadata(keys.DATA_CLASS, param.type)) { 
-                params.push(await plainToClass(param.type, req.body));  
-            } else {
+            if([ Number, String, Boolean ].includes(type))            
+                params.push(type(req.params[name]));
+
+            else if(typeof type === 'function' && md.hasMetadata(keys.DATA_CLASS))                 
+                params.push(await plainToClass(type, req[md.getMetadata(keys.DATA_CLASS) === keys.BODY_DTO ? 'body' : 'query']));  
+
+            else 
                 params.push(undefined);
-            }
         }
 
+    
         return params;
     }
 
@@ -130,9 +132,14 @@ export class ControllersLoader implements ILoader {
     private getSchemaDescriptor(rawParams: FunctionParam[]) {
         const schema: RouteSchema = {};
 
-        for(const param of rawParams)
-            if(typeof param.type === 'function' && Reflect.hasMetadata(keys.DATA_CLASS, param.type))
-                schema.body = DtoSchemaStorage.get(param.type);
+        for(const { type } of rawParams) {
+            const md = metadata(type);
+
+            if(typeof type === 'function' &&  md.hasMetadata(keys.DATA_CLASS)) {
+                const fieldName = md.getMetadata(keys.DATA_CLASS) === keys.BODY_DTO ? 'body' : 'querystring';
+                schema[fieldName] = DtoSchemaStorage.get(type);
+            }
+        }
 
         return schema;
     }

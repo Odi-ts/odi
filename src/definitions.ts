@@ -30,8 +30,10 @@ export const INJECT_ID = `${naming}_inject_id`;
 
 /* DTO */
 export const DATA_CLASS = `${naming}_data_class`;
-export const QUERY_CLASS = `${naming}_query_class`
 export const DATA_VALIDATION_PROP = `${naming}_data_validation`
+
+export const BODY_DTO = `${DATA_CLASS}_body_dto`;
+export const QUERY_DTO = `${DATA_CLASS}_query_dto`;
 
 /* Auth */
 export const AUTH = `${naming}_auth_defaults`
