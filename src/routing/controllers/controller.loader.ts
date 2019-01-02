@@ -16,6 +16,7 @@ import { bindAuthMiddleware } from '../middleware/middleware.functions';
 import { HttpMessage } from '../../http/message/http.message';
 import { RequestMiddleware, RequestHandler, Request } from '../../aliases';
 import { concatinateBase } from '../../utils/url.utils';
+import { getModule } from '../../utils/env.tools';
 
 export type AuthMetadata = any;
 
@@ -93,14 +94,22 @@ export class ControllersLoader implements ILoader {
                     return;
                 }
 
-                res.send(result);   
+                if (result['$$typeof'] === Symbol.for('react.element')) {      
+                    const ssr = getModule('react-dom/server');
+
+                    res.type('text/html').send(ssr.renderToString(result));
+                }       
+
+                res.send(result);  
 
             } catch (error) {
                 
                 if(error instanceof IHttpError)
                     return res.status(error.getHttpCode()).send(error.message);
-                else 
+                else { 
+                    console.log(error);
                     throw error;
+                }
             }
         }
     }
