@@ -10,11 +10,17 @@ export const GAJV: Ajv = ajv({
     coerceTypes: true
 });
 
-export const DtoSchemaStorage = new WeakMap<object, object>();
-export const DtoPropsStorage = new WeakMap<object, (string | symbol)[]>();
+
+(global as any).DtoSchemaStorage = new WeakMap<object, object>();
+(global as any).DtoPropsStorage = new WeakMap<object, (string | symbol)[]>();
+(global as any).DtoPropsTypes = new WeakMap<object, { [key: string]: any }>();
+
+
+export const DtoSchemaStorage = (global as any).DtoSchemaStorage ;
+export const DtoPropsStorage = (global as any).DtoPropsStorage;
 
 // Perfably
-export const DtoPropsTypes = new WeakMap<object, { [key: string]: any }>();
+export const DtoPropsTypes = (global as any).DtoPropsTypes ;
 
 export const getSchema = (target: any) => DtoSchemaStorage.has(target) ? DtoSchemaStorage.get(target)! : {};
 

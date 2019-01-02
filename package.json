@@ -24,6 +24,9 @@
     "pack": "rm -rf ./lib && tsc && npm pack",
     "bench": "node benchmark/bench"
   },
+  "bin": {
+    "odi": "./lib/cli/index.js"
+  },
   "author": "Dan Tsekhmastryuk",
   "license": "MIT",
   "devDependencies": {
@@ -36,6 +39,7 @@
     "mocha": "^5.2.0",
     "node-mocks-http": "^1.7.3",
     "nyc": "^13.1.0",
+    "openapi-types": "^1.3.2",
     "pg": "^7.7.1",
     "source-map-support": "^0.5.9",
     "ts-node": "^7.0.1",
@@ -45,20 +49,18 @@
     "typescript": "^3.2.2"
   },
   "dependencies": {
-    "@types/ajv": "^1.0.0",
     "@types/esprima": "^4.0.2",
-    "@types/glob": "^7.1.1",
-    "@types/jsonwebtoken": "^7.2.8",
+    "@types/globby": "^8.0.0",
+    "@types/inquirer": "0.0.43",
     "@types/node": "^10.12.18",
-    "@types/reflect-metadata": "^0.1.0",
     "@types/shortid": "0.0.29",
-    "@types/socket.io": "^1.4.38",
-    
     "ajv": "^6.6.2",
     "chalk": "^2.4.1",
     "esprima": "^4.0.1",
+    "fastify": "^1.13.3",
     "fastify-cookie": "^2.1.4",
-    "glob": "^7.1.3",
+    "globby": "^8.0.1",
+    "inquirer": "^6.2.1",
     "reflect-metadata": "^0.1.12",
     "shortid": "^2.2.14"
   },
@@ -66,7 +68,8 @@
     "socket.io": "^2.1.1",
     "typeorm": "^0.2.8",
     "jsonwebtoken": "^8.4.0",
-    "fastify": "^1.13.1"
+    "@types/socket.io": "^1.4.38",
+    "@types/jsonwebtoken": "^7.2.8"
   },
   "nyc": {
     "include": [

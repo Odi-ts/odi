@@ -1,4 +1,5 @@
 /src
+/cli
 /benchmark
 /test
 /.gitbook.yaml

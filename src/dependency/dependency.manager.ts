@@ -17,9 +17,11 @@ export enum DepType{
 }
 
 export interface Options{
-    rootPath : string
-    app : FastifyInstance,   
-    dependencyComposer: DependencyComposer
+    sources : string | string[];
+}
+
+interface RootDeps {
+    app: FastifyInstance;
 }
 
 interface Loaders{
@@ -35,16 +37,21 @@ export class DependencyManager {
     private queues: Queues;
 
     constructor(readonly options: Options) {
-        this.loaders = this.instansiateLoaders();
         this.queues = this.instansiateQueues();        
     }
         
 
     public classify(): void{
-        inject(this.options.rootPath, target => this.queues[this.getType(target)].push(target));    
+        inject(this.options.sources, target => this.queues[this.getType(target)].push(target));    
     }
 
-    public async compose(): Promise<void>{
+    public getDeps(type: DepType) {
+        return this.queues[type];
+    }
+
+    public async compose(dependencyComposer: DependencyComposer, deps: RootDeps): Promise<void>{
+        this.loaders = this.instansiateLoaders(dependencyComposer, deps);
+
         await this.processPart(DepType.Repository);
         // Log.completion(`${this.queues[DepType.Auth].length} Repositories was successfully loaded`);
         
@@ -66,9 +73,7 @@ export class DependencyManager {
             await processor(classType);
     }
 
-    private instansiateLoaders(): Loaders{
-        const { dependencyComposer, app } = this.options;
-
+    private instansiateLoaders(dependencyComposer: DependencyComposer, { app }: RootDeps): Loaders{
         return ({
             [DepType.Auth]: new AuthLoader({ dependencyComposer }),
             [DepType.Service]: new ServicesLoader({ dependencyComposer }),

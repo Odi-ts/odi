@@ -9,9 +9,11 @@ export interface FunctionParam {
 
 export function fnArgsList(fn: Function): any[] {
     const script = fn.toString();
-    const normalized = script.replace(/(\".*\"\(|\'.*\'\()/g, 'function anonym(');
+
+    const parsed = script.replace(/(\".*\"\(|\'.*\'\()/g, 'anonym(');
+    const normalized = parsed.startsWith('async') ? `async function ${parsed.replace(/^async/, '')}` : parsed;
     
-    const ast = parseScript(normalized.startsWith('function') ? normalized : `function ${normalized}`);
+    const ast = parseScript((normalized.startsWith('function') || normalized.startsWith('async function ')) ? normalized : `function ${normalized}`);
     const params = (ast.body[0] as ASTFunction).params;
 
     let patterCounter = 0;
@@ -22,6 +24,6 @@ export function fnArgsList(fn: Function): any[] {
 export function getFunctionArgs(target: any, propertyKey: string | symbol): FunctionParam[] {
     const argsNames = fnArgsList(target[propertyKey]);
     const argsTypes = reflectParameters(target, propertyKey);
-
+    
     return argsNames.map((name, i) => ({ name, type: argsTypes[i] }));
 }

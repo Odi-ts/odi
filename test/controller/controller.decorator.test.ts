@@ -21,7 +21,7 @@ describe('Controller Decorators', () => {
     describe('#Controller, RenderController, ...', () => {
         Controller()(SampleController);
         
-        expect(Reflect.getMetadata(CONTROLLER, SampleController)).to.be.deep.eq({ path: '', type: ControllerType.Rest});
+        expect(Reflect.getMetadata(CONTROLLER, SampleController)).to.be.deep.eq({ path: '/', type: ControllerType.Rest});
     });
 
     describe('#Get, Post, ...', () => {
