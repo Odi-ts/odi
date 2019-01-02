@@ -1,6 +1,5 @@
 import { writeFileSync } from "fs";
 import { join } from "path";
-import { parse } from 'doctrine';
 
 // Functions
 export function capitalize(str: string) {
