@@ -9,7 +9,9 @@ import { reflectClassMethods } from "../../src/utils/directory.loader";
 import { CONTROLLER, RAW_ROUTE, ROUTE } from "../../src/definitions";
 
 import { getFunctionArgs } from "../../src/utils/reflection/function.reflection";
-import { concatinateBase } from '../../src/utils/url.utils';
+import { concatinateBase } from "../../src/utils/url.utils";
+import { parseScript } from "esprima";
+import { remapPath } from '../utils';
 
 type HandlerDescriptor =  OpenAPIV3.OperationObject & { path: string, method: string };
 
@@ -32,9 +34,8 @@ function processMethod(controller: typeof IController, handler: string) {
         method, 
         parameters: [] 
     };
-
-    for(const { name, type } of args) {
     
+    for(const { name, type } of args) {
         if([String, Number, Boolean].includes(type))
             descriptor.parameters!.push({
                 name,
@@ -44,7 +45,6 @@ function processMethod(controller: typeof IController, handler: string) {
                     type: type.name.toLowerCase()
                 }
             })
-
     }
 
     return descriptor;
@@ -56,8 +56,8 @@ function processController(controller: typeof IController): HandlerDescriptor[] 
 
     return routeMethods.map(method => {
         const descriptor = processMethod(controller, method);
-        descriptor.path = concatinateBase(routePrefix.path, descriptor.path);
-
+        descriptor.path = concatinateBase(routePrefix.path, descriptor.path);        
+        
         return descriptor;
     });
 }
@@ -78,10 +78,10 @@ export function generateOpenAPI() {
         const handlers =  processController(controller); 
         
         handlers.forEach(({ path, method, ...descriptor }) => {
-    
+            const route = remapPath(path);
             //@ts-ignore        
-            document.paths[path] = {
-                ...(document.paths[path] || {}),
+            document.paths[route] = {
+                ...(document.paths[route] || {}),
                 [method]: descriptor
             };
         });
