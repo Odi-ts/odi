@@ -58,7 +58,7 @@
     "chalk": "^2.4.1",
     "esprima": "^4.0.1",
     "fastify": "^1.13.3",
-    "fastify-cookie": "^2.1.4",
+    "fastify-cookie": "^2.1.5",
     "globby": "^8.0.1",
     "inquirer": "^6.2.1",
     "reflect-metadata": "^0.1.12",
