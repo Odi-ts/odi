@@ -1,4 +1,5 @@
-import { writeFileSync, readFileSync } from "fs";
+import { writeFileSync } from "fs";
+import { join } from "path";
 import { parse } from 'doctrine';
 
 // Functions
@@ -15,6 +16,6 @@ export function remapPath(route: string) {
     }, route);
 }
 
-function writeFile(filename: string, path: string, content: string) {
-    return writeFileSync(path, content, { encoding: 'UTF-8' });
+export function writeFile(filename: string, path: string, content: string) {
+    return writeFileSync(join(path, filename), content, { encoding: 'UTF-8' });
 }

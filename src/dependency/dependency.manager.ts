@@ -17,7 +17,7 @@ export enum DepType{
 }
 
 export interface Options{
-    sources : string
+    sources : string | string[];
 }
 
 interface RootDeps {
