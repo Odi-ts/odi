@@ -1,4 +1,5 @@
 exclude_patterns:
+  - "deno"
   - "cli"
   - "config/"
   - "db/"

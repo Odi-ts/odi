@@ -1,5 +1,6 @@
 /src
 /cli
+/deno
 /benchmark
 /test
 /.gitbook.yaml
