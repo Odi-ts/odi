@@ -1,4 +1,4 @@
-import 'fastify-cookie';
+import * as fc from  'fastify-cookie';
 
 import { expect } from 'chai';
 import { createRequest } from 'node-mocks-http';
