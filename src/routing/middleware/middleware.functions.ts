@@ -16,8 +16,8 @@ export function bindAuthMiddleware(options: unknown, auth: CoreAuth<object, obje
         request['locals'] =  { user };
 
         if(result === true)
-            return next();
+            next();
         else   
-            return response.status(403).send(); 
+            response.status(403).send(); 
     };
 }
