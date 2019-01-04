@@ -49,7 +49,7 @@ export abstract class CoreAuth<T extends object, U>{
 
 
     /* Abstract Methods */
-    public authenticate<O>(context: Context, data: UserData<T,U>, options: O): Promise<boolean> | boolean | void {}
+    public authenticate(context: Context, data: UserData<T,U>, options: any): Promise<boolean> | boolean | void {}
     public abstract deserialize(decoding: T | null): U | Promise<U>;
 
     public abstract serialize(user: U): T | Promise<T>;

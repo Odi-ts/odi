@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { AUTH, AUTH_MIDDLEWARE } from "../../definitions";
+import { Propotype } from '../../types';
 
 export interface AuthDefaults{
     secret? : string;
@@ -12,7 +13,7 @@ export function Authentication(options: AuthDefaults = {}): ClassDecorator{
 }
 
 export function Auth(options?: unknown) {
-    return (target: Function, propertyKey?: string | symbol ) => {
+    return (target: Propotype, propertyKey?: string | symbol ) => {
         if(propertyKey)
             return Reflect.defineMetadata(AUTH_MIDDLEWARE, options, target, propertyKey);
 
