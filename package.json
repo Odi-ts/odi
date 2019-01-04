@@ -53,11 +53,11 @@
     "tslint-microsoft-contrib": "^5.2.1",   
     "typescript": "^3.2.2",        
     "@types/inquirer": "0.0.43",
-    "@types/esprima": "^4.0.2"
+    "@types/esprima": "^4.0.2",    
+    "@types/globby": "^8.0.0",
+    "@types/node": "^10.12.18"
   },
   "dependencies": {    
-    "@types/globby": "^8.0.0",
-    "@types/node": "^10.12.18",
     "ajv": "^6.6.2",
     "chalk": "^2.4.1",
     "cls-hooked": "^4.2.2",

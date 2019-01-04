@@ -1,5 +1,3 @@
-import * as shortid from 'shortid';
-
 import { ValidateFunction } from 'ajv';
 import { DATA_CLASS, DATA_VALIDATION_PROP, BODY_DTO, QUERY_DTO, DATA_CLASS_SCHEMA } from "../definitions";
 import { ValidatorFormat } from "./dto.type";
@@ -87,7 +85,7 @@ export const MinItems = (minItems: number) => validationFactory({ minItems });
 export const Nested = () => validationFactory({});
 
 export const CustomValidation = (validate: ValidateFunction, params: any = true) => {
-    const keyword = `odi_${shortid().toLowerCase()}`;
+    const keyword = `odi_${new Date().getTime()}`;
     GAJV.addKeyword(keyword, {
         async: true,
         validate
