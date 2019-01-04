@@ -2,38 +2,37 @@ import 'reflect-metadata';
 
 import { AUTOWIRED, INJECT } from "../definitions";
 
-import { Class } from "../utils/reflection/object.reflection";
-import { isFunction } from "../utils/directory.loader";
 import { autowiredPropsStore } from "./dependency.utils";
 import { ValuedProps, ConstructorParameters } from "./dependency.store";
+import { Constructor, Instance, Propotype } from '../types';
 
-export interface ComponentEntry<T extends Class> {
-    type?: 'singleton' | 'scoped',
-    constructorArgs?: Partial<ConstructorParameters<T>>,
-    props?: Partial<ValuedProps<InstanceType<T>>>
+export interface ComponentEntry<T extends Constructor> {
+    type?: 'singleton' | 'scoped';
+    constructorArgs?: Partial<ConstructorParameters<T>>;
+    props?: Partial<ValuedProps<InstanceType<T>>>;
 }
 
-export interface TypelessComponentEntry<T extends Class> {
-    constructorArgs?: Partial<ConstructorParameters<T>>,
-    props?: Partial<ValuedProps<InstanceType<T>>>
+export interface TypelessComponentEntry<T extends Constructor> {
+    constructorArgs?: Partial<ConstructorParameters<T>>;
+    props?: Partial<ValuedProps<InstanceType<T>>>;
 }
 
-export interface ComponentSettings<T extends Class> {
+export interface ComponentSettings<T extends Constructor> {
     [index: string]: ComponentEntry<T>;
 }
 
-export const defaultEntry: ComponentEntry<any> = {
+export const defaultEntry: ComponentEntry<Constructor> = {
     type: 'singleton',
     constructorArgs: [],
     props: {}
-}
+};
 
-export const defaultSettings: ComponentSettings<any> = {
+export const defaultSettings: ComponentSettings<Constructor> = {
     'default': defaultEntry
 };
 
 
-export const Autowired = (id?: string) => (target: any, propertyKey: string | symbol, descriptor?: PropertyDescriptor) => {
+export const Autowired = (id?: string) => (target: Propotype, propertyKey: string | symbol, descriptor?: PropertyDescriptor) => {
     Reflect.defineMetadata(AUTOWIRED, id || "default", target, propertyKey);
 
     if(descriptor) {
@@ -44,10 +43,17 @@ export const Autowired = (id?: string) => (target: any, propertyKey: string | sy
         autowiredPropsStore.get(target)!.push(propertyKey);
     else
         autowiredPropsStore.set(target, [propertyKey]);
-}
+};
 
-export const Inject = (id: string = 'default') => (target: any, propertyKey: string | symbol, index: number) => {
+export const Inject = (id: string = 'default') => (target: Propotype, propertyKey: string | symbol, index: number) => {
     const prev = Reflect.getMetadata(INJECT, target, propertyKey) || {};
     
     Reflect.defineMetadata(INJECT, { ...prev, [index]: id }, target, propertyKey);
+};
+
+
+class Kek {
+    constructor(args: string ){
+        
+    }
 }

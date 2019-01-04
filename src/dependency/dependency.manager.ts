@@ -6,6 +6,7 @@ import { ServicesLoader } from "../services/services.loader";
 import { ILoader, inject } from "../utils/directory.loader";
 import DependencyComposer from "./dependency.composer";
 import { FastifyInstance } from "fastify";
+import { Instance, Constructor } from "../types";
 
 export enum DepType{ 
     Controller = 1,
@@ -25,11 +26,11 @@ interface RootDeps {
 }
 
 interface Loaders{
-    [index: string] : ILoader
+    [index: string] : ILoader;
 }
 
 interface Queues{
-    [index: string] : any[];
+    [index: string] : Constructor[];
 }
 
 export class DependencyManager {
@@ -89,10 +90,10 @@ export class DependencyManager {
             [DepType.Controller]: [],
             [DepType.Repository]: [],
             [DepType.Socket]: []
-        }
+        };
     }
 
-    private getType(target: any): DepType{
+    private getType(target: Instance | Function): DepType{
         let belongsTo = this.getRefer(target);
         let result = DepType.Custom;
 
@@ -114,8 +115,8 @@ export class DependencyManager {
         return result;
     }
 
-    private getRefer(target: any): (key: string) => boolean {
-        return (identifier: string) => Reflect.hasMetadata(identifier, target)
+    private getRefer(target: Instance | Function): (key: string) => boolean {
+        return (identifier: string) => Reflect.hasMetadata(identifier, target);
     }
 
 }

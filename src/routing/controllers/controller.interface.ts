@@ -4,7 +4,7 @@ import { UserData } from "../../auth/local/auth.container";
 
 import { Decoding, User } from "./controller.types";
 import { DefaultHeaders, DefaultQuery, FastifyReply } from "fastify";
-import { FastifyCookieOptions } from 'fastify-cookie'
+import { FastifyCookieOptions } from 'fastify-cookie';
 
 export class IController<T = any>{ 
     private authService: CoreAuth<Decoding<T>, User<T>>;    
@@ -59,7 +59,7 @@ export class IController<T = any>{
 
     /* Useful actions */
     redirect(url: string, code: number = 302): FastifyReply<import('http').ServerResponse>{      
-        return this.response.redirect(code, url)
+        return this.response.redirect(code, url);
     }
 
     /* Set status */

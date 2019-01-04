@@ -1,13 +1,14 @@
 import 'reflect-metadata';
 
-import * as path from 'path'
-import * as glob from 'globby'
+import * as path from 'path';
+import * as glob from 'globby';
 
 import { MAIN_COMPONENTS } from '../definitions';
 import { isPrimitive } from 'util';
+import { Instance, Constructor } from '../types';
 
 
-export type RFunction = (instance: any) => void
+export type RFunction = (target: Constructor) => void;
 
 
 export interface ILoader{   
@@ -26,20 +27,20 @@ export function inject(pattern: string | string[], reworker: RFunction) {
     });  
 }
 
-export function reflectProperties(obj: any): string[]{  
+export function reflectProperties(obj: Instance): string[]{  
     return (Object.keys(obj));
 }
 
-export function reflectOwnProperties(obj: any): string[]{
-    let proto = Object.getPrototypeOf(obj)
+export function reflectOwnProperties(obj: Instance): string[]{
+    let proto = Object.getPrototypeOf(obj);
     return Object.getOwnPropertyNames(proto);
 }
 
-export function reflectClassMethods(cls: any): string[]{
+export function reflectClassMethods(cls: Function): string[]{
     return Object.getOwnPropertyNames(cls.prototype);
 }
 
-export function reflectParameters(target: any, key?: string | symbol): any[]{
+export function reflectParameters(target: Instance, key?: string | symbol): unknown[]{
     if(key){
         return Reflect.getMetadata("design:paramtypes", target, key);
     }
@@ -47,7 +48,7 @@ export function reflectParameters(target: any, key?: string | symbol): any[]{
     return Reflect.getMetadata("design:paramtypes", target);
 }
 
-export function reflectType(target: any, key?: string | symbol) {
+export function reflectType(target: Function | Instance, key?: string | symbol) {
     if(key){
         return Reflect.getMetadata("design:type", target, key);
     }
@@ -55,7 +56,7 @@ export function reflectType(target: any, key?: string | symbol) {
     return Reflect.getMetadata("design:type", target);
 }
 
-export const isFunction = (target: any, propertyKey: string | symbol) => (propertyKey && typeof target[propertyKey] == "function" && propertyKey != 'constructor');
+export const isFunction = (target: Instance, propertyKey: string | symbol) => (propertyKey && typeof (target as any)[propertyKey] == "function" && propertyKey != 'constructor');
 
 
 function findExport(imp: any): any{
@@ -74,7 +75,7 @@ function findExport(imp: any): any{
     return null;
 }
 
-function isMainComponent(target: any) {
+function isMainComponent(target: Instance | Function) {
     for(const componentKey of MAIN_COMPONENTS)
         if(Reflect.hasMetadata(componentKey, target))
             return true;

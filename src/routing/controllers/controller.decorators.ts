@@ -1,21 +1,21 @@
 import 'reflect-metadata';
-import * as keys from '../../definitions'
+import * as keys from '../../definitions';
 
 import { Method } from './controller.types';
 import { IController } from './controller.interface';
 import { normalizeRoutePath } from './controller.utils';
-import { StrictObjectType } from '../../utils/reflection/object.reflection';
+import { Instance, Propotype, Constructor } from '../../types';
 
 export type BasePath = string;
 export type RouteHandler = (...args: any[]) => any | void;
 
-export enum ControllerType{
+export enum ControllerType {
     Rest,
     Render
 } 
 export interface ControllerMeta {
-    path: string,  
-    type? : ControllerType
+    path: string;  
+    type? : ControllerType;
 }
 
 export enum Returning {
@@ -26,12 +26,12 @@ export type RouteHandlerDecorator = PropertyDecorator;
 
 
 export interface RouteMetadata {
-    method: 'get' | 'post' | 'all' | 'delete' | 'put' | 'patch' | 'head' | 'options',
-    path: string,
-    args: string[]
+    method: 'get' | 'post' | 'all' | 'delete' | 'put' | 'patch' | 'head' | 'options';
+    path: string;
+    args: string[];
 }
 
-export function isRouteHandler(target: any, propertyKey: string) {
+export function isRouteHandler(target: Instance, propertyKey: string) {
     return Reflect.hasMetadata(keys.ROUTE, target, propertyKey) || Reflect.hasMetadata(keys.RAW_ROUTE, target, propertyKey);
 }
 
@@ -39,11 +39,11 @@ export function isRouteHandler(target: any, propertyKey: string) {
 export function controllerFactory(route?: BasePath, options? : object) {
     const path = normalizeRoutePath(route || '/', true);   
 
-    return <T extends IController>(target: StrictObjectType<T>) => Reflect.defineMetadata(keys.CONTROLLER, { path, ...options }, target);
+    return <T extends IController>(target: Constructor<T>) => Reflect.defineMetadata(keys.CONTROLLER, { path, ...options }, target);
 }
 
 export function handlerFactory(method: string): PropertyDecorator {
-    return (target: any, propertyKey: string | symbol) => {
+    return (target: Propotype, propertyKey: string | symbol) => {
         const path = normalizeRoutePath(propertyKey.toString());
         
         Reflect.defineMetadata(keys.ROUTE, { method, path }, target, propertyKey);
@@ -51,10 +51,10 @@ export function handlerFactory(method: string): PropertyDecorator {
 }
 
 // Decorators
-export function Route(method: Method, route: string = '/') {
+export function Route(method: Method, route: string = '/'): PropertyDecorator {
     const path = normalizeRoutePath(route); 
 
-    return (target: any, propertyKey: string | symbol) => Reflect.defineMetadata(keys.RAW_ROUTE, { method, path }, target, propertyKey);
+    return (target: Propotype, propertyKey: string | symbol) => Reflect.defineMetadata(keys.RAW_ROUTE, { method, path }, target, propertyKey);
 }
 
 export function Controller(path? : BasePath ) { 

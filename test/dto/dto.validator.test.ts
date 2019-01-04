@@ -26,7 +26,7 @@ class DtoLocalSampled {
 
     @Nested()
     nested: DtoLocalSampledNested;
- 
+
     @ArrayOf(DtoLocalSampledNested)
     nesteds: DtoLocalSampledNested[];
 

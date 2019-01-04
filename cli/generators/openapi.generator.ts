@@ -1,6 +1,6 @@
 import { OpenAPIV3 } from 'openapi-types';
 
-import { DependencyManager, DepType } from "../../src/dependency/dependency.manager"
+import { DependencyManager, DepType } from "../../src/dependency/dependency.manager";
 import { join } from 'path';
 import { IController, isRouteHandler } from "../../src";
 
@@ -12,6 +12,7 @@ import { getFunctionArgs } from "../../src/utils/reflection/function.reflection"
 import { concatinateBase } from "../../src/utils/url.utils";
 import { parseScript } from "esprima";
 import { remapPath, writeFile } from '../utils';
+import { Constructor } from '../types';
 
 type HandlerDescriptor =  OpenAPIV3.OperationObject & { path: string, method: string };
 
@@ -46,7 +47,7 @@ function processMethod(controller: typeof IController, handler: string) {
                 schema: { 
                     type: type.name.toLowerCase()
                 }
-            })
+            });
          
         else if(md.hasMetadata(DATA_CLASS)) {             
                 descriptor.requestBody = {
@@ -56,7 +57,7 @@ function processMethod(controller: typeof IController, handler: string) {
                             schema: global['DtoSchemaStorage'].get(type)
                         }
                     }
-                }
+                };
             }
                
 
@@ -66,7 +67,7 @@ function processMethod(controller: typeof IController, handler: string) {
     return descriptor;
 }
 
-function processController(controller: typeof IController): HandlerDescriptor[] {
+function processController(controller: Constructor<IController>): HandlerDescriptor[] {
     const routePrefix = metadata(controller).getMetadata(CONTROLLER);   
     const routeMethods = reflectClassMethods(controller).filter(method => isRouteHandler(controller.prototype, method));
 

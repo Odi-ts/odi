@@ -8,7 +8,7 @@ class DtoSample {
     @Minimum(2)
     prop1: number;
 
-    prop2: number
+    prop2: number;
 }
 
 class DtoNotDecoratedSample {}

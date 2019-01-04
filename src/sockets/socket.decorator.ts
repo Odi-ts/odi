@@ -1,17 +1,18 @@
 import { SOCKET, SOCKET_EVENT } from "../definitions";
+import { Propotype } from "../types";
 
 export type Namespace = string;
 export type Event = string;
 
 export function Sockets(path: Namespace): ClassDecorator{
-    return (target: any) => {
-        Reflect.defineMetadata(SOCKET, path, target)
-    }
+    return (target: Function) => {
+        Reflect.defineMetadata(SOCKET, path, target);
+    };
 }
 
 export function Event<T>(name: Event): MethodDecorator{
-    return (target: any, propertyKey: string | symbol) => {
-        Reflect.defineMetadata(SOCKET_EVENT, name, target, propertyKey)
-    }
+    return (target: Propotype, propertyKey: string | symbol) => {
+        Reflect.defineMetadata(SOCKET_EVENT, name, target, propertyKey);
+    };
 }
 

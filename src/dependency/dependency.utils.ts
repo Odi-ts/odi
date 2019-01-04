@@ -1,14 +1,13 @@
-
-import { Class } from "../utils/reflection/object.reflection";
 import { ComponentEntry, TypelessComponentEntry } from "./dependency.decorators";
 import { ComponentSettingsStorage } from "./dependency.store";
+import { Constructor } from "../types";
 
 export const onInit = Symbol('onInit');
 
 export const autowiredPropsStore = new WeakMap<object, (string | symbol)[]>();
 
 
-function shortSet<T extends Class>(classType: T, id: string, type: "singleton" | "scoped", { props, constructorArgs }: TypelessComponentEntry<T>) {
+function shortSet<T extends Constructor>(classType: T, id: string, type: "singleton" | "scoped", { props, constructorArgs }: TypelessComponentEntry<T>) {
      /* Get other component versions */
      const prevSettings = ComponentSettingsStorage.get(classType) || {};
         
@@ -17,14 +16,13 @@ function shortSet<T extends Class>(classType: T, id: string, type: "singleton" |
          ...prevSettings, [id]: {  
             type,
             props,
-            constructorArgs: (constructorArgs as any)
          } 
      });
 }
 
-export function define<T extends Class> (classType: T) {
+export function define<T> (classType: Constructor<T>) {
     const methods = {
-        set(id: string, settings: ComponentEntry<T>) {
+        set(id: string, settings: ComponentEntry<Constructor<T>>) {
             /* Get other component versions */
             const prevSettings = ComponentSettingsStorage.get(classType) || {};
         
@@ -33,15 +31,15 @@ export function define<T extends Class> (classType: T) {
 
             return methods;
         },
-        setSingleton(id: string = 'default', settings: TypelessComponentEntry<T> = {}) {
+        setSingleton(id: string = 'default', settings: TypelessComponentEntry<Constructor<T>> = {}) {
             shortSet(classType, id, "singleton", settings);
             return methods;
         },
-        setScoped(id: string = 'default', settings: TypelessComponentEntry<T> = {}) {
+        setScoped(id: string = 'default', settings: TypelessComponentEntry<Constructor<T>> = {}) {
             shortSet(classType, id, "scoped", settings);
             return methods;
         }
-    }
+    };
 
     return methods;
 }

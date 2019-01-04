@@ -3,11 +3,12 @@ import DependencyComposer from '../dependency/dependency.composer';
 import { RFunction, ILoader } from '../utils/directory.loader';
 import { INJECT_ID } from '../definitions';
 import { getConnection } from 'typeorm';
+import { Constructor } from '../types';
 
 
 
 export interface LoaderOptions{
-    dependencyComposer: DependencyComposer
+    dependencyComposer: DependencyComposer;
 }
 
 export class RepositoryLoader implements ILoader{
@@ -15,7 +16,7 @@ export class RepositoryLoader implements ILoader{
     constructor(readonly options: LoaderOptions){}
     
     public processBase(): RFunction{
-        return (classType: any) => {
+        return (classType: Constructor) => {
             let id = Reflect.getMetadata(INJECT_ID, classType);
 
             if(this.options.dependencyComposer.contain(classType, id)) {

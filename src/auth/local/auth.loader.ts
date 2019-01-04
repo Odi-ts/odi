@@ -5,11 +5,11 @@ import { AuthDefaults } from "./auth.decorator";
 
 import DependencyComposer from "../../dependency/dependency.composer";
 import { CoreAuth } from "./auth.interface";
-import shortid = require("shortid");
+import { Constructor } from "../../types";
 
 
 export interface Options{
-    dependencyComposer : DependencyComposer
+    dependencyComposer : DependencyComposer;
 }
 
 export class AuthLoader implements ILoader{
@@ -18,19 +18,19 @@ export class AuthLoader implements ILoader{
 
 
     public processBase(){
-        return  async (classType : any) => {
-            let defaults: AuthDefaults<any> = Reflect.getMetadata(AUTH, classType);
+        return  async (classType: Constructor<CoreAuth<object, object>>) => {
+            let defaults: AuthDefaults = Reflect.getMetadata(AUTH, classType);
             let typeId: string = Reflect.getMetadata(INJECT_ID, classType) || 'default';
 
-            let authInstance: CoreAuth<any,any> = await this.options.dependencyComposer.instanciateClassType(classType);
+            let authInstance = await this.options.dependencyComposer.instanciateClassType(classType);
             
-            authInstance['secret'] = defaults.secret || shortid();
+            authInstance['secret'] = defaults.secret || 'secret';
             authInstance['expiration'] = defaults.expiration || '1 hour';
             authInstance['container'] = defaults.header;
 
             this.options.dependencyComposer.putById('auth', authInstance);  
             this.options.dependencyComposer.put(classType, authInstance, typeId);
-        }
+        };
     }
 
 }

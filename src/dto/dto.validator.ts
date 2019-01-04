@@ -2,12 +2,12 @@ import 'reflect-metadata';
 
 import { reflectType } from "../utils/directory.loader";
 import { DATA_CLASS, DATA_VALIDATION_PROP } from "../definitions";
-import { DtoSchemaStorage, getSchema, GAJV, getDtoProps } from "./dto.storage";
+import { DtoSchemaStorage, getSchema, getDtoProps } from "./dto.storage";
 import { metadata } from "../utils/metadata.utils";
-import { Ajv } from 'ajv';
+import { Constructor, Instance } from '../types';
 
 
-function extractBase(type: any) {
+function extractBase(type: Constructor) {
     let base: any = { type: null }; 
     
     if(type === String)
@@ -42,12 +42,12 @@ function extractBase(type: any) {
     return base;
 }
 
-export function buildSchema(target: any) {
+export function buildSchema(target: Constructor) {
     const instance = new target();        
     const reflectedProperties = (getDtoProps(Object.getPrototypeOf(instance)));
     
     let requiredProperties = [...reflectedProperties];
-    let properties: any = {};
+    let properties = {};
 
     for(const propertyKey of reflectedProperties) {
         const type = reflectType(instance, propertyKey);

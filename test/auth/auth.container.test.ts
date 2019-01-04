@@ -21,7 +21,7 @@ const payload = {
     id: "9fd522ee-bf8c-4310-b398-d703c98d345d",
     email: "uriel69@hotmail.com",
     permission: "000101101"
-}
+};
 
 describe('User Data', () => {
     const auth = new AuthService();
@@ -50,12 +50,12 @@ describe('User Data', () => {
             userData.token = token;
             const { data } = await userData.load();
 
-            expect(data).to.be.include(payload)
+            expect(data).to.be.include(payload);
         });
     });
 
     describe('#assing(...)', () => {
-        it('should call serialize and return new token', async () => {;
+        it('should call serialize and return new token', async () => {
             const token = await userData.assign(payload);
 
             expect(token).to.be.a('string');

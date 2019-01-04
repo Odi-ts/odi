@@ -34,10 +34,10 @@ describe('Auth Loader', () => {
         });
         
         it('should override existed repository in DI container',async () => {            
-            dependencyComposer.get(AuthServiceMock)['flag'] = 'origin';
+            (dependencyComposer.get(AuthServiceMock) as any)['flag'] = 'origin';
             await processor(AuthServiceMock);
             
-            expect(dependencyComposer.get(AuthServiceMock)['flag']).to.be.eq(undefined);
-        })
+            expect((dependencyComposer.get(AuthServiceMock) as any)['flag']).to.be.eq(undefined);
+        });
     });
 });

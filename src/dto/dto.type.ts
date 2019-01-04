@@ -14,6 +14,6 @@ export type ValidatorFormat = "date"
     | "regex"
     | "uuid"
     | "json-pointer"
-    | "relative-json-pointer"
+    | "relative-json-pointer";
 
 export type CustomValidateFunction = (propertyData: any) => boolean | Promise<boolean>;

@@ -49,7 +49,7 @@ describe('DTOs Decorators', () => {
         
         it('should merge metadata', () => {
             validationFactory({ maximum: 2 })(BodyDtoMock, 'prop1');
-            expect(Reflect.getMetadata(DATA_VALIDATION_PROP, BodyDtoMock, 'prop1')).to.deep.eq({ minimum: 1, maximum: 2 })
+            expect(Reflect.getMetadata(DATA_VALIDATION_PROP, BodyDtoMock, 'prop1')).to.deep.eq({ minimum: 1, maximum: 2 });
         });
         it('should not duplicate prop key in Props storage', () => expect(DtoPropsStorage.get(BodyDtoMock)).to.deep.equal(['prop1']));
 
@@ -62,7 +62,7 @@ describe('DTOs Decorators', () => {
     describe('#CustomValidation (...)', () => {  
         it('should emit metadata on class property', () =>  { 
             CustomValidation(() => true)(BodyDtoMock, 'prop3');
-            expect(Reflect.hasMetadata(DATA_VALIDATION_PROP, BodyDtoMock, 'prop3')).to.be.eq(true)
+            expect(Reflect.hasMetadata(DATA_VALIDATION_PROP, BodyDtoMock, 'prop3')).to.be.eq(true);
         });    
     });
 

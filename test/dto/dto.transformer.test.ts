@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import { plainToClass } from "../../src/dto/dto.transformer"
+import { plainToClass } from "../../src/dto/dto.transformer";
 import { Data, IsEmail, Maximum, IsUrl, Nested, ArrayOf, MaxItems} from "../../src/dto";
 
 @Data()
@@ -42,7 +42,7 @@ const payload = {
     ],
     prop4: [1,2,3,4,5],
     props5: [1,2,3,4,5]
-}
+};
 
 
 describe('DTOs Transformers', () => {
@@ -53,7 +53,7 @@ describe('DTOs Transformers', () => {
         it('should create instance of DTO class', () => expect(instance instanceof DtoSample).to.be.eq(true));
         it('should include decorated props', () => { 
             expect(instance).to.have.property('prop1', payload.prop1);
-            expect(instance).to.have.property('prop2', payload.prop2)
+            expect(instance).to.have.property('prop2', payload.prop2);
         });        
         it('should include undecorated props', () => expect(instance).to.have.property('prop3', false));     
 

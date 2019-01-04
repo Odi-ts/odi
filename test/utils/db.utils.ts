@@ -1,5 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
-import { createConnection } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, createConnection} from "typeorm";
 
 @Entity()
 export class FooModel {

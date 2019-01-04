@@ -1,6 +1,6 @@
 {
   "name": "odi",
-  "version": "0.2.13",
+  "version": "0.2.14",
   "description": "🌪🌌 Opinionated, Declarative, Idiomatic framework for building scalable, supportable, enterprise-grade applications.",
   "main": "lib/src/index.js",
   "homepage": "https://github.com/Odi-ts/Odi#readme",
@@ -58,16 +58,20 @@
     "@types/globby": "^8.0.0",
     "@types/inquirer": "0.0.43",
     "@types/node": "^10.12.18",
+    "@types/normalize-path": "^3.0.0",
     "@types/shortid": "0.0.29",
     "ajv": "^6.6.2",
     "chalk": "^2.4.1",
+    "cls-hooked": "^4.2.2",
     "esprima": "^4.0.1",
     "fastify": "^1.13.3",
     "fastify-cookie": "^2.1.5",
     "globby": "^8.0.1",
     "inquirer": "^6.2.1",
+    "normalize-path": "^3.0.0",
     "reflect-metadata": "^0.1.12",
-    "shortid": "^2.2.14"
+    "shortid": "^2.2.14",
+    "ts-simple-ast": "^20.0.0"
   },
   "optionalDependencies": {
     "socket.io": "^2.1.1",

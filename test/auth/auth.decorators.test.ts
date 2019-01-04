@@ -40,7 +40,7 @@ describe('Auth Decorators', () => {
         });
 
         it('should emit auth middleware options', () => {
-            expect(Reflect.getMetadata(AUTH_MIDDLEWARE, ControllerMock, 'postSomething')).to.be.deep.eq(1)
+            expect(Reflect.getMetadata(AUTH_MIDDLEWARE, ControllerMock, 'postSomething')).to.be.deep.eq(1);
             expect(Reflect.getMetadata(AUTH_MIDDLEWARE, ControllerMock, 'getSomething')).to.be.deep.eq([2, true, false, { hello: 'world' }]);
         });
     });

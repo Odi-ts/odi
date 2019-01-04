@@ -1,9 +1,9 @@
-import * as keys from '../../definitions'
+import * as keys from '../../definitions';
 import DependencyComposer from '../../dependency/dependency.composer';
 
 import { FastifyInstance, RouteSchema } from 'fastify';
 
-import { RouteMetadata, isRouteHandler, ControllerMeta } from './controller.decorators'
+import { RouteMetadata, isRouteHandler, ControllerMeta } from './controller.decorators';
 import { RFunction, ILoader, reflectOwnProperties } from '../../utils/directory.loader';
 import { getFunctionArgs, FunctionParam } from '../../utils/reflection/function.reflection';
 
@@ -17,6 +17,8 @@ import { HttpMessage } from '../../http/message/http.message';
 import { RequestMiddleware, RequestHandler, Request } from '../../aliases';
 import { concatinateBase } from '../../utils/url.utils';
 import { getModule } from '../../utils/env.tools';
+import { CoreAuth } from '../../auth/local/auth.interface';
+import { Constructor } from '../../types';
 
 export type AuthMetadata = any;
 
@@ -33,10 +35,10 @@ export class ControllersLoader implements ILoader {
 
 
     public processBase(): RFunction {
-        const auth = this.options.dependencyComposer.getById('auth');
+        const auth = this.options.dependencyComposer.getById('auth') as CoreAuth<object, object>;
         const { app } = this.options;
 
-        return async (classType: any) => {
+        return async (classType: Constructor<IController>) => {
             const ctrlMeta = metadata(classType);            
             const target: IController = await this.options.dependencyComposer.instanciateClassType(classType);
             target['authService'] = auth;
@@ -71,7 +73,7 @@ export class ControllersLoader implements ILoader {
                 }
             }
 
-        }
+        };
     }
 
     public bindHandler(target: IController, property: string, rawParams: FunctionParam[]): RequestHandler {        
@@ -111,7 +113,7 @@ export class ControllersLoader implements ILoader {
                     throw error;
                 }
             }
-        }
+        };
     }
 
     private async bindParams(req: Request, rawParams: FunctionParam[]) {

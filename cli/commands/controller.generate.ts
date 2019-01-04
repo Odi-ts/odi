@@ -17,13 +17,13 @@ const questions: Questions = [
             value: 'rest'
         }]
     }
-]
+];
 
 export default function (program: CommanderStatic) {
     program
         .command('controller')
         .description('Generate controller')
-        .action(() => prompt(questions).then(action))
+        .action(() => prompt(questions).then(action));
 }
 
 function action({ name, type }: any) {

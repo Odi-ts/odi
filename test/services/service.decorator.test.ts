@@ -10,6 +10,6 @@ describe('Service', () => {
 
         it('should emit correct metadata key', () => expect(Reflect.hasMetadata(SERVICE, ServiceMock)).to.be.eq(true));
        
-        it('should emit correct metadata value', () => expect(Reflect.getMetadata(SERVICE, ServiceMock)).to.be.eq(undefined));
+        it('should emit correct metadata value', () => expect(Reflect.getMetadata(SERVICE, ServiceMock)).to.be.eq(true));
     });
 });

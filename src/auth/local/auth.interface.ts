@@ -6,7 +6,7 @@ export abstract class CoreAuth<T extends object, U>{
     protected container: string | undefined;
     protected expiration: string | number;    
 
-    private jsonwebtoken: any;
+    private jsonwebtoken = require("jsonwebtoken");
 
     constructor(){
         this.configure();
@@ -30,7 +30,6 @@ export abstract class CoreAuth<T extends object, U>{
         return def || ctx.cookies[container];
     }
 
-
     /*
         protected applyStrategy(key: string, srategy: Strategy){
             passport.use(key, srategy);
@@ -50,16 +49,13 @@ export abstract class CoreAuth<T extends object, U>{
 
 
     /* Abstract Methods */
-    public authenticate(context: Context, data: UserData<T,U>, options: any): Promise<boolean> | boolean | void {};
-    
+    public authenticate<O>(context: Context, data: UserData<T,U>, options: O): Promise<boolean> | boolean | void {}
     public abstract deserialize(decoding: T | null): U | Promise<U>;
 
     public abstract serialize(user: U): T | Promise<T>;
 
 
     /* Hooks */    
-    protected configure() {
-        this.jsonwebtoken = require("jsonwebtoken");
-    }
+    protected configure() {}
 
 }

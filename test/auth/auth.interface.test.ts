@@ -19,7 +19,7 @@ const payload = {
     id: "9fd522ee-bf8c-4310-b398-d703c98d345d",
     email: "uriel69@hotmail.com",
     permission: "000101101"
-}
+};
 
 describe('Core Auth Service', () => {
     const auth = new AuthService();

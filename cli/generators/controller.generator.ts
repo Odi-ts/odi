@@ -15,6 +15,6 @@ export function generateController(payload: ControllerPayload) {
     export default class ${capitalize(payload.name)}Controller extends IController {
 
     }    
-    `
+    `;
 }
 

@@ -24,10 +24,10 @@ describe('Repository Loader', () => {
             expect(dependencyComposer.contain(RepoMock, 'default')).to.be.eq(true);
         });
         it('should not override existed repository in DI container', () => {            
-            dependencyComposer.get(RepoMock)['flag'] = 'origin';
+            (dependencyComposer.get(RepoMock) as any)['flag'] = 'origin';
             processor(RepoMock);
             
-            expect(dependencyComposer.get(RepoMock)['flag']).to.be.eq('origin');
-        })
+            expect((dependencyComposer.get(RepoMock) as any)['flag']).to.be.eq('origin');
+        });
     });
 });

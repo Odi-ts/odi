@@ -1,0 +1,40 @@
+{
+    "rulesDirectory": [
+        "node_modules/tslint-eslint-rules/dist/rules",
+        "node_modules/tslint-microsoft-contrib"
+    ],
+    "rules": {
+        "no-var-keyword": true,
+        "object-literal-shorthand": true,
+        "semicolon": [true, "always", "ignore-bound-class-methods"],
+        "no-parameter-reassignment": true,
+        "ban-comma-operator": true,
+        "no-return-await": true,
+        "prefer-conditional-expression": true,
+        "prefer-object-spread": true,
+        "ban-types": {
+            "options": [
+                ["Object", "Avoid using the `Object` type. Did you mean `object`?"],
+                ["Boolean", "Avoid using the `Boolean` type. Did you mean `boolean`?"],
+                ["Number", "Avoid using the `Number` type. Did you mean `number`?"],
+                ["String", "Avoid using the `String` type. Did you mean `string`?"]
+            ]
+        },
+        "no-empty-interface": true,
+        "class-name": true,
+        "max-classes-per-file": [true, 2],
+        "no-duplicate-imports": true,
+        "arrow-return-shorthand": true,
+        "file-name-casing": [true, "kebab-case"],
+        "variable-name": [true, "check-format", "allow-pascal-case"],
+        "no-inferrable-types": [true, "ignore-params", "ignore-properties"],
+        "no-control-regex": true,
+        "function-name": [ true, { 
+            "method-regex": "^[a-z][a-zA-Z]+$",
+            "private-method-regex": "^[a-z][a-zA-Z]+$",
+            "protected-method-regex": "^[a-z][a-zA-Z]+$",
+            "static-method-regex": "^[a-z][a-zA-Z]+$",
+            "function-regex": "^[a-zA-Z]+$"
+        }]
+    }    
+}

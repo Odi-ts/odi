@@ -1,19 +1,19 @@
 import * as ajv from 'ajv';
 
-import { Ajv } from 'ajv';
 import { isObject } from 'util';
+import { Constructor, Propotype } from '../types';
 
 
-export const GAJV: Ajv = ajv({
+export const GAJV: ajv.Ajv = ajv({
     removeAdditional: true,
     useDefaults: true, 
     coerceTypes: true
 });
 
 
-(global as any).DtoSchemaStorage = new WeakMap<object, object>();
-(global as any).DtoPropsStorage = new WeakMap<object, (string | symbol)[]>();
-(global as any).DtoPropsTypes = new WeakMap<object, { [key: string]: any }>();
+(global as any).DtoSchemaStorage = new WeakMap<Constructor, object>();
+(global as any).DtoPropsStorage = new WeakMap<Constructor, (string | symbol)[]>();
+(global as any).DtoPropsTypes = new WeakMap<Constructor, { [key: string]: any }>();
 
 
 export const DtoSchemaStorage = (global as any).DtoSchemaStorage ;
@@ -22,9 +22,9 @@ export const DtoPropsStorage = (global as any).DtoPropsStorage;
 // Perfably
 export const DtoPropsTypes = (global as any).DtoPropsTypes ;
 
-export const getSchema = (target: any) => DtoSchemaStorage.has(target) ? DtoSchemaStorage.get(target)! : {};
+export const getSchema = (target: Constructor | Propotype) => DtoSchemaStorage.has(target) ? DtoSchemaStorage.get(target)! : {};
 
-export function getDtoProps(prototype: any): any[]{
+export function getDtoProps(prototype: Constructor | Propotype): (string | symbol)[]{
     if(!prototype || !isObject(prototype)){
         return [];
     }
@@ -32,5 +32,5 @@ export function getDtoProps(prototype: any): any[]{
     return [
         ...(DtoPropsStorage.get(prototype) || []), 
         ...getDtoProps(Object.getPrototypeOf(prototype))
-    ]
+    ];
 }

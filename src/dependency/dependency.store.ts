@@ -1,5 +1,6 @@
 import { ComponentEntry } from "./dependency.decorators";
 import { KeyMap } from "../utils/object.utils";
+import { Constructor } from "../types";
 
 export type Omit<T, K extends keyof T | undefined> = Pick<T, Exclude<keyof T, K>>;
 
@@ -7,6 +8,6 @@ export type MethodProps<T> = ({ [P in keyof T]?: (T[P] extends Function ? P : ne
 
 export type ValuedProps<T> = Omit<T, MethodProps<T>>;
 
-export type ConstructorParameters<T extends new (...args: any[]) => any> = T extends new (...args: infer P) => any ? P : never;
+export type ConstructorParameters<T extends Constructor> = T extends new (...args: infer P) => unknown ? P : never;
 
-export const ComponentSettingsStorage = new WeakMap<object, KeyMap<ComponentEntry<any>>>();
+export const ComponentSettingsStorage = new WeakMap<object, KeyMap<ComponentEntry<Constructor>>>();

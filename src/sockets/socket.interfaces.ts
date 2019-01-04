@@ -4,11 +4,11 @@ export abstract class ISocket{
     private nsp: Namespace;
     private socket: Socket;
 
-    protected onConnect(): void {};
+    protected onConnect(): void {}
 
-    protected onDisconnect(): void {};
+    protected onDisconnect(): void {}
 
-    protected onReconnect(): void {};
+    protected onReconnect(): void {}
 
     
     emit(event: string | symbol, ...args: any[]) {

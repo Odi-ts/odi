@@ -1,4 +1,4 @@
-import { Server, IncomingMessage, ServerResponse} from 'http'
+import { Server, IncomingMessage, ServerResponse} from 'http';
 
 import { 
     FastifyRequest,

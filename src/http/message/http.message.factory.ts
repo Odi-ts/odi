@@ -2,8 +2,8 @@ import { HttpMessage } from "./http.message";
 import { HttpStatus } from "./http.statuses";
 
 interface ICode{
-    status: HttpStatus,
-    message: string
+    status: HttpStatus;
+    message: string;
 }
 
 const forbiddenMessage = 'You don`t have permissions to access / on this server';
@@ -18,7 +18,7 @@ const statusCodes: { [id: number]: ICode} = {
 
 export function createMessage(code: number, body: any) {
     const message = statusCodes[code] ? statusCodes[code].status: '';
-    const payload =  body || (statusCodes[code] ? statusCodes[code].message : null)
+    const payload =  body || (statusCodes[code] ? statusCodes[code].message : null);
 
     return new HttpMessage(code, message, payload);
 }

@@ -1,11 +1,12 @@
-import { EntityRepository as TypeORMEntityRepository } from 'typeorm'
 import { INJECT_ID, REPOSITORY } from '../definitions';
 
-export const EntityRepository = (entity: any): ClassDecorator => {
-    return (target: any) => {
+export const EntityRepository = (entity: Function): ClassDecorator => {
+    const typeorm =  require('typeorm');
+
+    return (target: Function) => {
         Reflect.defineMetadata(REPOSITORY, entity, target);
         Reflect.defineMetadata(INJECT_ID, 'default', target);
 
-        TypeORMEntityRepository(entity)(target);
-    }
-}
+        typeorm.EntityRepository(entity)(target);
+    };
+};

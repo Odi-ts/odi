@@ -1,18 +1,18 @@
-import { RFunction, ILoader } from '../utils/directory.loader';
-import { INJECT_ID } from '../definitions';
+import { ILoader } from '../utils/directory.loader';
 import DependencyComposer from '../dependency/dependency.composer';
+import { Constructor } from '../types';
 
 
 export interface LoaderOptions{
-    dependencyComposer: DependencyComposer
+    dependencyComposer: DependencyComposer;
 }
 
 export class ServicesLoader implements ILoader{
    
     constructor(readonly options: LoaderOptions){}
     
-    public processBase(): RFunction{
-        return async (classType: any) => {
+    public processBase() {
+        return async (classType: Constructor) => {
             /* Because singleton */
             const id = 'default';
 

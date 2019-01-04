@@ -25,10 +25,10 @@ describe('Repository Loader', () => {
             expect(dependencyComposer.contain(ServiceMock, 'default')).to.be.eq(true);
         });
         it('should not override existed repository in DI container', async () => {            
-            dependencyComposer.get(ServiceMock)['flag'] = 'origin';
+            (dependencyComposer.get(ServiceMock) as any)['flag'] = 'origin';
             await processor(ServiceMock);
             
-            expect(dependencyComposer.get(ServiceMock)['flag']).to.be.eq('origin');
-        })
+            expect((dependencyComposer.get(ServiceMock) as any)['flag']).to.be.eq('origin');
+        });
     });
 });

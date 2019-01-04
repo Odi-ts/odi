@@ -3,7 +3,7 @@ import * as fastify from 'fastify';
 import { expect } from 'chai';
 import { createRequest, createResponse } from 'node-mocks-http';
 import { IController, Controller, Post, Data, MinLength, IHttpError, Middleware } from "../../src";
-import { ControllersLoader } from "../../src/routing/controllers/controller.loader"
+import { ControllersLoader } from "../../src/routing/controllers/controller.loader";
 import { getDependencyComposer } from "../utils/di.utils";
 import { getFunctionArgs } from '../../src/utils/reflection/function.reflection';
 import { plainToClass } from '../../src/dto/dto.transformer';
@@ -24,6 +24,7 @@ class SampleControllerDto {
 @Controller('/custom')
 class SampleController extends IController{
 
+    // tslint:disable-next-line:function-name
     @Post '/smth/:id/:name' (id: string, name: string, anything: number, dto: SampleControllerDto) {
         if(name == id && name == dto.title)
             throw new Error();        
@@ -108,15 +109,15 @@ describe('Controller Loader', async () => {
         });
 
         it('should throw error on unexpected throw', async () => {  
-            const request = createRequest({ params: { id: 'qwerd', name: 'qwerd' }, body: { title: 'qwerd' } })
+            const request = createRequest({ params: { id: 'qwerd', name: 'qwerd' }, body: { title: 'qwerd' } });
             const response = createResponse();
             
             try {
-                await handler(request as any, response as any,)
+                await handler(request as any, response as any,);
             } catch (err) {
                 expect(err).to.be.instanceOf(Error);
             }
-        })
+        });
 
     });
 });

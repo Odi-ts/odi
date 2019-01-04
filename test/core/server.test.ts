@@ -21,7 +21,7 @@ function getCore() {
             database: "test_db_2",
             synchronize: true
         }
-    })
+    });
 }
 
 let core: Core;
@@ -58,7 +58,7 @@ describe('Core', async () => {
     describe('#loadDependencies(...)', async () => {
         it('should create deps loader', async () => {
             await core['loadDependencies']();
-            expect(core['dependencyLoader']).to.be.instanceOf(DependencyManager)
+            expect(core['dependencyLoader']).to.be.instanceOf(DependencyManager);
         });
     });
 

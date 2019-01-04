@@ -1,17 +1,17 @@
-import *  as io from  "socket.io"
+import *  as io from  "socket.io";
 
 import { RFunction, reflectProperties, ILoader } from "../utils/directory.loader";
 import { Namespace } from "./socket.decorator";
 import { SOCKET, SOCKET_EVENT } from "../definitions";
 import { ISocket } from "./socket.interfaces";
-import { StrictObjectType } from "../utils/reflection/object.reflection";
+import { Constructor } from "../types";
 import DependencyComposer from "../dependency/dependency.composer";
 
 
 export interface LoaderOptions{
-    directory : string,
-    socketServer : SocketIO.Server,
-    dependencyComposer: DependencyComposer
+    directory : string;
+    socketServer : SocketIO.Server;
+    dependencyComposer: DependencyComposer;
 }
 
 export default class ScoketLoader implements ILoader{
@@ -19,7 +19,7 @@ export default class ScoketLoader implements ILoader{
     constructor(readonly options: LoaderOptions) {}
 
     public processBase(): RFunction {
-        return async (classType: StrictObjectType<ISocket>) => {
+        return async (classType: Constructor) => {
             const instance: ISocket = await this.options.dependencyComposer.instanciateClassType(classType);
             const base: Namespace = Reflect.getMetadata(SOCKET, instance['constructor']);      
       
@@ -31,7 +31,7 @@ export default class ScoketLoader implements ILoader{
 
                 
             });        
-        } 
+        }; 
     }
 
     private bindController(target: ISocket){

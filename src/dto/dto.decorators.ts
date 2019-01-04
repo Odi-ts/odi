@@ -5,13 +5,14 @@ import { DATA_CLASS, DATA_VALIDATION_PROP, BODY_DTO, QUERY_DTO, DATA_CLASS_SCHEM
 import { ValidatorFormat } from "./dto.type";
 import { buildSchema } from "./dto.validator";
 import { DtoPropsStorage, getSchema, GAJV, DtoPropsTypes } from "./dto.storage";
+import { Constructor, Propotype } from '../types';
 
-function dtoFactory(value: string) {
-    return (target: any) => {
+function dtoFactory(value: string): ClassDecorator {
+    return (target: Function) => {
         Reflect.defineMetadata(DATA_CLASS, value, target);
 
         // Build schema and write to global DTO
-        Reflect.defineMetadata(DATA_CLASS_SCHEMA, buildSchema(target), target)
+        Reflect.defineMetadata(DATA_CLASS_SCHEMA, buildSchema(target as Constructor), target);
     };
 }
 
@@ -23,8 +24,8 @@ export function Query(): ClassDecorator {
     return dtoFactory(QUERY_DTO);
 }
 
-export function validationFactory(object: any): PropertyDecorator {
-    return (target: any, propertyKey: string | symbol) => {
+export function validationFactory(object: object): PropertyDecorator {
+    return (target: Propotype, propertyKey: string | symbol) => {
         const prev = Reflect.getMetadata(DATA_VALIDATION_PROP, target, propertyKey) || {};
         Reflect.defineMetadata(DATA_VALIDATION_PROP, { ...prev, ...object }, target, propertyKey);
         
@@ -37,7 +38,7 @@ export function validationFactory(object: any): PropertyDecorator {
         } else {
             DtoPropsStorage.set(target, [propertyKey]);
         }
-    }
+    };
 }
 
 /* Number validations */
@@ -67,7 +68,7 @@ export const IsRequired = () => validationFactory({});
 export const Deafault = <T>(def: T) => validationFactory({ default: def });
 
 /* Array validaitons */
-export const ArrayOf = (targetClass: any) => (target: any, propertyKey: string | symbol) => {
+export const ArrayOf = (targetClass: any) => (target: Propotype, propertyKey: string | symbol) => {
     const items = getSchema(target);
 
     validationFactory({ items })(target, propertyKey);
@@ -76,7 +77,7 @@ export const ArrayOf = (targetClass: any) => (target: any, propertyKey: string |
     const prevTypes = DtoPropsTypes.get(target) || {};
 
     DtoPropsTypes.set(target, { ...prevTypes, [propertyKey]: targetClass });
-}
+};
 
 export const UniqueItems = () => validationFactory({ uniqueItems: true });
 export const MaxItems = (maxItems: number) => validationFactory({ maxItems });
@@ -92,5 +93,5 @@ export const CustomValidation = (validate: ValidateFunction, params: any = true)
         validate
     });
 
-    return validationFactory({ [keyword]: true })
+    return validationFactory({ [keyword]: true });
 };

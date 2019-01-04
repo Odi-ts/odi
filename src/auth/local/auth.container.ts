@@ -2,7 +2,7 @@ import { CoreAuth } from "./auth.interface";
 import { SignOptions, VerifyOptions, DecodeOptions } from "./auth.types";
 
 export class UserData<Decoding extends object, User>{     
-    private _decoding: Decoding;
+    private decoding: Decoding | null;
     public token: string;
     
     constructor(
@@ -18,11 +18,11 @@ export class UserData<Decoding extends object, User>{
     }    
     
     decode(options?: DecodeOptions) {
-        if(!this._decoding) {
-            this._decoding = (this.authService.decodeToken(this.token, options) as Decoding);
+        if(!this.decoding) {
+            this.decoding = (this.authService.decodeToken(this.token, options) as Decoding);
         }
 
-        return this._decoding;
+        return this.decoding;
     }
 
     verify(options?: VerifyOptions) {
@@ -38,7 +38,7 @@ export class UserData<Decoding extends object, User>{
     }
  
     async assign(user: User, options?: SignOptions): Promise<string> {
-        return this.authService.createToken(await this.authService.serialize(user), options)
+        return this.authService.createToken(await this.authService.serialize(user), options);
     }
 
     /*
