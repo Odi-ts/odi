@@ -14,3 +14,8 @@ exclude_patterns:
   - "**/vendor/"
   - "**/*_test.go"
   - "**/*.d.ts"
+  
+plugins:
+  tslint:
+    enabled: true
+    config: tslint.json
