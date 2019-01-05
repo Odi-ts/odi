@@ -2,7 +2,7 @@ import { CoreAuth } from "../../auth/local/auth.interface";
 import { RequestMiddleware } from "../../aliases";
 
 export function bindAuthMiddleware(options: unknown, auth: CoreAuth<object, object>): RequestMiddleware {
-    return async (request, response, next) => {   
+    return async (request, response) => {   
         const user = auth['extractUser'](request);
         const [ err, decoding ] = user.verify();
 
@@ -15,9 +15,7 @@ export function bindAuthMiddleware(options: unknown, auth: CoreAuth<object, obje
         //@ts-ignore
         request['locals'] =  { user };
 
-        if(result === true)
-            next();
-        else   
+        if(result !== true)
             response.status(403).send(); 
     };
 }
