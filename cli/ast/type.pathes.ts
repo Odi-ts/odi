@@ -1,1 +1,0 @@
-export const IControllerPath = `node_modules/odi/lib/src/routing/controllers/controller.interface").IController<T>`;

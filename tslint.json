@@ -5,6 +5,7 @@
     ],
     "rules": {
         "no-var-keyword": true,
+        "linebreak-style": false,
         "object-literal-shorthand": true,
         "semicolon": [true, "always", "ignore-bound-class-methods"],
         "no-parameter-reassignment": true,

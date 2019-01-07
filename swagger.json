@@ -1,0 +1,2215 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Test",
+        "version": "0.1"
+    },
+    "paths": {
+        "/auth": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "body": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    },
+                    "202": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/auth/password/request": {
+            "post": {
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "minLength": 1
+                                    }
+                                },
+                                "required": [
+                                    "username"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "body": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    },
+                    "202": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/auth/password/reset/{token}": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "body": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    },
+                    "202": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "minLength": 3
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "minLength": 6
+                                    }
+                                },
+                                "required": [
+                                    "username",
+                                    "password"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "body": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    },
+                    "202": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/auth/signin": {
+            "post": {
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "minLength": 1
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "minLength": 1
+                                    }
+                                },
+                                "required": [
+                                    "username",
+                                    "password"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "body": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "refreshToken": {
+                                            "type": "string"
+                                        },
+                                        "accessToken": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "object",
+                                            "properties": {
+                                                "code": {
+                                                    "type": "number"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                },
+                                                "body": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "smth": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "202": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/auth/refresh": {
+            "post": {
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "refreshToken": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": []
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "any"
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    },
+                    "202": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/client/count": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "number"
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    },
+                    "202": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/client/list": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "username": {
+                                                "type": "string"
+                                            },
+                                            "password": {
+                                                "type": "string"
+                                            },
+                                            "salt": {
+                                                "type": "string"
+                                            },
+                                            "refreshTokens": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "resetToken": {
+                                                "type": "string"
+                                            },
+                                            "resetDate": {
+                                                "type": "string",
+                                                "format": "date"
+                                            },
+                                            "role": {
+                                                "type": "string",
+                                                "enum": [
+                                                    0,
+                                                    1,
+                                                    2,
+                                                    3,
+                                                    4
+                                                ]
+                                            },
+                                            "status": {
+                                                "type": "string",
+                                                "enum": [
+                                                    0,
+                                                    1,
+                                                    2,
+                                                    3,
+                                                    4
+                                                ]
+                                            },
+                                            "client": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "firstName": {
+                                                        "type": "string"
+                                                    },
+                                                    "lastName": {
+                                                        "type": "string"
+                                                    },
+                                                    "user": {
+                                                        "type": "object",
+                                                        "properties": {}
+                                                    },
+                                                    "id": {
+                                                        "type": "string"
+                                                    },
+                                                    "createdAt": {
+                                                        "type": "string",
+                                                        "format": "date"
+                                                    },
+                                                    "updatedAt": {
+                                                        "type": "string",
+                                                        "format": "date"
+                                                    }
+                                                }
+                                            },
+                                            "email": {
+                                                "type": "string"
+                                            },
+                                            "firstName": {
+                                                "type": "string"
+                                            },
+                                            "lastName": {
+                                                "type": "string"
+                                            },
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "createdAt": {
+                                                "type": "string",
+                                                "format": "date"
+                                            },
+                                            "updatedAt": {
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    },
+                    "202": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/client/search": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "username": {
+                                                "type": "string"
+                                            },
+                                            "password": {
+                                                "type": "string"
+                                            },
+                                            "salt": {
+                                                "type": "string"
+                                            },
+                                            "refreshTokens": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "resetToken": {
+                                                "type": "string"
+                                            },
+                                            "resetDate": {
+                                                "type": "string",
+                                                "format": "date"
+                                            },
+                                            "role": {
+                                                "type": "string",
+                                                "enum": [
+                                                    0,
+                                                    1,
+                                                    2,
+                                                    3,
+                                                    4
+                                                ]
+                                            },
+                                            "status": {
+                                                "type": "string",
+                                                "enum": [
+                                                    0,
+                                                    1,
+                                                    2,
+                                                    3,
+                                                    4
+                                                ]
+                                            },
+                                            "client": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "firstName": {
+                                                        "type": "string"
+                                                    },
+                                                    "lastName": {
+                                                        "type": "string"
+                                                    },
+                                                    "user": {
+                                                        "type": "object",
+                                                        "properties": {}
+                                                    },
+                                                    "id": {
+                                                        "type": "string"
+                                                    },
+                                                    "createdAt": {
+                                                        "type": "string",
+                                                        "format": "date"
+                                                    },
+                                                    "updatedAt": {
+                                                        "type": "string",
+                                                        "format": "date"
+                                                    }
+                                                }
+                                            },
+                                            "email": {
+                                                "type": "string"
+                                            },
+                                            "firstName": {
+                                                "type": "string"
+                                            },
+                                            "lastName": {
+                                                "type": "string"
+                                            },
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "createdAt": {
+                                                "type": "string",
+                                                "format": "date"
+                                            },
+                                            "updatedAt": {
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "body": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "202": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/client/{id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "username": {
+                                            "type": "string"
+                                        },
+                                        "password": {
+                                            "type": "string"
+                                        },
+                                        "salt": {
+                                            "type": "string"
+                                        },
+                                        "refreshTokens": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "resetToken": {
+                                            "type": "string"
+                                        },
+                                        "resetDate": {
+                                            "type": "string",
+                                            "format": "date"
+                                        },
+                                        "role": {
+                                            "type": "string",
+                                            "enum": [
+                                                0,
+                                                1,
+                                                2,
+                                                3,
+                                                4
+                                            ]
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "enum": [
+                                                0,
+                                                1,
+                                                2,
+                                                3,
+                                                4
+                                            ]
+                                        },
+                                        "client": {
+                                            "type": "object",
+                                            "properties": {
+                                                "firstName": {
+                                                    "type": "string"
+                                                },
+                                                "lastName": {
+                                                    "type": "string"
+                                                },
+                                                "user": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "username": {
+                                                            "type": "string"
+                                                        },
+                                                        "password": {
+                                                            "type": "string"
+                                                        },
+                                                        "salt": {
+                                                            "type": "string"
+                                                        },
+                                                        "refreshTokens": {
+                                                            "type": "array"
+                                                        },
+                                                        "resetToken": {
+                                                            "type": "string"
+                                                        },
+                                                        "resetDate": {
+                                                            "type": "string",
+                                                            "format": "date"
+                                                        },
+                                                        "role": {
+                                                            "type": "string",
+                                                            "enum": [
+                                                                0,
+                                                                1,
+                                                                2,
+                                                                3,
+                                                                4
+                                                            ]
+                                                        },
+                                                        "status": {
+                                                            "type": "string",
+                                                            "enum": [
+                                                                0,
+                                                                1,
+                                                                2,
+                                                                3,
+                                                                4
+                                                            ]
+                                                        },
+                                                        "client": {
+                                                            "type": "object",
+                                                            "properties": {}
+                                                        },
+                                                        "email": {
+                                                            "type": "string"
+                                                        },
+                                                        "firstName": {
+                                                            "type": "string"
+                                                        },
+                                                        "lastName": {
+                                                            "type": "string"
+                                                        },
+                                                        "id": {
+                                                            "type": "string"
+                                                        },
+                                                        "createdAt": {
+                                                            "type": "string",
+                                                            "format": "date"
+                                                        },
+                                                        "updatedAt": {
+                                                            "type": "string",
+                                                            "format": "date"
+                                                        }
+                                                    }
+                                                },
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "createdAt": {
+                                                    "type": "string",
+                                                    "format": "date"
+                                                },
+                                                "updatedAt": {
+                                                    "type": "string",
+                                                    "format": "date"
+                                                }
+                                            }
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "firstName": {
+                                            "type": "string"
+                                        },
+                                        "lastName": {
+                                            "type": "string"
+                                        },
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "createdAt": {
+                                            "type": "string",
+                                            "format": "date"
+                                        },
+                                        "updatedAt": {
+                                            "type": "string",
+                                            "format": "date"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "body": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "202": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "firstName": {
+                                        "type": "string",
+                                        "minLength": 2
+                                    },
+                                    "lastName": {
+                                        "type": "string",
+                                        "minLength": 2
+                                    },
+                                    "status": {
+                                        "type": "number",
+                                        "enum": [
+                                            "Pending",
+                                            "Active",
+                                            "Paused",
+                                            "Banned",
+                                            "Deleted",
+                                            0,
+                                            1,
+                                            2,
+                                            3,
+                                            4
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "email",
+                                    "firstName",
+                                    "lastName",
+                                    "status"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "body": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "202": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/comment": {
+            "post": {
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "issueId": {
+                                        "type": "string",
+                                        "format": "uuid"
+                                    },
+                                    "text": {
+                                        "type": "string",
+                                        "maxLength": 2000,
+                                        "minLength": 5
+                                    }
+                                },
+                                "required": [
+                                    "issueId",
+                                    "text"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    },
+                    "202": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/comment/{id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    },
+                    "202": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    },
+                    "202": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/issue": {
+            "post": {
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "minLength": 5
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "maxLength": 2000,
+                                        "minLength": 5
+                                    },
+                                    "type": {
+                                        "type": "number",
+                                        "enum": [
+                                            0,
+                                            1,
+                                            2,
+                                            3,
+                                            4,
+                                            5
+                                        ]
+                                    },
+                                    "sfClientId": {
+                                        "type": "string",
+                                        "maxLength": 20
+                                    }
+                                },
+                                "required": [
+                                    "title",
+                                    "description",
+                                    "type"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "sfClientId": {
+                                            "type": "string"
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "type": {
+                                            "type": "string",
+                                            "enum": [
+                                                0,
+                                                1,
+                                                2,
+                                                3,
+                                                4,
+                                                5
+                                            ]
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "enum": [
+                                                "New",
+                                                "Open",
+                                                "In Progress",
+                                                "Resolved",
+                                                "Rejected"
+                                            ]
+                                        },
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "createdAt": {
+                                            "type": "string",
+                                            "format": "date"
+                                        },
+                                        "updatedAt": {
+                                            "type": "string",
+                                            "format": "date"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    },
+                    "202": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "sfClientId": {
+                                                "type": "string"
+                                            },
+                                            "title": {
+                                                "type": "string"
+                                            },
+                                            "description": {
+                                                "type": "string"
+                                            },
+                                            "type": {
+                                                "type": "string",
+                                                "enum": [
+                                                    0,
+                                                    1,
+                                                    2,
+                                                    3,
+                                                    4,
+                                                    5
+                                                ]
+                                            },
+                                            "status": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "New",
+                                                    "Open",
+                                                    "In Progress",
+                                                    "Resolved",
+                                                    "Rejected"
+                                                ]
+                                            },
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "createdAt": {
+                                                "type": "string",
+                                                "format": "date"
+                                            },
+                                            "updatedAt": {
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    },
+                    "202": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/issue/{id}/status": {
+            "post": {
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "New",
+                                            "Open",
+                                            "In Progress",
+                                            "Resolved",
+                                            "Rejected"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "status"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "sfClientId": {
+                                            "type": "string"
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "type": {
+                                            "type": "string",
+                                            "enum": [
+                                                0,
+                                                1,
+                                                2,
+                                                3,
+                                                4,
+                                                5
+                                            ]
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "enum": [
+                                                "New",
+                                                "Open",
+                                                "In Progress",
+                                                "Resolved",
+                                                "Rejected"
+                                            ]
+                                        },
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "createdAt": {
+                                            "type": "string",
+                                            "format": "date"
+                                        },
+                                        "updatedAt": {
+                                            "type": "string",
+                                            "format": "date"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    },
+                    "202": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/issue/{id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "sfClientId": {
+                                            "type": "string"
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "type": {
+                                            "type": "string",
+                                            "enum": [
+                                                0,
+                                                1,
+                                                2,
+                                                3,
+                                                4,
+                                                5
+                                            ]
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "enum": [
+                                                "New",
+                                                "Open",
+                                                "In Progress",
+                                                "Resolved",
+                                                "Rejected"
+                                            ]
+                                        },
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "createdAt": {
+                                            "type": "string",
+                                            "format": "date"
+                                        },
+                                        "updatedAt": {
+                                            "type": "string",
+                                            "format": "date"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    },
+                    "202": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "raw": {
+                                            "type": "any"
+                                        },
+                                        "affected": {
+                                            "type": "number"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    },
+                    "202": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/qb": {
+            "post": {
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "userId": {
+                                        "type": "string",
+                                        "format": "uuid"
+                                    },
+                                    "username": {
+                                        "type": "string",
+                                        "minLength": 6
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "minLength": 6
+                                    },
+                                    "companyFile": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "userId",
+                                    "username",
+                                    "password"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "body": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "202": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/qb/{id}/download": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "body": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "202": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/qb/{id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "body": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "userId": {
+                                            "type": "string"
+                                        },
+                                        "username": {
+                                            "type": "string"
+                                        },
+                                        "companyFile": {
+                                            "type": "string"
+                                        },
+                                        "soapAuthId": {
+                                            "type": "string"
+                                        },
+                                        "salt": {
+                                            "type": "string"
+                                        },
+                                        "password": {
+                                            "type": "string"
+                                        },
+                                        "enabled": {
+                                            "type": "boolean"
+                                        },
+                                        "passedRequests": {
+                                            "type": "number"
+                                        },
+                                        "setUser": {
+                                            "type": "object",
+                                            "properties": {}
+                                        },
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "createdAt": {
+                                            "type": "string",
+                                            "format": "date"
+                                        },
+                                        "updatedAt": {
+                                            "type": "string",
+                                            "format": "date"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "202": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/user": {
+            "post": {
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "minLength": 5
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "minLength": 6
+                                    },
+                                    "role": {
+                                        "type": "number",
+                                        "enum": [
+                                            0,
+                                            1,
+                                            2,
+                                            3,
+                                            4,
+                                            5,
+                                            6
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "username",
+                                    "password",
+                                    "role"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "body": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "role": {
+                                            "type": "string",
+                                            "enum": [
+                                                0,
+                                                1,
+                                                2,
+                                                3,
+                                                4
+                                            ]
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "enum": [
+                                                0,
+                                                1,
+                                                2,
+                                                3,
+                                                4
+                                            ]
+                                        },
+                                        "username": {
+                                            "type": "string"
+                                        },
+                                        "createdAt": {
+                                            "type": "string",
+                                            "format": "date"
+                                        },
+                                        "client": {
+                                            "type": "object",
+                                            "properties": {
+                                                "firstName": {
+                                                    "type": "string"
+                                                },
+                                                "lastName": {
+                                                    "type": "string"
+                                                },
+                                                "user": {
+                                                    "type": "object",
+                                                    "properties": {}
+                                                },
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "createdAt": {
+                                                    "type": "string",
+                                                    "format": "date"
+                                                },
+                                                "updatedAt": {
+                                                    "type": "string",
+                                                    "format": "date"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "202": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/user/{id}": {
+            "patch": {
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "status": {
+                                        "type": "number",
+                                        "enum": [
+                                            "Pending",
+                                            "Active",
+                                            "Paused",
+                                            "Banned",
+                                            "Deleted",
+                                            0,
+                                            1,
+                                            2,
+                                            3,
+                                            4
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "status"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "body": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    },
+                    "202": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "get": {
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "body": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "role": {
+                                            "type": "string",
+                                            "enum": [
+                                                0,
+                                                1,
+                                                2,
+                                                3,
+                                                4
+                                            ]
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "enum": [
+                                                0,
+                                                1,
+                                                2,
+                                                3,
+                                                4
+                                            ]
+                                        },
+                                        "username": {
+                                            "type": "string"
+                                        },
+                                        "createdAt": {
+                                            "type": "string",
+                                            "format": "date"
+                                        },
+                                        "client": {
+                                            "type": "object",
+                                            "properties": {
+                                                "firstName": {
+                                                    "type": "string"
+                                                },
+                                                "lastName": {
+                                                    "type": "string"
+                                                },
+                                                "user": {
+                                                    "type": "object",
+                                                    "properties": {}
+                                                },
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "createdAt": {
+                                                    "type": "string",
+                                                    "format": "date"
+                                                },
+                                                "updatedAt": {
+                                                    "type": "string",
+                                                    "format": "date"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "202": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/user/client": {
+            "post": {
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "minLength": 5
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "minLength": 6
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "firstName": {
+                                        "type": "string",
+                                        "minLength": 2
+                                    },
+                                    "lastName": {
+                                        "type": "string",
+                                        "minLength": 2
+                                    }
+                                },
+                                "required": [
+                                    "username",
+                                    "password",
+                                    "email",
+                                    "firstName",
+                                    "lastName"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "body": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "username": {
+                                            "type": "string"
+                                        },
+                                        "password": {
+                                            "type": "string"
+                                        },
+                                        "salt": {
+                                            "type": "string"
+                                        },
+                                        "refreshTokens": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "resetToken": {
+                                            "type": "string"
+                                        },
+                                        "resetDate": {
+                                            "type": "string",
+                                            "format": "date"
+                                        },
+                                        "role": {
+                                            "type": "string",
+                                            "enum": [
+                                                0,
+                                                1,
+                                                2,
+                                                3,
+                                                4
+                                            ]
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "enum": [
+                                                0,
+                                                1,
+                                                2,
+                                                3,
+                                                4
+                                            ]
+                                        },
+                                        "client": {
+                                            "type": "object",
+                                            "properties": {
+                                                "firstName": {
+                                                    "type": "string"
+                                                },
+                                                "lastName": {
+                                                    "type": "string"
+                                                },
+                                                "user": {
+                                                    "type": "object",
+                                                    "properties": {}
+                                                },
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "createdAt": {
+                                                    "type": "string",
+                                                    "format": "date"
+                                                },
+                                                "updatedAt": {
+                                                    "type": "string",
+                                                    "format": "date"
+                                                }
+                                            }
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "firstName": {
+                                            "type": "string"
+                                        },
+                                        "lastName": {
+                                            "type": "string"
+                                        },
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "createdAt": {
+                                            "type": "string",
+                                            "format": "date"
+                                        },
+                                        "updatedAt": {
+                                            "type": "string",
+                                            "format": "date"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "202": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "any"
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    },
+                    "202": {
+                        "content": {
+                            "application/json": {}
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        }
+    }
+}

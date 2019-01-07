@@ -59,7 +59,7 @@ export function reflectType(target: Function | Instance, key?: string | symbol) 
 export const isFunction = (target: Instance, propertyKey: string | symbol) => (propertyKey && typeof (target as any)[propertyKey] == "function" && propertyKey != 'constructor');
 
 
-function findExport(imp: any): any{
+export function findExport(imp: any): any{
     if(imp.default && isMainComponent(imp.default)) 
         return imp.default;
 
