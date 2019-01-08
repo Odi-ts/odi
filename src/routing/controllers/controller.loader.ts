@@ -128,8 +128,8 @@ export class ControllersLoader implements ILoader {
         for(const { name, type } of rawParams) {
             const md = metadata(type);
 
-            if([ Number, String, Boolean ].includes(type))            
-                params.push(type(req.params[name]));
+            if([ Number, String, Boolean ].includes(type))       
+                req.params[name] ? params.push(type(req.params[name])) : undefined;
 
             else if(typeof type === 'function' && md.hasMetadata(keys.DATA_CLASS))                 
                 params.push(await plainToClass(type, req[md.getMetadata(keys.DATA_CLASS) === keys.BODY_DTO ? 'body' : 'query']));  
