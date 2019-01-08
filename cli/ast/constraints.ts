@@ -1,0 +1,1 @@
+export const HTTP_MESSAGE_TYPE_ENDING = 'node_modules/odi/lib/src/http/message/http.message").HttpMessage';

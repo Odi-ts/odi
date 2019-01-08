@@ -10,22 +10,7 @@
                 "responses": {
                     "200": {
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "code": {
-                                            "type": "number"
-                                        },
-                                        "message": {
-                                            "type": "string"
-                                        },
-                                        "body": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
+                            "application/json": {}
                         },
                         "description": ""
                     },
@@ -66,22 +51,7 @@
                 "responses": {
                     "200": {
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "code": {
-                                            "type": "number"
-                                        },
-                                        "message": {
-                                            "type": "string"
-                                        },
-                                        "body": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
+                            "application/json": {}
                         },
                         "description": ""
                     },
@@ -115,22 +85,7 @@
                 "responses": {
                     "200": {
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "code": {
-                                            "type": "number"
-                                        },
-                                        "message": {
-                                            "type": "string"
-                                        },
-                                        "body": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
+                            "application/json": {}
                         },
                         "description": ""
                     },
@@ -184,22 +139,7 @@
                 "responses": {
                     "200": {
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "code": {
-                                            "type": "number"
-                                        },
-                                        "message": {
-                                            "type": "string"
-                                        },
-                                        "body": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
+                            "application/json": {}
                         },
                         "description": ""
                     },
@@ -249,27 +189,6 @@
                                 "schema": {
                                     "type": "object",
                                     "properties": {
-                                        "code": {
-                                            "type": "number"
-                                        },
-                                        "message": {
-                                            "type": "string"
-                                        },
-                                        "body": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "description": ""
-                    },
-                    "201": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
                                         "refreshToken": {
                                             "type": "string"
                                         },
@@ -299,6 +218,12 @@
                                     }
                                 }
                             }
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {}
                         },
                         "description": ""
                     },
@@ -610,22 +535,7 @@
                     },
                     "201": {
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "code": {
-                                            "type": "number"
-                                        },
-                                        "message": {
-                                            "type": "string"
-                                        },
-                                        "body": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
+                            "application/json": {}
                         },
                         "description": ""
                     },
@@ -817,22 +727,7 @@
                     },
                     "201": {
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "code": {
-                                            "type": "number"
-                                        },
-                                        "message": {
-                                            "type": "string"
-                                        },
-                                        "body": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
+                            "application/json": {}
                         },
                         "description": ""
                     },
@@ -907,22 +802,7 @@
                     },
                     "201": {
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "code": {
-                                            "type": "number"
-                                        },
-                                        "message": {
-                                            "type": "string"
-                                        },
-                                        "body": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
+                            "application/json": {}
                         },
                         "description": ""
                     },
@@ -1499,13 +1379,7 @@
                                 "schema": {
                                     "type": "object",
                                     "properties": {
-                                        "code": {
-                                            "type": "number"
-                                        },
-                                        "message": {
-                                            "type": "string"
-                                        },
-                                        "body": {
+                                        "id": {
                                             "type": "string"
                                         }
                                     }
@@ -1516,16 +1390,7 @@
                     },
                     "201": {
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "id": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
+                            "application/json": {}
                         },
                         "description": ""
                     },
@@ -1563,22 +1428,7 @@
                     },
                     "201": {
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "code": {
-                                            "type": "number"
-                                        },
-                                        "message": {
-                                            "type": "string"
-                                        },
-                                        "body": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
+                            "application/json": {}
                         },
                         "description": ""
                     },
@@ -1605,27 +1455,6 @@
                 ],
                 "responses": {
                     "200": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "code": {
-                                            "type": "number"
-                                        },
-                                        "message": {
-                                            "type": "string"
-                                        },
-                                        "body": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "description": ""
-                    },
-                    "201": {
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1673,6 +1502,12 @@
                                     }
                                 }
                             }
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {}
                         },
                         "description": ""
                     },
@@ -1729,27 +1564,6 @@
                                 "schema": {
                                     "type": "object",
                                     "properties": {
-                                        "code": {
-                                            "type": "number"
-                                        },
-                                        "message": {
-                                            "type": "string"
-                                        },
-                                        "body": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "description": ""
-                    },
-                    "201": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
                                         "id": {
                                             "type": "string"
                                         },
@@ -1794,7 +1608,71 @@
                                                 },
                                                 "user": {
                                                     "type": "object",
-                                                    "properties": {}
+                                                    "properties": {
+                                                        "username": {
+                                                            "type": "string"
+                                                        },
+                                                        "password": {
+                                                            "type": "string"
+                                                        },
+                                                        "salt": {
+                                                            "type": "string"
+                                                        },
+                                                        "refreshTokens": {
+                                                            "type": "array"
+                                                        },
+                                                        "resetToken": {
+                                                            "type": "string"
+                                                        },
+                                                        "resetDate": {
+                                                            "type": "string",
+                                                            "format": "date"
+                                                        },
+                                                        "role": {
+                                                            "type": "string",
+                                                            "enum": [
+                                                                0,
+                                                                1,
+                                                                2,
+                                                                3,
+                                                                4
+                                                            ]
+                                                        },
+                                                        "status": {
+                                                            "type": "string",
+                                                            "enum": [
+                                                                0,
+                                                                1,
+                                                                2,
+                                                                3,
+                                                                4
+                                                            ]
+                                                        },
+                                                        "client": {
+                                                            "type": "object",
+                                                            "properties": {}
+                                                        },
+                                                        "email": {
+                                                            "type": "string"
+                                                        },
+                                                        "firstName": {
+                                                            "type": "string"
+                                                        },
+                                                        "lastName": {
+                                                            "type": "string"
+                                                        },
+                                                        "id": {
+                                                            "type": "string"
+                                                        },
+                                                        "createdAt": {
+                                                            "type": "string",
+                                                            "format": "date"
+                                                        },
+                                                        "updatedAt": {
+                                                            "type": "string",
+                                                            "format": "date"
+                                                        }
+                                                    }
                                                 },
                                                 "id": {
                                                     "type": "string"
@@ -1812,6 +1690,12 @@
                                     }
                                 }
                             }
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {}
                         },
                         "description": ""
                     },
@@ -1867,22 +1751,7 @@
                 "responses": {
                     "200": {
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "code": {
-                                            "type": "number"
-                                        },
-                                        "message": {
-                                            "type": "string"
-                                        },
-                                        "body": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
+                            "application/json": {}
                         },
                         "description": ""
                     },
@@ -1913,27 +1782,6 @@
                 ],
                 "responses": {
                     "200": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "code": {
-                                            "type": "number"
-                                        },
-                                        "message": {
-                                            "type": "string"
-                                        },
-                                        "body": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "description": ""
-                    },
-                    "201": {
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1983,7 +1831,71 @@
                                                 },
                                                 "user": {
                                                     "type": "object",
-                                                    "properties": {}
+                                                    "properties": {
+                                                        "username": {
+                                                            "type": "string"
+                                                        },
+                                                        "password": {
+                                                            "type": "string"
+                                                        },
+                                                        "salt": {
+                                                            "type": "string"
+                                                        },
+                                                        "refreshTokens": {
+                                                            "type": "array"
+                                                        },
+                                                        "resetToken": {
+                                                            "type": "string"
+                                                        },
+                                                        "resetDate": {
+                                                            "type": "string",
+                                                            "format": "date"
+                                                        },
+                                                        "role": {
+                                                            "type": "string",
+                                                            "enum": [
+                                                                0,
+                                                                1,
+                                                                2,
+                                                                3,
+                                                                4
+                                                            ]
+                                                        },
+                                                        "status": {
+                                                            "type": "string",
+                                                            "enum": [
+                                                                0,
+                                                                1,
+                                                                2,
+                                                                3,
+                                                                4
+                                                            ]
+                                                        },
+                                                        "client": {
+                                                            "type": "object",
+                                                            "properties": {}
+                                                        },
+                                                        "email": {
+                                                            "type": "string"
+                                                        },
+                                                        "firstName": {
+                                                            "type": "string"
+                                                        },
+                                                        "lastName": {
+                                                            "type": "string"
+                                                        },
+                                                        "id": {
+                                                            "type": "string"
+                                                        },
+                                                        "createdAt": {
+                                                            "type": "string",
+                                                            "format": "date"
+                                                        },
+                                                        "updatedAt": {
+                                                            "type": "string",
+                                                            "format": "date"
+                                                        }
+                                                    }
                                                 },
                                                 "id": {
                                                     "type": "string"
@@ -2001,6 +1913,12 @@
                                     }
                                 }
                             }
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {}
                         },
                         "description": ""
                     },
@@ -2059,27 +1977,6 @@
                                 "schema": {
                                     "type": "object",
                                     "properties": {
-                                        "code": {
-                                            "type": "number"
-                                        },
-                                        "message": {
-                                            "type": "string"
-                                        },
-                                        "body": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "description": ""
-                    },
-                    "201": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
                                         "username": {
                                             "type": "string"
                                         },
@@ -2133,7 +2030,71 @@
                                                 },
                                                 "user": {
                                                     "type": "object",
-                                                    "properties": {}
+                                                    "properties": {
+                                                        "username": {
+                                                            "type": "string"
+                                                        },
+                                                        "password": {
+                                                            "type": "string"
+                                                        },
+                                                        "salt": {
+                                                            "type": "string"
+                                                        },
+                                                        "refreshTokens": {
+                                                            "type": "array"
+                                                        },
+                                                        "resetToken": {
+                                                            "type": "string"
+                                                        },
+                                                        "resetDate": {
+                                                            "type": "string",
+                                                            "format": "date"
+                                                        },
+                                                        "role": {
+                                                            "type": "string",
+                                                            "enum": [
+                                                                0,
+                                                                1,
+                                                                2,
+                                                                3,
+                                                                4
+                                                            ]
+                                                        },
+                                                        "status": {
+                                                            "type": "string",
+                                                            "enum": [
+                                                                0,
+                                                                1,
+                                                                2,
+                                                                3,
+                                                                4
+                                                            ]
+                                                        },
+                                                        "client": {
+                                                            "type": "object",
+                                                            "properties": {}
+                                                        },
+                                                        "email": {
+                                                            "type": "string"
+                                                        },
+                                                        "firstName": {
+                                                            "type": "string"
+                                                        },
+                                                        "lastName": {
+                                                            "type": "string"
+                                                        },
+                                                        "id": {
+                                                            "type": "string"
+                                                        },
+                                                        "createdAt": {
+                                                            "type": "string",
+                                                            "format": "date"
+                                                        },
+                                                        "updatedAt": {
+                                                            "type": "string",
+                                                            "format": "date"
+                                                        }
+                                                    }
                                                 },
                                                 "id": {
                                                     "type": "string"
@@ -2171,6 +2132,12 @@
                                     }
                                 }
                             }
+                        },
+                        "description": ""
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {}
                         },
                         "description": ""
                     },

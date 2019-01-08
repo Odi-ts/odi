@@ -1,4 +1,5 @@
 import { Project, MethodDeclaration, Type, EnumDeclaration } from 'ts-simple-ast';
+import { HTTP_MESSAGE_TYPE_ENDING } from './constraints';
 
 export const program = new Project();
 const checker = program.getTypeChecker();
@@ -70,5 +71,5 @@ export function extractReturnType(method: MethodDeclaration) {
     const targetType = isPromised ? baseType.getTypeArguments()![0] :  baseType;
     const returnTypes = targetType.isUnion() ? targetType.getUnionTypes() : [targetType];
   
-    return returnTypes.map(extractType);
+    return returnTypes.filter(type => !type.getText().endsWith(HTTP_MESSAGE_TYPE_ENDING)).map(extractType);
 }
