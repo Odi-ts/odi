@@ -90,7 +90,7 @@ export class ControllersLoader implements ILoader {
                 if(res.sent)
                     return;
 
-                if(!result) {
+                if(result === null || result === undefined) {
                     res.send();
 
                     return;
