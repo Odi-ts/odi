@@ -1,9 +1,18 @@
 import { Project, MethodDeclaration, Type, EnumDeclaration } from 'ts-simple-ast';
 import { HTTP_MESSAGE_TYPE_ENDING } from './constraints';
 
-export const program = new Project();
-const checker = program.getTypeChecker();
+let project: Project;
 
+export const getProgram = () => {
+    if(!project)
+        project = new Project();
+
+    return project;
+};
+
+function getChecker() {
+    return getProgram().getTypeChecker();
+}
 
 function extractType(type: Type, level: number = 0) {
     let descriptor = {};
@@ -48,7 +57,7 @@ function extractType(type: Type, level: number = 0) {
             properties: extractProperties(type, nextLevel)
         };
     } else {
-        descriptor = { type: checker.compilerObject.typeToString(type.compilerType) };
+        descriptor = { type: getChecker().compilerObject.typeToString(type.compilerType) };
     }
 
     return descriptor;
@@ -56,7 +65,8 @@ function extractType(type: Type, level: number = 0) {
 
 function extractProperties(type: Type, level: number = 0): any {
     return type.getProperties().reduce((prev, symbol) => {
-        const type = checker.getTypeOfSymbolAtLocation(symbol, symbol.getValueDeclaration()!);
+        const type = getChecker().getTypeOfSymbolAtLocation(symbol, symbol.getValueDeclaration()!);
+        
         return {
             ...prev,
             [symbol.getName()]: extractType(type, level)

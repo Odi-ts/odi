@@ -6,6 +6,7 @@
 /.gitbook.yaml
 /docs
 /lib/test
+/lib/cli
 tsconfig.json
 tslint.json
 

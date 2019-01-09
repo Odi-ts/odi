@@ -11,15 +11,16 @@ import { getFunctionArgs } from "../../src/utils/reflection/function.reflection"
 import { concatinateBase } from "../../src/utils/url.utils";
 import { remapPath, writeFile, injectTsFiles } from '../utils';
 import { Constructor } from '../types';
-import { program, extractReturnType } from '../ast/parser';
+import { getProgram, extractReturnType } from '../ast/parser';
 import { ClassDeclaration, MethodDeclaration } from 'ts-simple-ast';
+import { relative, join, resolve } from 'path';
 
 type HandlerDescriptor = OpenAPIV3.OperationObject & { path: string, method: string };
 
 
 
-function readControllers(sources: string | string[]) {
-    const files = injectTsFiles(sources, 'C:/Projects/VSCode/Addax/DMT/front-service');
+function readControllers(base: string, sources: string | string[]) {
+    const files = injectTsFiles(sources, base);
 
     return files.filter(injection => Reflect.hasMetadata(CONTROLLER, injection.classType));
 }
@@ -114,8 +115,12 @@ function processController(controller: Constructor<IController>, classAST: Class
     });
 }
 
-export function generateOpenAPI() {
-    const controllers = readControllers(['C:/Projects/VSCode/Addax/DMT/front-service/src', '!C:/Projects/VSCode/Addax/DMT/front-service/src/index.ts']);
+export function generateOpenAPI(base: string, sources: string, rootFile: string, ) {
+    console.log(base);
+    console.log(resolve(base, sources));
+    console.log(`!${resolve(base,rootFile)}`);
+
+    const controllers = readControllers(base, [ resolve(base, sources), `!${resolve(base,rootFile)}` ]);
     const document: OpenAPIV3.Document = {
         openapi: "3.0.0",
         info: {
@@ -126,7 +131,7 @@ export function generateOpenAPI() {
     };
 
     for (const { classType, jsPath, tsPath } of controllers) {
-        const file = program.addExistingSourceFile(tsPath);
+        const file = getProgram().addExistingSourceFile(tsPath);
         const classAST = file.getClass(classType.name);
 
         if (!classAST)
@@ -144,5 +149,5 @@ export function generateOpenAPI() {
         });
     }
 
-    writeFile('swagger.json', process.cwd(), JSON.stringify(document, null, 4));
+    return document;
 }
