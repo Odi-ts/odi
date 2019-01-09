@@ -3,22 +3,17 @@ import { HttpStatus } from "./http.statuses";
 
 interface ICode{
     status: HttpStatus;
-    message: string;
 }
 
-const forbiddenMessage = 'You don`t have permissions to access / on this server';
-const empty = '';
-
 const statusCodes: { [id: number]: ICode} = {
-    200: {status: HttpStatus.Ok, message: empty},
-    400: {status: HttpStatus.BadRequest, message: empty},
-    403: {status: HttpStatus.Forbidden, message: forbiddenMessage},
-    404: {status: HttpStatus.NotFound, message: empty}
+    200: {status: HttpStatus.Ok },
+    400: {status: HttpStatus.BadRequest },
+    403: {status: HttpStatus.Forbidden },
+    404: {status: HttpStatus.NotFound }
 };
 
-export function createMessage(code: number, body: any) {
+export function createMessage<T>(code: number, body: T) {
     const message = statusCodes[code] ? statusCodes[code].status: '';
-    const payload =  body || (statusCodes[code] ? statusCodes[code].message : null);
 
-    return new HttpMessage(code, message, payload);
+    return new HttpMessage<T>(code, message, body);
 }

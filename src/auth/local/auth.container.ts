@@ -27,7 +27,7 @@ export class UserData<Decoding extends object, User>{
 
     verify(options?: VerifyOptions) {
         let result: [ Error | null, Decoding | null];
-
+        
         try {
             result = [ null, this.authService.verifyToken(this.token, options) ];
         } catch (err) {

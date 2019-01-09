@@ -1,3 +1,4 @@
+import "fastify-cookie";
 import { Request, Context } from '../../aliases';
 import { UserData } from './auth.container';
 import { SignOptions, VerifyOptions, DecodeOptions } from './auth.types';
@@ -26,7 +27,7 @@ export abstract class CoreAuth<T extends object, U>{
                 def = parts[1];
             }
         }
-
+        
         return def || ctx.cookies[container];
     }
 
@@ -49,7 +50,9 @@ export abstract class CoreAuth<T extends object, U>{
 
 
     /* Abstract Methods */
-    public authenticate(context: Context, data: UserData<T,U>, options: any): Promise<boolean> | boolean | void {}
+    public authenticate(context: Context, data: UserData<T,U>, options: any): Promise<boolean> | boolean | void {
+        return true;
+    }
     public abstract deserialize(decoding: T | null): U | Promise<U>;
 
     public abstract serialize(user: U): T | Promise<T>;

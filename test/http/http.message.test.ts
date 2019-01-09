@@ -6,14 +6,12 @@ import { Ok, BadRequest, Forbidden, NotFound } from '../../src/http/message/inde
 
 describe('Http Message', () => {
     describe('#HttpMessage(...)', () => {
-        const forbiddenMessage = 'You don`t have permissions to access / on this server';
-        const message = '';
-
+  
         const statusCodes: any = {
-            200: { status: HttpStatus.Ok, message },
-            400: { status: HttpStatus.BadRequest, message },
-            403: { status: HttpStatus.Forbidden, message: forbiddenMessage},
-            404: { status: HttpStatus.NotFound, message }
+            200: { status: HttpStatus.Ok },
+            400: { status: HttpStatus.BadRequest },
+            403: { status: HttpStatus.Forbidden },
+            404: { status: HttpStatus.NotFound }
         };
 
         for(const code of [200, 400, 403, 404]) {
@@ -22,7 +20,6 @@ describe('Http Message', () => {
 
                 expect(httpMessage).to.be.instanceOf(HttpMessage);
                 expect(httpMessage.message).to.be.eq(statusCodes[code].status);
-                expect(httpMessage.body).to.be.eq(statusCodes[code].message);
                 expect(httpMessage.code).to.be.eq(code);
             });
         }

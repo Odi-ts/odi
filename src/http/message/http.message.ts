@@ -1,9 +1,9 @@
 
-export class HttpMessage {
+export class HttpMessage<T> {
 
     constructor(
         readonly code: number,
         readonly message: string,
-        readonly body: string
+        readonly body: T
     ) {}
 }
