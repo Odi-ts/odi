@@ -4,7 +4,7 @@
   "description": "🌪🌌 Opinionated, Declarative, Idiomatic framework for building scalable, supportable, enterprise-grade applications.",
   "main": "lib/src/index.js",
   "homepage": "https://github.com/Odi-ts/Odi#readme",
-   "repository": {
+  "repository": {
     "type": "git",
     "url": "https://github.com/Odi-ts/Odi.git"
   },
@@ -64,7 +64,7 @@
     "esprima": "^4.0.1",
     "fastify": "^1.13.3",
     "fastify-cookie": "^2.1.5",
-    "globby": "^8.0.1",
+    "globby": "^8.0.2",
     "inquirer": "^6.2.1",
     "reflect-metadata": "^0.1.12",
     "ts-simple-ast": "^20.0.0",
