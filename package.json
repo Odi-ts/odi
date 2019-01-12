@@ -1,6 +1,6 @@
 {
   "name": "odi",
-  "version": "0.2.25",
+  "version": "0.2.26",
   "description": "🌪🌌 Opinionated, Declarative, Idiomatic framework for building scalable, supportable, enterprise-grade applications.",
   "main": "lib/src/index.js",
   "homepage": "https://github.com/Odi-ts/Odi#readme",

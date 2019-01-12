@@ -21,6 +21,6 @@ export default function (program: CommanderStatic) {
 
 function action({ sources, entry, output }: any) {
     const doc = generateOpenAPI(process.cwd(), sources, entry);
-    
-    return writeFileSync(resolve(process.cwd(), output), JSON.stringify(doc, null, 4));    
+
+    return writeFileSync(resolve(process.cwd(), output || `./swagger-${doc.info.version}.json`), JSON.stringify(doc, null, 4));    
 }
