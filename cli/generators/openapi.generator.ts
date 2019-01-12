@@ -1,8 +1,5 @@
 import "reflect-metadata";
-import * as ora from 'ora';
-
-//@ts-ignore
-import * as spinner from 'cli-spinners';
+const Gauge = require("gauge");
 
 import { OpenAPIV3 } from 'openapi-types';
 
@@ -157,29 +154,26 @@ function processMethod(controller: typeof IController, handler: string, methodAS
     return descriptor;
 }
 
-function processController(controller: Constructor<IController>, classAST: ClassDeclaration): HandlerDescriptor[] {
-    const routePrefix = metadata(controller).getMetadata(CONTROLLER);
-    const routeMethods = reflectClassMethods(controller).filter(method => isRouteHandler(controller.prototype, method));
+async function processController(controller: Constructor<IController>, classAST: ClassDeclaration): Promise<HandlerDescriptor[]> {
+    return new Promise<any>(res =>  setTimeout(async () => {
+        const routePrefix = metadata(controller).getMetadata(CONTROLLER);
+        const routeMethods = reflectClassMethods(controller).filter(method => isRouteHandler(controller.prototype, method));
 
-    return routeMethods.map(method => {
-        const methodAST = classAST.getMethodOrThrow(method);
+        const result = routeMethods.map(method => {
+            const methodAST = classAST.getMethodOrThrow(method);
 
-        const descriptor = processMethod(controller, method, methodAST);
-        descriptor.path = concatinateBase(routePrefix.path, descriptor.path);
+            const descriptor = processMethod(controller, method, methodAST);
+            descriptor.path = concatinateBase(routePrefix.path, descriptor.path);
 
-        return descriptor;
-    });
+            return descriptor;
+        });
+
+        res(result);
+    }, 200));
 }
 
-export function generateOpenAPI(base: string, sources: string, rootFile: string, ) {
-    //Wrap with loader
-    const jsLoader = ora({ text: 'Improting dependencies', spinner: spinner['dots'] }).start();   
-
+export async function generateOpenAPI(base: string, sources: string, rootFile: string, ) {
     const controllers = readControllers(base, [resolve(base, sources), `!${resolve(base, rootFile)}`]);
-
-    jsLoader.succeed('All dependencies improted');
-    //Finish
-    
     const { version } = require(resolve(process.cwd(), './package.json'));
 
     const document: OpenAPIV3.Document = {
@@ -191,17 +185,26 @@ export function generateOpenAPI(base: string, sources: string, rootFile: string,
         paths: {}
     };
 
-    //Wrap with loader
-    const tsLoader = ora({ text: 'Processing controllers', spinner: spinner['dots'] }).start();   
+    
+    let gt = new Gauge(process.stdout, {
+        updateInterval: 50,
+        theme: 'colorASCII'
+    });
 
-    for (const { classType, jsPath, tsPath } of controllers) {
+    let progress = 0;
+    gt.show('Start processing...', progress);
+
+    for (const [i, { classType, jsPath, tsPath }] of controllers.entries()) {
+
         const file = getProgram().addExistingSourceFile(tsPath);
         const classAST = file.getClass(classType.name);
         
+        gt.show(chalk.yellow('Processing: ') + classType.name, (100 / controllers.length * (i + 1))/ 100);
+
         if (!classAST)
             throw new Error(`Can't find class - ${classType.name} in ts file - ${tsPath}`);
 
-        const handlers = processController(classType, classAST);
+        const handlers = await processController(classType, classAST);
 
         handlers.forEach(({ path, method, ...descriptor }) => {
             const route = remapPath(path);
@@ -211,13 +214,10 @@ export function generateOpenAPI(base: string, sources: string, rootFile: string,
                 [method]: descriptor
             };
         });
+    }  
+    gt.hide();
 
-        tsLoader.text = `${classType} succesfully processed`;
-    }   
-
-    //Finish
-    tsLoader.succeed('Controllers successfully processed');
-
-    console.log(chalk`{green Done !}`);
+    console.log(chalk`{green ✔ Done!}`);
     return document;
 }
+

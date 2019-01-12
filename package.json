@@ -1,6 +1,6 @@
 {
   "name": "odi",
-  "version": "0.2.26",
+  "version": "0.3.0",
   "description": "🌪🌌 Opinionated, Declarative, Idiomatic framework for building scalable, supportable, enterprise-grade applications.",
   "main": "lib/src/index.js",
   "homepage": "https://github.com/Odi-ts/Odi#readme",
@@ -66,9 +66,9 @@
     "esprima": "^4.0.1",
     "fastify": "^1.13.3",
     "fastify-cookie": "^2.1.5",
+    "gauge": "^2.7.4",
     "globby": "^8.0.2",
     "inquirer": "^6.2.1",
-    "ora": "^3.0.0",
     "reflect-metadata": "^0.1.12",
     "ts-simple-ast": "^20.0.0"
   },

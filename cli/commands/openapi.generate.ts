@@ -22,8 +22,8 @@ export default function (program: CommanderStatic) {
         });
 }
 
-function action({ sources, entry, output, link, title }: any) {
-    const doc = generateOpenAPI(process.cwd(), sources, (entry || join(sources, './index.ts')));
+async function action({ sources, entry, output, link, title }: any) {
+    const doc = await generateOpenAPI(process.cwd(), sources, (entry || join(sources, './index.ts')));
 
     doc.info.title = title;
     doc.servers = link.map((link: string) => ({ url: link }));
