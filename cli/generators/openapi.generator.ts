@@ -1,5 +1,4 @@
 import "reflect-metadata";
-import * as ora from 'ora';
 
 import { OpenAPIV3 } from 'openapi-types';
 
@@ -16,6 +15,7 @@ import { Constructor } from '../types';
 import { resolve, relative } from 'path';
 import { getProgram, extractReturnType } from '../ast/parser';
 import { ClassDeclaration, MethodDeclaration, JSDoc } from 'ts-simple-ast';
+import chalk from "chalk";
 
 type HandlerDescriptor = OpenAPIV3.OperationObject & { path: string, method: string };
 
@@ -180,33 +180,10 @@ export function generateOpenAPI(base: string, sources: string, rootFile: string,
         paths: {}
     };
 
-
-    const loader = ora({ 
-        spinner:  {
-            interval: 80,
-            frames: [
-                "⠋",
-                "⠙",
-                "⠹",
-                "⠸",
-                "⠼",
-                "⠴",
-                "⠦",
-                "⠧",
-                "⠇",
-                "⠏"
-            ]
-        }
-    });
-
-    loader.start('Start loading');
-
     for (const { classType, jsPath, tsPath } of controllers) {
         const file = getProgram().addExistingSourceFile(tsPath);
         const classAST = file.getClass(classType.name);
         
-        loader.text = `Loading ${classType.name}...`;
-
         if (!classAST)
             throw new Error(`Can't find class - ${classType.name} in ts file - ${tsPath}`);
 
@@ -220,8 +197,9 @@ export function generateOpenAPI(base: string, sources: string, rootFile: string,
                 [method]: descriptor
             };
         });
+
+        console.log(chalk`{green ✔} {gray ${'['}}${classType.name}{gray ] successfully parsed}`);
     }   
-    //loader.stopAndPersist({ text: "Successfully completed!" });
 
     return document;
 }

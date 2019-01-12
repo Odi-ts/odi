@@ -1,6 +1,6 @@
 {
   "name": "odi",
-  "version": "0.2.24",
+  "version": "0.2.25",
   "description": "🌪🌌 Opinionated, Declarative, Idiomatic framework for building scalable, supportable, enterprise-grade applications.",
   "main": "lib/src/index.js",
   "homepage": "https://github.com/Odi-ts/Odi#readme",
@@ -60,7 +60,7 @@
   },
   "dependencies": {
     "ajv": "^6.6.2",
-    "chalk": "^2.4.1",
+    "chalk": "^2.4.2",
     "cls-hooked": "^4.2.2",
     "commander": "^2.19.0",
     "esprima": "^4.0.1",

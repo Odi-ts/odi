@@ -4,39 +4,18 @@ import { generateOpenAPI } from '../generators/openapi.generator';
 import { join, resolve } from 'path';
 import { writeFileSync } from 'fs';
 
-const questions: Questions = [{
-    message: 'Sources directory: ',
-    name: 'sources',
-    type: 'input'
-}, {
-    message: 'Entry (main) file: ',
-    name: 'entry',
-    type: 'input',
-    default: ''
-}, {
-    message: 'Output file: ',
-    name: 'output',
-    type: 'input',
-    default: './swagger.json'
-}];
-
 export default function (program: CommanderStatic) {
     program
         .command('docs')
-        .option('-r, --raw', 'skip prompts')
         .option('-s, --sources <path>', 'set sources path', )
         .option('-e, --entry <path>', 'set entry file path')
         .option('-o, --output <path>', 'set output path ')
         .description('Generate API docs')
         .action(({ raw, sources, entry, output }) => {
-            if(raw) {
-                if(!sources) 
-                    return console.log('Sources must be specified');      
+            if(!sources) 
+                return console.log('Sources must be specified');      
 
-                action({ sources, output, entry: entry || join(sources, './index.ts') });
-            } else {
-                prompt(questions).then(action);
-            }
+            action({ sources, output, entry: entry || join(sources, './index.ts') });
         });
 }
 
