@@ -13,7 +13,7 @@ import { getFunctionArgs } from "../../src/utils/reflection/function.reflection"
 import { concatinateBase } from "../../src/utils/url.utils";
 import { remapPath, injectTsFiles } from '../utils';
 import { Constructor } from '../types';
-import { resolve } from 'path';
+import { resolve, relative } from 'path';
 import { getProgram, extractReturnType } from '../ast/parser';
 import { ClassDeclaration, MethodDeclaration, JSDoc } from 'ts-simple-ast';
 
@@ -168,13 +168,14 @@ function processController(controller: Constructor<IController>, classAST: Class
 }
 
 export function generateOpenAPI(base: string, sources: string, rootFile: string, ) {
-
     const controllers = readControllers(base, [resolve(base, sources), `!${resolve(base, rootFile)}`]);
+    const { version } = require(resolve(process.cwd(), './package.json'));
+
     const document: OpenAPIV3.Document = {
         openapi: "3.0.0",
         info: {
             title: "Test",
-            version: "0.1"
+            version
         },
         paths: {}
     };
