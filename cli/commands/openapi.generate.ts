@@ -1,6 +1,8 @@
 import { CommanderStatic } from 'commander';
 import { prompt, Questions } from 'inquirer';
 import { generateOpenAPI } from '../generators/openapi.generator';
+import { join, resolve } from 'path';
+import { writeFileSync } from 'fs';
 
 const questions: Questions = [{
     message: 'Sources directory: ',
@@ -9,7 +11,13 @@ const questions: Questions = [{
 }, {
     message: 'Entry (main) file: ',
     name: 'entry',
-    type: 'input'
+    type: 'input',
+    default: ''
+}, {
+    message: 'Output file: ',
+    name: 'output',
+    type: 'input',
+    default: './swagger.json'
 }];
 
 export default function (program: CommanderStatic) {
@@ -18,25 +26,22 @@ export default function (program: CommanderStatic) {
         .option('-r, --raw', 'skip prompts')
         .option('-s, --sources <path>', 'set sources path', )
         .option('-e, --entry <path>', 'set entry file path')
+        .option('-o, --output <path>', 'set output path ')
         .description('Generate API docs')
-        .action(({ raw, sources, entry }) => {
+        .action(({ raw, sources, entry, output }) => {
             if(raw) {
                 if(!sources) 
-                    return console.log('Sources must be specified');
+                    return console.log('Sources must be specified');      
 
-                if(!entry) 
-                    return console.log('Entry file must be specified');
-
-                action({ sources, entry });
-
+                action({ sources, output, entry: entry || join(sources, './index.ts') });
             } else {
                 prompt(questions).then(action);
             }
         });
 }
 
-function action({ sources, entry }: any) {
-    console.log(process.cwd());
-    const text = generateOpenAPI(process.cwd(), sources, entry);
-    console.log(text);
+function action({ sources, entry, output }: any) {
+    const doc = generateOpenAPI(process.cwd(), sources, entry);
+    
+    return writeFileSync(resolve(process.cwd(), output), JSON.stringify(doc, null, 4));    
 }

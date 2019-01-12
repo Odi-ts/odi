@@ -14,13 +14,12 @@ function getChecker() {
     return getProgram().getTypeChecker();
 }
 
-function extractType(type: Type, level: number = 0) {
-    let descriptor = {};
-    
+function extractType(type: Type | undefined, level: number = 0) {
     const nextLevel = level+ 1;
-    if(nextLevel > 4)
+    if(!type || nextLevel > 4)
         return;
     
+    let descriptor = {};
     if(type.isArray()) {
         const items = type.getTypeArguments();
 
@@ -51,6 +50,12 @@ function extractType(type: Type, level: number = 0) {
             format: "date"
         };
 
+    } else if(type.getText() === 'JSX.Element') {
+        descriptor = { 
+            type: 'string',
+            format: "html"
+        };
+
     } else if(type.isClassOrInterface() || type.isObject()) {
         descriptor = {
             type: 'object',
@@ -61,6 +66,18 @@ function extractType(type: Type, level: number = 0) {
     }
 
     return descriptor;
+}
+
+function unwrapReservedTypes(type: Type, reservedCodes: (string | undefined)[]) {
+    if(type.getText().includes(HTTP_MESSAGE_TYPE_ENDING)) {
+        const [ unwrapped, code ] = type.getTypeArguments();
+
+        reservedCodes.push(code.getText());
+        return unwrapped;
+    }
+
+    reservedCodes.push(undefined);
+    return type;
 }
 
 function extractProperties(type: Type, level: number = 0): any {
@@ -74,12 +91,12 @@ function extractProperties(type: Type, level: number = 0): any {
     }, {});
 }
 
-export function extractReturnType(method: MethodDeclaration) {
+export function extractReturnType(method: MethodDeclaration, reservedCodes: (string | undefined)[]) {
     const baseType = method.getReturnType();
     const isPromised = baseType.getText().startsWith('Promise');
 
     const targetType = isPromised ? baseType.getTypeArguments()![0] :  baseType;
     const returnTypes = targetType.isUnion() ? targetType.getUnionTypes() : [targetType];
   
-    return returnTypes.filter(type => !type.getText().endsWith(HTTP_MESSAGE_TYPE_ENDING)).map(extractType);
+    return returnTypes.map(type => unwrapReservedTypes(type,reservedCodes)).map(extractType);
 }

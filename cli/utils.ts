@@ -72,7 +72,7 @@ export function injectTsFiles(pattern: string | string[], rawBasePath = process.
     
     glob.sync(pattern).forEach(path => {
         const tsPath = normalize(path);
-        const jsPath = normalize(urlMapper(tsPath, basePath, compilerOptions.outDir, compilerOptions.rootDir ||compilerOptions.rootDirs).replace(/\.ts$/, ""));
+        const jsPath = normalize(urlMapper(tsPath, basePath, compilerOptions.outDir, compilerOptions.rootDir ||compilerOptions.rootDirs).replace(/\.(ts|tsx)$/, ""));
 
         const module: any = require(relative(__dirname, jsPath)); 
 

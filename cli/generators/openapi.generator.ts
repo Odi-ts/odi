@@ -1,22 +1,23 @@
-import chalk from 'chalk';
+import "reflect-metadata";
+import * as ora from 'ora';
+
 import { OpenAPIV3 } from 'openapi-types';
 
 import { IController, isRouteHandler } from "../../src";
 
 import { metadata } from "../../src/utils/metadata.utils";
 import { reflectClassMethods } from "../../src/utils/directory.loader";
-import { CONTROLLER, RAW_ROUTE, ROUTE, DATA_CLASS } from "../../src/definitions";
+import { CONTROLLER, RAW_ROUTE, ROUTE, DATA_CLASS, QUERY_DTO, BODY_DTO } from "../../src/definitions";
 
 import { getFunctionArgs } from "../../src/utils/reflection/function.reflection";
 import { concatinateBase } from "../../src/utils/url.utils";
-import { remapPath, writeFile, injectTsFiles } from '../utils';
+import { remapPath, injectTsFiles } from '../utils';
 import { Constructor } from '../types';
+import { resolve } from 'path';
 import { getProgram, extractReturnType } from '../ast/parser';
-import { ClassDeclaration, MethodDeclaration } from 'ts-simple-ast';
-import { relative, join, resolve } from 'path';
+import { ClassDeclaration, MethodDeclaration, JSDoc } from 'ts-simple-ast';
 
 type HandlerDescriptor = OpenAPIV3.OperationObject & { path: string, method: string };
-
 
 
 function readControllers(base: string, sources: string | string[]) {
@@ -25,15 +26,51 @@ function readControllers(base: string, sources: string | string[]) {
     return files.filter(injection => Reflect.hasMetadata(CONTROLLER, injection.classType));
 }
 
+function processJSDoc([node]: JSDoc[]) {
+    if(!node) 
+        return {};
+
+    return node.getTags().reduce((p, tag) => {
+        const name = tag.getTagName();
+        const value = tag.getComment();
+        const preVel = p[name];
+
+        return ({
+            ...p,
+            [name]: name === 'send' ?
+                preVel ? [...preVel, value] : [value] :
+                tag.getComment()
+        });
+    }, {} as any);
+}
+
+function processSends(sends?: string[]) {
+    if (!sends)
+        return [];
+
+    return sends.map(send => send.replace(/[\[\]\s]/g, '').split('=>'));
+}
+
+function processTags(tags: string) {
+    return tags ? tags.replace(/[\[\]\s]/g, '').split(',') : [];
+}
+
+
+
 function processMethod(controller: typeof IController, handler: string, methodAST: MethodDeclaration) {
     const meta = metadata(controller.prototype, handler);
     const args = getFunctionArgs(controller.prototype, handler);
+    const docs = processJSDoc(methodAST.getJsDocs()) as any;
 
     const { path, method } = meta.getMetadata(RAW_ROUTE) || meta.getMetadata(ROUTE);
 
     const descriptor: HandlerDescriptor = {
         path,
-        method
+        method,
+        responses: {},
+        summary: docs.summary,
+        description: docs.description,
+        tags: processTags(docs.tags)
     };
 
     for (const { name, type } of args) {
@@ -52,7 +89,7 @@ function processMethod(controller: typeof IController, handler: string, methodAS
                 }
             });
 
-        } else if (md.hasMetadata(DATA_CLASS)) {
+        } else if (md.getMetadata(DATA_CLASS) === BODY_DTO) {
             descriptor.requestBody = {
                 content: {
                     'application/json': {
@@ -61,43 +98,58 @@ function processMethod(controller: typeof IController, handler: string, methodAS
                     }
                 }
             };
+        } else if (md.hasMetadata(DATA_CLASS) === QUERY_DTO) {
+            if (!descriptor.parameters)
+                descriptor.parameters = [];
+
+            const { properties, required } = (global as any)['DtoSchemaStorage'].get(type);    
+            
+            for(const prop of Object.keys(properties))
+                descriptor.parameters.push({
+                    name: prop,
+                    in: 'query',
+                    required: (required as string[]).includes(prop),
+                    schema: properties[prop]
+                });
         }
     }
 
-    //if(handler === 'getUser') {
-        try {
-            const returnings = extractReturnType(methodAST);
-            descriptor.responses = {
-                '200': {
-                    content: {
-                        'application/json': {
-                            schema: returnings[0] as OpenAPIV3.SchemaObject
-                        }
-                    },
-                    description: ''
-                },
-                '201': {
-                    content: {
-                        'application/json': {
-                            schema: returnings[1] as OpenAPIV3.SchemaObject
-                        }
-                    },
-                    description: ''
-                },
-                '202': {
-                    content: {
-                        'application/json': {
-                            schema: returnings[2] as OpenAPIV3.SchemaObject
-                        }
-                    },
-                    description: ''
-                }
+    const sends = processSends(docs.send);
+    const reservedCodes: (string | undefined)[] = [];
+    const returnings = extractReturnType(methodAST, reservedCodes);
 
-            };
-        } catch (err) {
-            console.log(handler);
+    for (const [i, returning] of (returnings as OpenAPIV3.SchemaObject[]).entries()) {
+        const doc = sends[i];
+
+        const type = doc ? doc[1] : 'application/json';
+        const code = reservedCodes[i] || (doc ? doc[0] : '200');
+
+        if (!descriptor.responses) {
+            descriptor.responses = {};
         }
-   // }
+
+        if (!descriptor.responses[code]) {
+            //@ts-ignore
+            descriptor.responses = {
+                ...descriptor.responses,
+                [code]: {
+                    content: {}
+                }
+            };
+        }
+
+        if (!(descriptor.responses![code] as OpenAPIV3.ResponseObject).content![type]) {
+            //@ts-ignore
+            descriptor.responses[code].content = {
+                ...(descriptor.responses![code] as OpenAPIV3.ResponseObject).content,
+                [type]: {}
+            };
+        }
+
+        //@ts-ignore
+        (descriptor.responses![code] as OpenAPIV3.ResponseObject).content![type].schema = returning;
+    }
+
     return descriptor;
 }
 
@@ -116,11 +168,8 @@ function processController(controller: Constructor<IController>, classAST: Class
 }
 
 export function generateOpenAPI(base: string, sources: string, rootFile: string, ) {
-    console.log(base);
-    console.log(resolve(base, sources));
-    console.log(`!${resolve(base,rootFile)}`);
 
-    const controllers = readControllers(base, [ resolve(base, sources), `!${resolve(base,rootFile)}` ]);
+    const controllers = readControllers(base, [resolve(base, sources), `!${resolve(base, rootFile)}`]);
     const document: OpenAPIV3.Document = {
         openapi: "3.0.0",
         info: {
@@ -130,9 +179,32 @@ export function generateOpenAPI(base: string, sources: string, rootFile: string,
         paths: {}
     };
 
+
+    const loader = ora({ 
+        spinner:  {
+            interval: 80,
+            frames: [
+                "⠋",
+                "⠙",
+                "⠹",
+                "⠸",
+                "⠼",
+                "⠴",
+                "⠦",
+                "⠧",
+                "⠇",
+                "⠏"
+            ]
+        }
+    });
+
+    loader.start('Start loading');
+
     for (const { classType, jsPath, tsPath } of controllers) {
         const file = getProgram().addExistingSourceFile(tsPath);
         const classAST = file.getClass(classType.name);
+        
+        loader.text = `Loading ${classType.name}...`;
 
         if (!classAST)
             throw new Error(`Can't find class - ${classType.name} in ts file - ${tsPath}`);
@@ -147,7 +219,8 @@ export function generateOpenAPI(base: string, sources: string, rootFile: string,
                 [method]: descriptor
             };
         });
-    }
+    }   
+    //loader.stopAndPersist({ text: "Successfully completed!" });
 
     return document;
 }

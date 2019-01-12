@@ -1,5 +1,5 @@
 
-export class HttpMessage<T> {
+export class HttpMessage<T, C = number, P = 'application/json'> {
 
     constructor(
         readonly code: number,
