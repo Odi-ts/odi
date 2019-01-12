@@ -1,4 +1,8 @@
 import "reflect-metadata";
+import * as ora from 'ora';
+
+//@ts-ignore
+import * as spinner from 'cli-spinners';
 
 import { OpenAPIV3 } from 'openapi-types';
 
@@ -12,9 +16,9 @@ import { getFunctionArgs } from "../../src/utils/reflection/function.reflection"
 import { concatinateBase } from "../../src/utils/url.utils";
 import { remapPath, injectTsFiles } from '../utils';
 import { Constructor } from '../types';
-import { resolve, relative } from 'path';
+import { resolve } from 'path';
 import { getProgram, extractReturnType } from '../ast/parser';
-import { ClassDeclaration, MethodDeclaration, JSDoc } from 'ts-simple-ast';
+import { ClassDeclaration, MethodDeclaration, JSDoc, ts } from 'ts-simple-ast';
 import chalk from "chalk";
 
 type HandlerDescriptor = OpenAPIV3.OperationObject & { path: string, method: string };
@@ -168,7 +172,14 @@ function processController(controller: Constructor<IController>, classAST: Class
 }
 
 export function generateOpenAPI(base: string, sources: string, rootFile: string, ) {
+    //Wrap with loader
+    const jsLoader = ora({ text: 'Improting dependencies', spinner: spinner['dots'] }).start();   
+
     const controllers = readControllers(base, [resolve(base, sources), `!${resolve(base, rootFile)}`]);
+
+    jsLoader.succeed('All dependencies improted');
+    //Finish
+    
     const { version } = require(resolve(process.cwd(), './package.json'));
 
     const document: OpenAPIV3.Document = {
@@ -179,6 +190,9 @@ export function generateOpenAPI(base: string, sources: string, rootFile: string,
         },
         paths: {}
     };
+
+    //Wrap with loader
+    const tsLoader = ora({ text: 'Processing controllers', spinner: spinner['dots'] }).start();   
 
     for (const { classType, jsPath, tsPath } of controllers) {
         const file = getProgram().addExistingSourceFile(tsPath);
@@ -198,8 +212,12 @@ export function generateOpenAPI(base: string, sources: string, rootFile: string,
             };
         });
 
-        console.log(chalk`{green ✔} {gray ${'['}}${classType.name}{gray ] successfully parsed}`);
+        tsLoader.text = `${classType} succesfully processed`;
     }   
 
+    //Finish
+    tsLoader.succeed('Controllers successfully processed');
+
+    console.log(chalk`{green Done !}`);
     return document;
 }

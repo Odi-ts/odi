@@ -10,23 +10,23 @@ export default function (program: CommanderStatic) {
         .option('-s, --sources <path>', 'set sources path', )
         .option('-e, --entry <path>', 'set entry file path')
         .option('-o, --output <path>', 'set output path ')
-        .option('-l, --links [urls...]', 'set server links', (val, memo) => [...memo, val], [])
+        .option('-l, --link [urls]', 'set server links', (val, memo) => [...memo, val], [])
         .option('-t, --title <title>', 'set app titile', 'Docs')
         .description('Generate API docs')
-        .action(({ raw, sources, entry, output, title, links }) => {
-            console.log(links);
-            if(!sources) 
+        .action(options => {
+
+            if(!options.sources) 
                 return console.log('Sources must be specified');      
 
-            action({ sources, output, entry: entry || join(sources, './index.ts'), title, links });
+            action(options);
         });
 }
 
-function action({ sources, entry, output, links, title }: any) {
-    const doc = generateOpenAPI(process.cwd(), sources, entry);
+function action({ sources, entry, output, link, title }: any) {
+    const doc = generateOpenAPI(process.cwd(), sources, (entry || join(sources, './index.ts')));
 
     doc.info.title = title;
-    doc.servers = links.map((link: string) => ({ url: link }));
+    doc.servers = link.map((link: string) => ({ url: link }));
 
     return writeFileSync(resolve(process.cwd(), output || `./swagger-${doc.info.version}.json`), JSON.stringify(doc, null, 4));    
 }

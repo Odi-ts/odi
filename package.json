@@ -68,6 +68,7 @@
     "fastify-cookie": "^2.1.5",
     "globby": "^8.0.2",
     "inquirer": "^6.2.1",
+    "ora": "^3.0.0",
     "reflect-metadata": "^0.1.12",
     "ts-simple-ast": "^20.0.0"
   },
