@@ -68,11 +68,11 @@ function extractType(type: Type | undefined, level: number = 0) {
     return descriptor;
 }
 
-function unwrapReservedTypes(type: Type, reservedCodes: (string | undefined)[]) {
+function unwrapReservedTypes(type: Type, reservedCodes: ([string, string] | undefined)[]) {
     if(type.getText().includes(HTTP_MESSAGE_TYPE_ENDING)) {
-        const [ unwrapped, code ] = type.getTypeArguments();
+        const [ unwrapped, code, rawType ] = type.getTypeArguments();
 
-        reservedCodes.push(code.getText());
+        reservedCodes.push([code.getText(), rawType.getText().replace(/[\'\"]/g, '')]);
         return unwrapped;
     }
 
@@ -91,7 +91,7 @@ function extractProperties(type: Type, level: number = 0): any {
     }, {});
 }
 
-export function extractReturnType(method: MethodDeclaration, reservedCodes: (string | undefined)[]) {
+export function extractReturnType(method: MethodDeclaration, reservedCodes: ([string, string] |  undefined)[]) {
     const baseType = method.getReturnType();
     const isPromised = baseType.getText().startsWith('Promise');
 

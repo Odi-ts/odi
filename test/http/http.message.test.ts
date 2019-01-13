@@ -35,7 +35,7 @@ describe('Http Message', () => {
 
         for(const { func, code } of sets) {
             it(`should create correct message using ${func.name} function`, () => {
-                const message = func();
+                const message = (func as any)();
 
                 expect(message).to.be.instanceOf(HttpMessage);
                 expect(message.code).to.be.eq(code);

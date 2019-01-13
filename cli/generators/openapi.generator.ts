@@ -116,14 +116,15 @@ function processMethod(controller: typeof IController, handler: string, methodAS
     }
 
     const sends = processSends(docs.send);
-    const reservedCodes: (string | undefined)[] = [];
+    const reservedCodes: ([string, string] | undefined)[] = [];
     const returnings = extractReturnType(methodAST, reservedCodes);
 
     for (const [i, returning] of (returnings as OpenAPIV3.SchemaObject[]).entries()) {
         const doc = sends[i];
-
-        const type = doc ? doc[1] : 'application/json';
-        const code = reservedCodes[i] || (doc ? doc[0] : '200');
+        const reserved = reservedCodes[i];
+        
+        const code = doc ? doc[0] : reserved ? reserved[0] : '200';
+        const type = doc ? doc[1] : reserved ? reserved[1] : 'application/json';
 
         if (!descriptor.responses) {
             descriptor.responses = {};

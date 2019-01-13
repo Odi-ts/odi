@@ -2,7 +2,7 @@ import { ValidateFunction } from 'ajv';
 import { DATA_CLASS, DATA_VALIDATION_PROP, BODY_DTO, QUERY_DTO, DATA_CLASS_SCHEMA } from "../definitions";
 import { ValidatorFormat } from "./dto.type";
 import { buildSchema } from "./dto.validator";
-import { DtoPropsStorage, getSchema, GAJV, DtoPropsTypes } from "./dto.storage";
+import { DtoPropsStorage, getSchema, GAJV, DtoPropsTypes, DtoSchemaStorage } from "./dto.storage";
 import { Constructor, Propotype } from '../types';
 
 function dtoFactory(value: string): ClassDecorator {
@@ -67,8 +67,7 @@ export const Deafault = <T>(def: T) => validationFactory({ default: def });
 
 /* Array validaitons */
 export const ArrayOf = (targetClass: any) => (target: Propotype, propertyKey: string | symbol) => {
-    const items = getSchema(target);
-
+    const items = DtoSchemaStorage.get(targetClass) || { type: targetClass.name.toLowerCase() };
     validationFactory({ items })(target, propertyKey);
    
     /* Set array value */

@@ -12,8 +12,8 @@ const statusCodes: { [id: number]: ICode} = {
     404: {status: HttpStatus.NotFound }
 };
 
-export function createMessage<T>(code: number, body: T) {
+export function createMessage<T, P extends number>(code: P, body: T) {
     const message = statusCodes[code] ? statusCodes[code].status: '';
 
-    return new HttpMessage<T>(code, message, body);
+    return new HttpMessage<T, P>(code, message, body);
 }

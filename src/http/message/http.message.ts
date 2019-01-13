@@ -1,8 +1,8 @@
 
-export class HttpMessage<T, C = number, P = 'application/json'> {
+export class HttpMessage<T, C extends number, P = "application/json"> {
 
     constructor(
-        readonly code: number,
+        readonly code: C,
         readonly message: string,
         readonly body: T
     ) {}
