@@ -68,6 +68,7 @@ export const Deafault = <T>(def: T) => validationFactory({ default: def });
 /* Array validaitons */
 export const ArrayOf = (targetClass: any) => (target: Propotype, propertyKey: string | symbol) => {
     const items = DtoSchemaStorage.get(targetClass) || { type: targetClass.name.toLowerCase() };
+
     validationFactory({ items })(target, propertyKey);
    
     /* Set array value */

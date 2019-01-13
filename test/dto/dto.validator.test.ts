@@ -5,7 +5,7 @@ import { Data, IsEmail, Maximum, IsUrl, Nested, ArrayOf, MaxItems, IsOptional, C
 
 @Data()
 class DtoLocalSampledNested {
-    
+
     @IsUrl()
     prop1: string;
 
@@ -14,7 +14,7 @@ class DtoLocalSampledNested {
 // Decorator disabled for auto schema build
 //@Data()
 class DtoLocalSampled {
-    
+
     @IsEmail()
     prop1: string;
 
@@ -69,7 +69,17 @@ const schema = {
         },
         "nesteds": {
             "type": "array",
-            "items": {}
+            "items": {
+                "properties": {
+                    "prop1": {
+                        "format": "url",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "prop1"
+                ]
+            }
         },
         "prop3": {
             "type": "number"
