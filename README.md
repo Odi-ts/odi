@@ -37,6 +37,8 @@ Features Overview:
  - [ ] SSR
  
 For future updates check [Roadmap](https://github.com/Odi-ts/Odi/wiki/Roadmap)
+
+[![Edit Odi](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/pjov89947x)
  
 ## 🚀 Getting Started 
 1. Install npm package<br/>
