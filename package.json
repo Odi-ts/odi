@@ -19,8 +19,7 @@
   ],
   "typings": "lib/src/index.d.ts",
   "scripts": {
-    "test": "nyc mocha test/**/*.test.ts",
-    "posttest": "mkdir coverage && nyc report --reporter=lcov",
+    "test": "nyc mocha test/**/*.test.ts --exit",
     "pack": "rm -rf ./lib && tsc && npm pack",
     "integration": "tsc && node lib/test/integration/index.js",
     "bench": "node benchmark/bench"
@@ -41,6 +40,7 @@
     "@types/ora": "^3.0.0",
     "@types/react": "^16.7.18",
     "@types/react-dom": "^16.0.11",
+    "@types/socket.io-client": "^1.4.32",
     "autocannon": "^3.2.0",
     "chai": "^4.2.0",
     "istanbul": "^0.4.5",
@@ -52,6 +52,7 @@
     "pg": "^7.7.1",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
+    "socket.io-client": "^2.2.0",
     "source-map-support": "^0.5.9",
     "ts-node": "^7.0.1",
     "tslint": "^5.12.0",

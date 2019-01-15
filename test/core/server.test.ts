@@ -9,7 +9,10 @@ import { Connection, getConnection, getManager } from 'typeorm';
 
 function getCore() {
     return new Core({
-        server: { port: 8080 },
+        server: { 
+            port: 8080, 
+            socket: true
+        },
         sources: resolve(__dirname, './deps/classes'),
         database: {
             name: "scoped",
@@ -40,7 +43,6 @@ describe('Core', async () => {
         it('should create dependency composer', () => expect(core['dependencyComposer']).to.be.instanceOf(DependencyComposer));
     });
 
-
     describe('#setDatabase(..)', async () => {
         it('should return typeorm connection', async () => {
             if(core['database'])
@@ -54,14 +56,6 @@ describe('Core', async () => {
     describe('#setMiddleware(..)', () => {
         it('should set at least 2 default middlewares', () => core['setMiddleware']());
     });
-
-    describe('#loadDependencies(...)', async () => {
-        it('should create deps loader', async () => {
-            await core['loadDependencies']();
-            expect(core['dependencyManager']).to.be.instanceOf(DependencyManager);
-        });
-    });
-
     describe('#setUp(...)', async () => {
 
         before(async () => {
@@ -79,6 +73,13 @@ describe('Core', async () => {
         it('should return typeorm connection', () => expect(core['database']).to.be.instanceOf(Connection));
     });
 
+    describe('#loadDependencies(...)', async () => {
+        it('should create deps loader', async () => {
+            await core['loadDependencies']();
+            expect(core['dependencyManager']).to.be.instanceOf(DependencyManager);
+        });
+    });
+
     describe('#listen(...)', () => {  
 
         before(async () => {
@@ -92,9 +93,9 @@ describe('Core', async () => {
             core = getCore();
         });  
 
-        it('should run whole application without errors', async () => core.listen());
-
+       it('should run whole application without errors', async () => core.listen());
     });
-});
 
-after((done) => core['server'].close(() =>  done()));
+    
+    after((done) =>  core['app'].close(() => core['socketio'].close(() => done())));
+});

@@ -14,6 +14,7 @@ import DependencyContainer from '../dependency/dependency.container';
 export interface CoreOptions{
     server : {
         port: number,
+        socket?: boolean | import('socket.io').ServerOptions,
         https?: boolean | {
             keyFile: string,
             certFile: string
@@ -37,7 +38,8 @@ export class Core{
     private dependencyManager: DependencyManager;
 
     /* Treat like Connection */
-    protected database: any;
+    protected database?: any;
+    protected socketio: SocketIO.Server;
 
     protected options: CoreOptions;
     protected server: HttpServer;
@@ -61,9 +63,13 @@ export class Core{
     }   
 
     private async setUp(): Promise<void>{
-        if(this.options.database){
+
+        if(this.options.server.socket)
+            this.socketio = await this.setSocketio();
+
+        if(this.options.database)
             this.database = await this.setDatabase();
-        }
+        
 
         this.dependencyContainer.putById(DB_CONNECTION, this.database);
         
@@ -88,12 +94,22 @@ export class Core{
         return typeorm.createConnection(config);        
     }
 
+    protected async setSocketio(): Promise<any> {
+        const options = this.options.server.socket!;
+        
+        const socketio = await import("socket.io");
+        return socketio(this.app.server as any,  typeof options === 'boolean' ? {} : options);
+    }
+
+
     private async loadDependencies(): Promise<void>{
         const { sources } = this.options;
+        const { app, socketio } = this;
 
+        this.dependencyManager.applyRoots({ app, socketio });
         this.dependencyManager.classify(sources);        
-
-        await this.dependencyManager.compose({ app: this.app });
+    
+        await this.dependencyManager.compose();
     }
 
     public async listen(fnc?: (err: Error, address: string) => void){

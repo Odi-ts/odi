@@ -1,11 +1,13 @@
+import { FastifyInstance } from "fastify";
 import { AuthLoader } from "../auth/local/auth.loader";
+
 import { AUTH, CONTROLLER, REPOSITORY, SERVICE, SOCKET } from "../definitions";
-import { RepositoryLoader } from "../respositories/repository.loader";
 import { ControllersLoader } from "../routing/controllers/controller.loader";
+import { RepositoryLoader } from "../respositories/repository.loader";
 import { ServicesLoader } from "../services/services.loader";
 import { ILoader, inject } from "../utils/directory.loader";
 import DependencyComposer from "./dependency.composer";
-import { FastifyInstance } from "fastify";
+import SocketLoader from "../sockets/socket.loader";
 import { Instance, Constructor } from "../types";
 
 export enum DepType{ 
@@ -23,6 +25,7 @@ export interface Options{
 
 interface RootDeps {
     app: FastifyInstance;
+    socketio?: SocketIO.Server;
 }
 
 interface Loaders{
@@ -38,6 +41,7 @@ export class DependencyManager {
 
     private loaders: Loaders;
     private queues: Queues;
+    private roots: RootDeps;
 
     private constructor() {
         this.queues = this.instansiateQueues();        
@@ -58,9 +62,13 @@ export class DependencyManager {
     public getDeps(type: DepType) {
         return this.queues[type];
     }
+    
+    public applyRoots(rootDeps: RootDeps) {
+        this.roots = rootDeps;
+    }
 
-    public async compose(deps: RootDeps): Promise<void>{
-        this.loaders = this.instansiateLoaders(deps);
+    public async compose(): Promise<void>{
+        this.loaders = this.instansiateLoaders();
 
         await this.processPart(DepType.Repository);
         // Log.completion(`${this.queues[DepType.Auth].length} Repositories was successfully loaded`);
@@ -71,27 +79,40 @@ export class DependencyManager {
         await this.processPart(DepType.Auth);
         // Log.completion(`${this.queues[DepType.Auth].length} Auth was successfully loaded`);
 
+        await this.processPart(DepType.Socket);
+        // Log.completion(`${this.queues[DepType.Socket].length} Sockets was successfully loaded`);
+
         await this.processPart(DepType.Controller);       
         // Log.completion(`${this.queues[DepType.Controller].length} Controllers were successfully loaded`);       
     }
 
 
     private async processPart(key: DepType): Promise<void>{
-        let processor = this.loaders[key].processBase();
+        if(!this.loaders[key] && this.queues[key].length > 0)
+            throw Error(`${DepType[key]} processor doesn't exist. Install all required dependencies and fill configuration`);
+
+        const processor = this.loaders[key].processBase();
 
         for(const classType of this.queues[key])
             await processor(classType);
     }
 
-    private instansiateLoaders({ app }: RootDeps): Loaders{
+    private instansiateLoaders(): Loaders{
         const dependencyComposer = DependencyComposer.getComposer();
+        const { app, socketio } = this.roots;
         
-        return ({
+        const loaders: Loaders =  ({
             [DepType.Auth]: new AuthLoader({ dependencyComposer }),
             [DepType.Service]: new ServicesLoader({ dependencyComposer }),
+            [DepType.Controller]: new ControllersLoader({ dependencyComposer, app }),
+
             [DepType.Repository]: new RepositoryLoader({ dependencyComposer }),
-            [DepType.Controller]: new ControllersLoader({  dependencyComposer, app })
         });
+
+        if(socketio)
+            loaders[DepType.Socket] = new SocketLoader({ dependencyComposer, socketio });
+    
+        return loaders;
     }
 
     private instansiateQueues(): Queues{

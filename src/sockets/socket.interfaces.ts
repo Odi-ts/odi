@@ -10,7 +10,6 @@ export abstract class ISocket{
 
     protected onError(error: Error) {}
     
-
     
     emit(event: string | symbol, ...args: any[]) {
         this.nsp.emit(event, ...args);

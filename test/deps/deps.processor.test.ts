@@ -19,6 +19,8 @@ describe('Dependency Classifier', () => {
     const dependencyContainer = dependencyComposer['container'];
 
     const app = fastify();
+    const socketio = require('socket.io')(app.server);
+
     const sources = resolve(__dirname, './classes');
     const types = Object.values(DepType).filter(elem => typeof elem !== 'string');
 
@@ -70,7 +72,8 @@ describe('Dependency Classifier', () => {
 
     describe('#compose()', () => {
         it('should instantiate deps from folder into deps storage', async () => {
-            await dep.compose({ app });
+            dep.applyRoots({ app, socketio });
+            await dep.compose();
 
             expect(dependencyContainer.contain(RepositoryMock)).to.be.eq(true);
             expect(dependencyContainer.contain(ControllerMock)).to.be.eq(true);
@@ -78,4 +81,6 @@ describe('Dependency Classifier', () => {
             expect(dependencyContainer.contain(ServiceMock)).to.be.eq(true);
         });      
     });
+
+    after(done => socketio.close(() => done()));
 });
