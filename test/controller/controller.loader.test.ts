@@ -45,6 +45,8 @@ const requestPayload = {
 describe('Controller Loader', async () => {
     const app = fastify();
     const dependencyComposer = getDependencyComposer();
+    const dependencyContainer = dependencyComposer['container'];
+
     const loader = new ControllersLoader({ dependencyComposer, app });
     const processor = loader.processBase();
     const controller = new SampleController();    
@@ -73,7 +75,7 @@ describe('Controller Loader', async () => {
 
         it('should not put instance in DI container', () => {                
             processor(SampleController);
-            expect(dependencyComposer.contain(SampleController, 'default')).to.be.eq(false);
+            expect(dependencyContainer.contain(SampleController, 'default')).to.be.eq(false);
         });
     });
 

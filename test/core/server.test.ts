@@ -58,7 +58,7 @@ describe('Core', async () => {
     describe('#loadDependencies(...)', async () => {
         it('should create deps loader', async () => {
             await core['loadDependencies']();
-            expect(core['dependencyLoader']).to.be.instanceOf(DependencyManager);
+            expect(core['dependencyManager']).to.be.instanceOf(DependencyManager);
         });
     });
 
@@ -75,7 +75,7 @@ describe('Core', async () => {
             await core['setUp']();
         });       
 
-        it('should create deps loader', () => expect(core['dependencyLoader']).to.be.instanceOf(DependencyManager));
+        it('should create deps loader', () => expect(core['dependencyManager']).to.be.instanceOf(DependencyManager));
         it('should return typeorm connection', () => expect(core['database']).to.be.instanceOf(Connection));
     });
 

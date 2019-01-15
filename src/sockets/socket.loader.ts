@@ -1,11 +1,10 @@
-import *  as io from  "socket.io";
-
 import { RFunction, reflectProperties, ILoader } from "../utils/directory.loader";
 import { Namespace } from "./socket.decorator";
 import { SOCKET, SOCKET_EVENT } from "../definitions";
 import { ISocket } from "./socket.interfaces";
 import { Constructor } from "../types";
 import DependencyComposer from "../dependency/dependency.composer";
+import { metadata } from "../utils/metadata.utils";
 
 
 export interface LoaderOptions{
@@ -20,14 +19,22 @@ export default class ScoketLoader implements ILoader{
 
     public processBase(): RFunction {
         return async (classType: Constructor) => {
-            const instance: ISocket = await this.options.dependencyComposer.instanciateClassType(classType);
-            const base: Namespace = Reflect.getMetadata(SOCKET, instance['constructor']);      
-      
-            instance['nsp'] = this.options.socketServer.of(base);            
-            instance['nsp'].on('connection', (socket: SocketIO.Socket): void => {
-                const handler: ISocket = this.bindController(instance); 
-                handler['socket'] = socket;
+            const sckMeta = metadata(classType);  
+            const base: Namespace = sckMeta.getMetadata(SOCKET);      
 
+            const instance: ISocket = await this.options.dependencyComposer.instanciateClassType(classType);
+            const handlers = this.bindHandlers(instance);
+
+            instance['nsp'] = this.options.socketServer.of(base);            
+            instance['nsp'].on('connection', (socket: SocketIO.Socket) => {
+                const isocketHandler: ISocket = this.bindController(instance); 
+                isocketHandler['socket'] = socket;
+
+                socket.on('disconnect', reason => isocketHandler['onDisconnect'](reason));
+                socket.on('error', error => isocketHandler['onError'](error));
+
+                for(const [ event, { handler }] of handlers)
+                    socket.on(event, () => handler.call(isocketHandler));
 
                 
             });        
@@ -52,6 +59,6 @@ export default class ScoketLoader implements ILoader{
             }
         }
 
-        return map;
+        return map.entries();
     }
 }

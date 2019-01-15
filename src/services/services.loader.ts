@@ -1,6 +1,8 @@
 import { ILoader } from '../utils/directory.loader';
-import DependencyComposer from '../dependency/dependency.composer';
 import { Constructor } from '../types';
+
+import DependencyComposer from '../dependency/dependency.composer';
+import DependencyContainer from '../dependency/dependency.container';
 
 
 export interface LoaderOptions{
@@ -16,13 +18,13 @@ export class ServicesLoader implements ILoader{
             /* Because singleton */
             const id = 'default';
 
-            if(this.options.dependencyComposer.contain(classType, id)){
+            if(DependencyContainer.getContainer().contain(classType, id)){
                 return;
             }
             
             const target = await this.options.dependencyComposer.instanciateClassType(classType);
             
-            this.options.dependencyComposer.put(classType, target, id);
+            DependencyContainer.getContainer().put(classType, target, id);
         }; 
     }
     

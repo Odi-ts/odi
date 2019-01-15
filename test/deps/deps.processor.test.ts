@@ -16,6 +16,8 @@ import { resolve } from 'path';
 
 describe('Dependency Classifier', () => {
     const dependencyComposer = getDependencyComposer();
+    const dependencyContainer = dependencyComposer['container'];
+
     const app = fastify();
     const sources = resolve(__dirname, './classes');
     const types = Object.values(DepType).filter(elem => typeof elem !== 'string');
@@ -23,7 +25,7 @@ describe('Dependency Classifier', () => {
     let dep: DependencyManager;
 
     describe('#constructor', () => {
-        dep = new DependencyManager({ sources });
+        dep = DependencyManager.getManager();
 
         it('should init queues for main components', () => {
             expect(dep['queues']).to.be.a('object');
@@ -59,7 +61,7 @@ describe('Dependency Classifier', () => {
 
     describe('#classify()', () => {
         it('should load deps from folder into queues', () => {
-            dep.classify();
+            dep.classify(sources);
 
             for(const queue of Object.values(dep['queues']))
                 expect(queue).to.have.length(1);
@@ -68,12 +70,12 @@ describe('Dependency Classifier', () => {
 
     describe('#compose()', () => {
         it('should instantiate deps from folder into deps storage', async () => {
-            await dep.compose(dependencyComposer, { app });
+            await dep.compose({ app });
 
-            expect(dependencyComposer.contain(RepositoryMock)).to.be.eq(true);
-            expect(dependencyComposer.contain(ControllerMock)).to.be.eq(true);
-            expect(dependencyComposer.contain(AuthMock)).to.be.eq(true);
-            expect(dependencyComposer.contain(ServiceMock)).to.be.eq(true);
+            expect(dependencyContainer.contain(RepositoryMock)).to.be.eq(true);
+            expect(dependencyContainer.contain(ControllerMock)).to.be.eq(true);
+            expect(dependencyContainer.contain(AuthMock)).to.be.eq(true);
+            expect(dependencyContainer.contain(ServiceMock)).to.be.eq(true);
         });      
     });
 });

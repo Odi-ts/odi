@@ -1,9 +1,9 @@
 import DependencyComposer from '../dependency/dependency.composer';
 
 import { RFunction, ILoader } from '../utils/directory.loader';
-import { INJECT_ID } from '../definitions';
-import { getConnection } from 'typeorm';
 import { Constructor } from '../types';
+import { metadata } from '../utils/metadata.utils';
+import DependencyContainer from '../dependency/dependency.container';
 
 
 
@@ -16,15 +16,16 @@ export class RepositoryLoader implements ILoader{
     constructor(readonly options: LoaderOptions){}
     
     public processBase(): RFunction{
-        return (classType: Constructor) => {
-            let id = Reflect.getMetadata(INJECT_ID, classType);
+        return async (classType: Constructor) => {
+            const { getConnection } = await import('typeorm');
+            const id = metadata(classType).getMetadata('INJECT_ID');
 
-            if(this.options.dependencyComposer.contain(classType, id)) {
+            if(DependencyContainer.getContainer().contain(classType, id))
                 return;
-            }
+    
 
-            let target = getConnection().getCustomRepository(classType);
-            this.options.dependencyComposer.put(classType, target, id);
+            const target = getConnection().getCustomRepository(classType);
+            DependencyContainer.getContainer().put(classType, target, id);
         }; 
     }
     

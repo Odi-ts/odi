@@ -34,24 +34,33 @@ interface Queues{
 }
 
 export class DependencyManager {
+    private static manager: DependencyManager;
+
     private loaders: Loaders;
     private queues: Queues;
 
-    constructor(readonly options: Options) {
+    private constructor() {
         this.queues = this.instansiateQueues();        
     }
-        
 
-    public classify(): void{
-        inject(this.options.sources, target => this.queues[this.getType(target)].push(target));    
+    public static getManager() {
+        if(!this.manager)
+            this.manager = new DependencyManager();
+
+        return this.manager;
+    }
+         
+
+    public classify(sources: string | string[]): void{
+        inject(sources, target => this.queues[this.getType(target)].push(target));    
     }
 
     public getDeps(type: DepType) {
         return this.queues[type];
     }
 
-    public async compose(dependencyComposer: DependencyComposer, deps: RootDeps): Promise<void>{
-        this.loaders = this.instansiateLoaders(dependencyComposer, deps);
+    public async compose(deps: RootDeps): Promise<void>{
+        this.loaders = this.instansiateLoaders(deps);
 
         await this.processPart(DepType.Repository);
         // Log.completion(`${this.queues[DepType.Auth].length} Repositories was successfully loaded`);
@@ -74,7 +83,9 @@ export class DependencyManager {
             await processor(classType);
     }
 
-    private instansiateLoaders(dependencyComposer: DependencyComposer, { app }: RootDeps): Loaders{
+    private instansiateLoaders({ app }: RootDeps): Loaders{
+        const dependencyComposer = DependencyComposer.getComposer();
+        
         return ({
             [DepType.Auth]: new AuthLoader({ dependencyComposer }),
             [DepType.Service]: new ServicesLoader({ dependencyComposer }),

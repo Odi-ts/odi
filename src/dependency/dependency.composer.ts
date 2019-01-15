@@ -7,39 +7,43 @@ import { isNull } from "../utils/object.utils";
 import { metadata } from "../utils/metadata.utils";
 import { ComponentSettingsStorage } from "./dependency.store";
 import { Constructor, Instance } from "../types";
-
-export interface Implemenations{   
-    [index: string]: Instance;
-}
+import DependencyContainer from "./dependency.container";
 
 export default class DependencyComposer{
-    private map: Map<Constructor, Implemenations>;
-    private idMap: Map<string, Instance>;
+    private static composer: DependencyComposer;
+    private container: DependencyContainer;   
 
-    constructor(){
-        this.map = new Map();
-        this.idMap = new Map();
+    private constructor() {
+        this.container = DependencyContainer.getContainer();
     }
 
-    public async instanciateClassType<T>(classType: Constructor<T>, { id, constructorArgs, props = {}, type = "singleton" }: ComponentEntry<Constructor<T>> & { id?: string } = defaultEntry){
+    public static getComposer() {
+        if(!this.composer)
+            this.composer = new DependencyComposer();
+
+        return this.composer;
+    }
+
+    public async instanciateClassType<T>(classType: Constructor<T>, { id, constructorArgs, props = {}, type }: ComponentEntry<Constructor<T>> & { id?: string } = defaultEntry){
         const instance = new classType(...await this.injectByConstructor(classType, constructorArgs as any[]));  
 
         // Use it for handling not DI props
         Object.keys(props).forEach(prop => (instance as any)[prop] = (props as any)![prop]);
 
-        if((instance as any)[onInit]){
+        if((instance as any)[onInit])
            await (instance as any)[onInit](); 
-        }
-
+        
         await this.injectByProperty(instance, props);
         await this.injectByMethod(instance);
 
         if(type === 'singleton')
-            this.put(classType, instance, id);
+            this.container.put(classType, instance, id);
 
         return instance;
-    }
+    }   
 
+
+    //* Injectors
     private async injectByConstructor<T>(classType: Constructor<T>, ctrArgs: any[] = []): Promise<unknown[]>{
         const params = await this.injectByParams(classType);
         
@@ -92,63 +96,23 @@ export default class DependencyComposer{
     }
     
 
-    /* By Type Methods */
-    public put(classType: Constructor, instance: Instance, id: string = 'default'): void{
-        if(!instance)
-            return;
-
-        const prev = this.map.has((instance.constructor as Constructor) || classType) || {};
-        
-        this.map.set((instance.constructor as Constructor)|| classType, { ...prev, [id]: instance });    
-    }
-
-    public get(classType: Constructor, id: string = 'default') {
-        const instance = this.map.get(classType);
-
-        return instance ? instance[id] : null;
-    }
-
-    public contain(classType: Constructor, id: string = 'default'): boolean {
-        const instance = this.map.get(classType);
-
-        if(!instance){
-            return false;
-        }
-
-        return (instance[id] !== undefined);
-    }
-
-   
-    /* By Id methods */
-    public putById(id: string, instance: Instance): void{
-       this.idMap.set(id, instance);
-    }
-
-    public getById(id: string) {
-        return this.idMap.get(id);
-    }
-
-    public containById(id: string): boolean{
-        return this.idMap.has(id);
-    }
-
-
-
-    private async proccessDependency(parentObject: Instance, dependency: Constructor, depId: string = 'default', propertyKey?: string | symbol) {    
+    //* Deps processors
+    private async proccessDependency(parentObject: Instance, dependency: Constructor, depId?: string, propertyKey?: string | symbol) {    
         if(metadata(dependency).hasMetadata(INJECT_ID) || ComponentSettingsStorage.get(dependency)){
             
-            const id = metadata(Object.getPrototypeOf(parentObject), propertyKey).getMetadata(AUTOWIRED) || 
+            const id = depId ||
+                       metadata(Object.getPrototypeOf(parentObject), propertyKey).getMetadata(AUTOWIRED) || 
                        metadata(dependency).getMetadata(INJECT_ID) || 
-                       depId;
+                       'default';
             
             const depSettings = ComponentSettingsStorage.get(dependency);
             const settings = depSettings ? depSettings[id] || {} : {};
 
-            if(!this.contain(dependency, id)){
-                await this.instanciateClassType(dependency, { id, ...settings });
+            if(!this.container.contain(dependency, id)){
+                return this.instanciateClassType(dependency, { id, ...settings });
             }
 
-            return this.get(dependency, id);
+            return this.container.get(dependency, id);
         } else {                         
             return this.proccessUnexpected(parentObject, dependency);
         }
@@ -158,6 +122,7 @@ export default class DependencyComposer{
         return new dependency;
     }
 
+    //* Helper function
     private getInjectableProps(prototype: Constructor): (string | symbol)[]{
         if(!prototype || !isObject(prototype)){
             return [];
@@ -168,4 +133,5 @@ export default class DependencyComposer{
             ...this.getInjectableProps(Object.getPrototypeOf(prototype))
         ];
     }
+    
 }

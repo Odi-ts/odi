@@ -50,10 +50,3 @@ export const Inject = (id: string = 'default') => (target: Propotype, propertyKe
     
     Reflect.defineMetadata(INJECT, { ...prev, [index]: id }, target, propertyKey);
 };
-
-
-class Kek {
-    constructor(args: string ){
-        
-    }
-}

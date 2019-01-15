@@ -21,6 +21,9 @@ describe('Auth Loader', () => {
 
     describe('#AuthLoader', async () => {           
         const dependencyComposer = getDependencyComposer();   
+        const dependencyContainer = dependencyComposer['container'];
+
+
         const loader = new AuthLoader({ dependencyComposer }); 
         const processor = loader.processBase();       
 
@@ -29,15 +32,15 @@ describe('Auth Loader', () => {
         it('should put instance in DI container', async () => {    
             await processor(AuthServiceMock);
 
-            expect(dependencyComposer.contain(AuthServiceMock)).to.be.eq(true);
-            expect(dependencyComposer.containById('auth')).to.be.eq(true);
+            expect(dependencyContainer.contain(AuthServiceMock)).to.be.eq(true);
+            expect(dependencyContainer.containById('auth')).to.be.eq(true);
         });
         
         it('should override existed repository in DI container',async () => {            
-            (dependencyComposer.get(AuthServiceMock) as any)['flag'] = 'origin';
+            (dependencyContainer.get(AuthServiceMock) as any)['flag'] = 'origin';
             await processor(AuthServiceMock);
             
-            expect((dependencyComposer.get(AuthServiceMock) as any)['flag']).to.be.eq(undefined);
+            expect((dependencyContainer.get(AuthServiceMock) as any)['flag']).to.be.eq(undefined);
         });
     });
 });

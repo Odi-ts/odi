@@ -1,5 +1,5 @@
 import { ISocket } from "../../../src/sockets/socket.interfaces";
-import { Sockets } from "../../../src/sockets/socket.decorator";
+import { Socket } from "../../../src/sockets/socket.decorator";
 
-@Sockets('/')
+@Socket('/')
 export class SocketMock extends ISocket{} 

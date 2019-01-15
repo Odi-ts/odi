@@ -1,14 +1,14 @@
 import * as fastify from 'fastify';
 import * as cookie from 'fastify-cookie';
 
-import { createServer, Server as HttpServer } from 'http';
+import { Server as HttpServer } from 'http';
 
-import { ConnectionOptions, Connection } from "typeorm";
 import { CoreAuth } from '../auth/local/auth.interface';
 import { DB_CONNECTION } from '../definitions';
 import { DependencyManager } from '../dependency/dependency.manager';
 import DependencyComposer from '../dependency/dependency.composer';
 import { GAJV } from '../dto/dto.storage';
+import DependencyContainer from '../dependency/dependency.container';
 
 
 export interface CoreOptions{
@@ -21,7 +21,7 @@ export interface CoreOptions{
         proxy?: boolean
     };
     sources: string;
-    database?: ConnectionOptions | 'ormconfig';
+    database?: any | 'ormconfig';
     /*
         dependencies  : {
             controllers: string,
@@ -32,11 +32,12 @@ export interface CoreOptions{
 }
 
 export class Core{
+    private dependencyContainer: DependencyContainer;
     private dependencyComposer: DependencyComposer;
-    private dependencyLoader: DependencyManager;
+    private dependencyManager: DependencyManager;
 
     /* Treat like Connection */
-    protected database: Connection;
+    protected database: any;
 
     protected options: CoreOptions;
     protected server: HttpServer;
@@ -48,7 +49,10 @@ export class Core{
 
     constructor(options: CoreOptions){
         this.options = options;
-        this.dependencyComposer = new DependencyComposer();
+
+        this.dependencyContainer = DependencyContainer.getContainer();
+        this.dependencyComposer = DependencyComposer.getComposer();
+        this.dependencyManager = DependencyManager.getManager();
         
         this.app = fastify();   
         
@@ -61,7 +65,7 @@ export class Core{
             this.database = await this.setDatabase();
         }
 
-        this.dependencyComposer.putById(DB_CONNECTION, this.database);
+        this.dependencyContainer.putById(DB_CONNECTION, this.database);
         
 
         this.setMiddleware();
@@ -77,7 +81,7 @@ export class Core{
         this.app.register(cookie);
     }
 
-    protected async setDatabase(): Promise<Connection> {
+    protected async setDatabase(): Promise<any> {
         const typeorm = await import("typeorm");
         const config = this.options.database === 'ormconfig' ? await typeorm.getConnectionOptions() : this.options.database!;    
 
@@ -87,10 +91,9 @@ export class Core{
     private async loadDependencies(): Promise<void>{
         const { sources } = this.options;
 
-        this.dependencyLoader = new DependencyManager({ sources });
-        this.dependencyLoader.classify();        
+        this.dependencyManager.classify(sources);        
 
-        await this.dependencyLoader.compose(this.dependencyComposer, { app: this.app });
+        await this.dependencyManager.compose({ app: this.app });
     }
 
     public async listen(fnc?: (err: Error, address: string) => void){

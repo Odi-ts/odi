@@ -19,6 +19,7 @@ import { concatinateBase } from '../../utils/url.utils';
 import { getModule } from '../../utils/env.tools';
 import { CoreAuth } from '../../auth/local/auth.interface';
 import { Constructor } from '../../types';
+import DependencyContainer from '../../dependency/dependency.container';
 
 export type AuthMetadata = any;
 
@@ -35,7 +36,7 @@ export class ControllersLoader implements ILoader {
 
 
     public processBase(): RFunction {
-        const auth = this.options.dependencyComposer.getById('auth') as CoreAuth<object, object>;
+        const auth = DependencyContainer.getContainer().getById('auth') as CoreAuth<object, object>;
         const { app } = this.options;
 
         return async (classType: Constructor<IController>) => {
