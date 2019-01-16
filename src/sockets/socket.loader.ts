@@ -13,6 +13,9 @@ export interface LoaderOptions{
     dependencyComposer: DependencyComposer;
 }
 
+type HandlersMap = { [index: string]: string; };
+
+
 export default class SocketLoader implements ILoader{
 
     constructor(readonly options: LoaderOptions) {}
@@ -29,8 +32,9 @@ export default class SocketLoader implements ILoader{
 
             const instance: ISocket = await this.options.dependencyComposer.instanciateClassType(classType);
             const handlers = this.bindHandlers(instance);
+            const nsp = this.options.socketio.of(base);
 
-            instance['nsp'] = this.options.socketio.of(base);            
+            instance['nsp'] = nsp;            
             instance['nsp'].on('connect', (socket: SocketIO.Socket) => {
                 const isocketHandler: ISocket = this.bindController(instance); 
                 isocketHandler['socket'] = socket;
@@ -53,16 +57,16 @@ export default class SocketLoader implements ILoader{
     }
 
     private bindHandlers(instance : ISocket) {
-        let map: Map<string, string> = new Map();
+        const map: HandlersMap = {};
 
         for(let method of reflectOwnProperties(instance)){
             let eventName: string = Reflect.getMetadata(SOCKET_EVENT, instance, method);
 
             if(eventName){
-                map.set(eventName, method);
+                map[eventName] = method;
             }
         }
 
-        return map.entries();
+        return Object.entries(map);
     }
 }
