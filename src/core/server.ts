@@ -1,5 +1,6 @@
 import * as fastify from 'fastify';
 import * as cookie from 'fastify-cookie';
+import * as fstatic from 'fastify-static';
 
 import { Server as HttpServer } from 'http';
 
@@ -19,7 +20,8 @@ export interface CoreOptions{
             keyFile: string,
             certFile: string
         },
-        proxy?: boolean
+        proxy?: boolean,
+        static?: import('fastify-static').FastifyStaticOptions
     };
     sources: string;
     database?: any | 'ormconfig';
@@ -63,6 +65,9 @@ export class Core{
     }   
 
     private async setUp(): Promise<void>{
+
+        if(this.options.server.static)
+            this.app.register(fstatic, this.options.server.static);
 
         if(this.options.server.socket)
             this.socketio = await this.setSocketio();

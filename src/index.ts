@@ -10,6 +10,7 @@ export * from './routing/controllers/controller.decorators';
 export * from './routing/controllers/controller.types';
 export * from './routing/middleware/middleware.decorators';
 export * from './dto/dto.decorators';
+export * from './sockets/socket.decorator';
 
 export { IController } from './routing/controllers/controller.interface';
 
