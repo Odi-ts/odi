@@ -34,12 +34,13 @@ export default class SocketLoader implements ILoader{
             instance['nsp'].on('connect', (socket: SocketIO.Socket) => {
                 const isocketHandler: ISocket = this.bindController(instance); 
                 isocketHandler['socket'] = socket;
+                isocketHandler['onConnect']();
 
                 socket.on('disconnect', reason => isocketHandler['onDisconnect'](reason));
                 socket.on('error', error => isocketHandler['onError'](error));
 
-                for(const [ event, { handler }] of handlers) {
-                    socket.on(event, () => handler.call(isocketHandler));
+                for(const [ eventName, method] of handlers) {
+                    socket.on(eventName, (...args) => (isocketHandler as any)[method](...args));
                 }
             });        
 
@@ -52,16 +53,13 @@ export default class SocketLoader implements ILoader{
     }
 
     private bindHandlers(instance : ISocket) {
-        let map: Map<string, { handler: Function, userFor?: boolean }> = new Map();
+        let map: Map<string, string> = new Map();
 
         for(let method of reflectOwnProperties(instance)){
             let eventName: string = Reflect.getMetadata(SOCKET_EVENT, instance, method);
 
-
             if(eventName){
-                map.set(eventName, {
-                    handler :  (<any>instance)[method]
-                });
+                map.set(eventName, method);
             }
         }
 

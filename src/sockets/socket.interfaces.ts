@@ -1,8 +1,8 @@
 import { Namespace, Socket } from 'socket.io';
 
 export abstract class ISocket{
-    private nsp: Namespace;
-    private socket: Socket;
+    protected nsp: Namespace;
+    protected socket: Socket;
 
     protected onConnect() {}
 

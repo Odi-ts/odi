@@ -13,7 +13,7 @@ export * from './dto/dto.decorators';
 export * from './sockets/socket.decorator';
 
 export { IController } from './routing/controllers/controller.interface';
-
+export { ISocket } from './sockets/socket.interfaces';
 
 export * from './services/services.decorator';
 
