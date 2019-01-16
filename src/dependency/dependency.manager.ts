@@ -90,6 +90,9 @@ export class DependencyManager {
     private async processPart(key: DepType): Promise<void>{
         if(!this.loaders[key] && this.queues[key].length > 0)
             throw Error(`${DepType[key]} processor doesn't exist. Install all required dependencies and fill configuration`);
+        
+        else if(!this.loaders[key])
+            return;
 
         const processor = this.loaders[key].processBase();
 
