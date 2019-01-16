@@ -74,7 +74,7 @@
     "gauge": "^2.7.4",
     "globby": "^8.0.2",
     "inquirer": "^6.2.1",
-    "reflect-metadata": "^0.1.12",
+    "reflect-metadata": "^0.1.13",
     "ts-simple-ast": "^20.0.0"
   },
   "optionalDependencies": {
