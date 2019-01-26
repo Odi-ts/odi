@@ -3,9 +3,12 @@ import * as glob from 'globby';
 import * as ts from 'typescript';
 
 import { writeFileSync } from "fs";
-import { join, normalize, relative } from "path";
+import { join, normalize, relative, resolve } from "path";
 import { isArray } from "util";
 import { findExport } from '../src/utils/directory.loader';
+import { execSync } from 'child_process';
+
+
 
 // Functions
 export function capitalize(str: string) {
@@ -21,8 +24,12 @@ export function remapPath(route: string) {
     }, route);
 }
 
-export function writeFile(filename: string, path: string, content: string) {
-    return writeFileSync(join(path, filename), content, { encoding: 'UTF-8' });
+export function writeFile(filename: string, content: string) {
+    return writeFileSync(resolve(process.cwd(), filename), content.trim(), { encoding: 'UTF-8' });
+}
+
+export function writeJsonFile(filename: string, content: object) {
+    return writeFileSync(resolve(process.cwd(), filename), JSON.stringify(content, null, 4), { encoding: 'UTF-8' });
 }
 
 export function urlMapper(ts: string, basePath: string, outDir: string, rootDirs: string | string[]) { 
@@ -53,7 +60,15 @@ export function urlMapper(ts: string, basePath: string, outDir: string, rootDirs
 }
 
 
+// Commands
+export function execCommands(commands: string[]) {
+    for(const command of commands) {
+        execSync(command, { stdio: 'inherit' });
+    }
+}
 
+
+// TypeSript files injection
 export interface IjectionResult {
     tsPath: string;
     jsPath: string;

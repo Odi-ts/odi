@@ -1,6 +1,6 @@
 {
   "name": "odi",
-  "version": "0.3.3",
+  "version": "0.3.31",
   "description": "🌪🌌 Opinionated, Declarative, Idiomatic framework for building scalable, supportable, enterprise-grade applications.",
   "main": "lib/src/index.js",
   "homepage": "https://github.com/Odi-ts/Odi#readme",
@@ -20,7 +20,8 @@
   "typings": "lib/src/index.d.ts",
   "scripts": {
     "test": "nyc mocha test/**/*.test.ts --exit",
-    "pack": "rm -rf ./lib && tsc && npm pack",
+    "build": "rm -rf ./lib && tsc",
+    "pack": "npm run build && npm pack",
     "integration": "tsc && node lib/test/integration/index.js",
     "bench": "node benchmark/bench"
   },
