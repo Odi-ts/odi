@@ -7,15 +7,11 @@ import { MAIN_COMPONENTS } from '../definitions';
 import { isPrimitive } from 'util';
 import { Instance, Constructor } from '../types';
 
-
-export type RFunction = (target: Constructor) => void;
-
-
 export interface ILoader{   
-    processBase(...args: any[]): void | any; 
+    processBase(...args: any[]): (constructor: Constructor) => Promise<Instance>; 
 }
 
-export function inject(pattern: string | string[], reworker: RFunction) {
+export function inject(pattern: string | string[], reworker: (constructor: Constructor) => any) {
     glob.sync(pattern).forEach(drpath => {
         let imp: any = require(path.relative(__dirname, drpath));       
         let typeClass: any = findExport(imp);

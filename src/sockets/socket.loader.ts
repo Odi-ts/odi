@@ -1,4 +1,4 @@
-import { RFunction, reflectProperties, ILoader, reflectOwnProperties } from "../utils/directory.loader";
+import { reflectProperties, ILoader, reflectOwnProperties } from "../utils/directory.loader";
 import { Namespace } from "./socket.decorator";
 import { SOCKET, SOCKET_EVENT } from "../definitions";
 import { ISocket } from "./socket.interfaces";
@@ -25,7 +25,7 @@ export default class SocketLoader implements ILoader{
 
         return async (classType: Constructor) => {
             if(container.contain(classType))
-                return;
+                return container.get(classType)!;
 
             const sckMeta = metadata(classType);  
             const base: Namespace = sckMeta.getMetadata(SOCKET);      
@@ -49,6 +49,8 @@ export default class SocketLoader implements ILoader{
             });        
 
             container.put(classType, instance);
+
+            return instance;
         }; 
     }
 

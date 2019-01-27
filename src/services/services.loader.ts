@@ -22,9 +22,10 @@ export class ServicesLoader implements ILoader{
                 return;
             }
             
-            const target = await this.options.dependencyComposer.instanciateClassType(classType);
-            
+            const target = await this.options.dependencyComposer.instanciateClassType(classType);            
             DependencyContainer.getContainer().put(classType, target, id);
+
+            return target;
         }; 
     }
     

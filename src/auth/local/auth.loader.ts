@@ -26,7 +26,7 @@ export class AuthLoader implements ILoader{
             const defaults: AuthDefaults = md.getMetadata(AUTH);
             const typeId: string = md.getMetadata(INJECT_ID) || 'default';
 
-            let authInstance = await this.options.dependencyComposer.instanciateClassType(classType);
+            const authInstance = await this.options.dependencyComposer.instanciateClassType(classType);
             
             authInstance['secret'] = defaults.secret || 'secret';
             authInstance['expiration'] = defaults.expiration || '1 hour';
@@ -34,6 +34,8 @@ export class AuthLoader implements ILoader{
 
             DependencyContainer.getContainer().putById('auth', authInstance);  
             DependencyContainer.getContainer().put(classType, authInstance, typeId);
+
+            return authInstance;
         };
     }
 

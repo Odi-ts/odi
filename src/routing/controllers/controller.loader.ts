@@ -4,7 +4,7 @@ import DependencyComposer from '../../dependency/dependency.composer';
 import { FastifyInstance, RouteSchema } from 'fastify';
 
 import { RouteMetadata, isRouteHandler, ControllerMeta } from './controller.decorators';
-import { RFunction, ILoader, reflectOwnProperties } from '../../utils/directory.loader';
+import { ILoader, reflectOwnProperties } from '../../utils/directory.loader';
 import { getFunctionArgs, FunctionParam } from '../../utils/reflection/function.reflection';
 
 import { metadata } from '../../utils/metadata.utils';
@@ -35,7 +35,7 @@ export class ControllersLoader implements ILoader {
     }
 
 
-    public processBase(): RFunction {
+    public processBase() {
         const auth = DependencyContainer.getContainer().getById('auth') as CoreAuth<object, object>;
         const { app } = this.options;
 
@@ -74,6 +74,7 @@ export class ControllersLoader implements ILoader {
                 }
             }
 
+            return target;
         };
     }
 

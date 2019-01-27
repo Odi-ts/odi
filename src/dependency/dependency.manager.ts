@@ -9,6 +9,7 @@ import { ILoader, inject } from "../utils/directory.loader";
 import DependencyComposer from "./dependency.composer";
 import SocketLoader from "../sockets/socket.loader";
 import { Instance, Constructor } from "../types";
+import { getType } from "mime";
 
 export enum DepType{ 
     Controller = 1,
@@ -84,6 +85,13 @@ export class DependencyManager {
 
         await this.processPart(DepType.Controller);       
         // Log.completion(`${this.queues[DepType.Controller].length} Controllers were successfully loaded`);       
+    }
+
+    public async processDep(dep: Constructor): Promise<Instance> {
+        const type = this.getType(dep);
+        const processor = this.loaders[type].processBase();
+
+        return processor(dep);
     }
 
 
