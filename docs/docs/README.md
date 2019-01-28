@@ -1,7 +1,7 @@
 # Table of contents
 
 * [Read Me](../README.md)
-* [Intoduction](../introduction/README.md)
+* [Introduction](../introduction/README.md)
   * [Motivation](../introduction/motivation.md)
   * [Core Concepts](../introduction/core-concepts.md)
 * [Fundamentals](../basics/README.md)

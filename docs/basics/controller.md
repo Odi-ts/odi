@@ -4,7 +4,7 @@
 
 Controllers serve as a simple yet powerful routing mechanism. Controller methods are mapped to webserver paths. The value returned by the method is sent as the response.
 
-In order to create a Controller, you must use the `@Controller` decorator and inherit the `IController` class. The decorator sets the component type, so the DI (dependency injection) container can detect what the class will be used for.
+In order to create a Controller, you must use the `@Controller` decorator and inherit the `IController` class. The decorator sets the component type, so the DI \(dependency injection\) container can detect what the class will be used for.
 
 ### Overview
 
@@ -22,7 +22,7 @@ export class SampleController extends IController {
     @Get index() {
         return `Hello world !`;
     }
-    
+
     @RoutePost('save') 
     saveSample(payload: SampleDTO) {
         return `Your sample name is - ${payload.name}`;
@@ -54,7 +54,7 @@ Information from the request **body** and request **params** is automatically in
 
 ### Decorators
 
-* `@Controller(basePath: string = "/")` __- sets a class as a controller. Accepts only one optional argument: the base path, which prefixes all routes in a controller.
+* `@Controller(basePath: string = "/")` \_\_- sets a class as a controller. Accepts only one optional argument: the base path, which prefixes all routes in a controller.
 * `@Route(method: Method, path: string = "/")` -  sets a method of a controller as a route handler. Accepts two arguments: the HTTP method and the path. The default path is "/".
 
 {% hint style="info" %}
@@ -72,7 +72,7 @@ There is also a set of decorators for binding class methods of a controller to s
 
 #### Route Shorthand
 
-There is a shorthand available for the `@Route` decorator which allows you to omit the _method_ parameter. All of the following decorators accept the path as a parameter. The default value is "/". 
+There is a shorthand available for the `@Route` decorator which allows you to omit the _method_ parameter. All of the following decorators accept the path as a parameter. The default value is "/".
 
 * `@RouteAll`
 * `@RouteGet`
@@ -89,13 +89,11 @@ Note: If a method is decorated with both the **@Route** and **@Get** headers \(o
 
 In all routing decorators, the leading slash can be omitted.
 
-`@RouteGet('foo')` is equivalent to `@RouteGet('/foo')` 
-
-
+`@RouteGet('foo')` is equivalent to `@RouteGet('/foo')`
 
 **Odi** provides special syntax for routing parameters.
 
-`@RouteGet('foo/{id}')` is equivalent to `@RouteGet('/foo/:id')`  
+`@RouteGet('foo/{id}')` is equivalent to `@RouteGet('/foo/:id')`
 
 There are no limitations and both variants can be used and are valid for the build process.
 
@@ -103,10 +101,11 @@ There are no limitations and both variants can be used and are valid for the bui
 
 As you can see in the Controller preview, you can directly inject data from the request into the route method as arguments.
 
-Supported types of data:
+Supported data type:
 
 * Route parameter
 * Request body
+* Request query parameters 
 
 To inject a route parameter, simply specify the parameter name. Only the `string` type is supported for now. You can inject an unlimited number of route parameters.
 
@@ -119,21 +118,17 @@ getSomething(id: string) {
 }
 ```
 
-To inject the body, a DTO class should be specified as an argument. You can use any name for this argument, but the type of the argument should be a DTO class that is decorated by the **@Data** decorator.
-
-You could theoretically inject unlimited numbers of DTOs, but there is no reason to do so. As you get only one request body, there should be only one DTO.
+To inject the body or the query parameters, a DTO class should be specified as an argument. You can use any name for this argument, but the type of the argument should be a DTO class that is decorated by the **@Data** or **@Query** decorator.
 
 ```typescript
-@Post save(payload: SampleDTO) {
-    return `Your sample name is - ${payload.name}`;
+@Post save(body: BodyDTO, query: QueryDTO) {
+    return `Your name is - ${body.name}, and your age is - ${query.age}`;
 }
 ```
 
 Read the **DTO** docs for more details:
 
 {% page-ref page="dto.md" %}
-
-### 
 
 ### Tips and Techniques
 
@@ -153,7 +148,7 @@ export class TodoController extends IController {
         const method = this.request.method;                  
         // Set your logic depending on method.
     }
-    
+
 }
 ```
 
@@ -169,12 +164,12 @@ export class TodoController extends IController {
     getTodo(id: string) {
         // Get todo...
     }
-    
+
     @RouteDel()
     delTodo(id: string) {
         // Delete todo...
     }
-    
+
 }
 ```
 
@@ -190,12 +185,12 @@ export class TodoController extends IController {
     getTodo(id: string) {
         // Get todo...
     }
-    
+
     @Route(Method.Del)
     delTodo(id: string) {
         // Delete todo...
     }
-    
+
 }
 ```
 
@@ -208,18 +203,15 @@ Note: In feature releases, a new Controller API will be added to handle such sit
 There are 3 helper actions that can be used in controllers.
 
 * `Ok(body?: any)` - set status code to 200 and send body
-
 * `BadRequest(body?: any)` - set status code to 400 and send body
-
 * `NotFound(body?: any)` - set status code to 404 and send body
-
-*  `Forbidden(body?: any)` - set status code to 403 and send body
+* `Forbidden(body?: any)` - set status code to 403 and send body
 
 ## Abstract Controller
 
 Every controller must extend the **IController** class. It provides useful methods that can be used for interaction with request data, cookies and other http thing. Also there are methods, that allows to work with **user**.
 
-### Methods and props \(HTTP\) 
+### Methods and props \(HTTP\)
 
 There are set of methods to work with headers, cookies, and other HTTP parameters/fields. without any additional calls or interacting _raw request/ raw response_ directly.
 
@@ -244,6 +236,10 @@ There are 2 methods to work with **cookies:**
 
 #### Query
 
+Can be accessed and validated using DTO.
+
+{% page-ref page="dto.md" %}
+
 There are 3 methods to work with **query:**
 
 * `getQueryParam(key: string)` - return query parameter value by key 
@@ -264,8 +260,6 @@ Information about request/response objects persist like a properties of class in
 * `request` - wrapped http request 
 * `response` - wrapped http response
 
-  
-
 ### Other methods and props
 
 There are few other methods
@@ -274,17 +268,15 @@ There are few other methods
 
 And property for user
 
-*  `user` - return user instance class
+* `user` - return user instance class
 
 For more details check **authentication** docs:
 
 {% page-ref page="authentication.md" %}
 
-
-
 ## Flow
 
-New instance of controller is created for each request. It allows to work conveniently and to avoid repeated code in your application. 
+New instance of controller is created for each request. It allows to work conveniently and to avoid repeated code in your application.
 
 ### **Dependency Injection**
 

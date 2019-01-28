@@ -14,14 +14,14 @@ But functional programming also takes part in development.
 
 Lets take a look on common **Odi** architecture, including database \([TypeORM](http://typeorm.io/#/) integration\):
 
-![](../.gitbook/assets/untitled-diagram%20%281%29.png)
+![](../.gitbook/assets/untitled-diagram-1.png)
 
 For responsibility, it can be divided into next layers:
 
-- **Controller** - network layer
-- **Service** - application \(logic\) layer
-- **Repository** - database actions layer
-- **Model** - data representation layer
+* **Controller** - network layer
+* **Service** - application \(logic\) layer
+* **Repository** - database actions layer
+* **Model** - data representation layer
 
 There can be other components on every layer, but we are looking only on a basic example.
 
@@ -59,3 +59,4 @@ Enable the following settings in `tsconfig.json`
 These settings allow us to properly handle **Dependency Injection** and many other things that are connected with runtime types. Without these options enabled, most of the core features will be disabled.
 
 In future versions there may be changes as the CLI tool will be released.
+
