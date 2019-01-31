@@ -19,7 +19,7 @@ export class AuthLoader implements ILoader{
 
     constructor(readonly options: Options){}
 
-    public processBase(){
+    public async processBase(){
         return  async (classType: Constructor<CoreAuth<object, object>>) => {
             const md = metadata(classType);
 

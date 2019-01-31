@@ -19,7 +19,7 @@ describe('Repository Loader', () => {
             dependencyComposer = getDependencyComposer();
             dependencyContainer = dependencyComposer['container'];
             loader = new ServicesLoader({ dependencyComposer });
-            processor = loader.processBase();
+            processor = await loader.processBase();
         });
        
         it('should return processing function', () => expect(processor).to.be.instanceOf(Function));

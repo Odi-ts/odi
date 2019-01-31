@@ -98,7 +98,7 @@ export default class DependencyComposer{
 
     //* Deps processors
     private async proccessDependency(parentObject: Instance, dependency: Constructor, depId?: string, propertyKey?: string | symbol) {    
-        if(metadata(dependency).hasMetadata(INJECT_ID) || ComponentSettingsStorage.get(dependency)){
+        if(metadata(dependency).hasMetadata(INJECT_ID) || ComponentSettingsStorage.get(dependency) || this.container.contain(dependency)) {
             
             const id = depId ||
                        metadata(Object.getPrototypeOf(parentObject), propertyKey).getMetadata(AUTOWIRED) || 
@@ -113,7 +113,8 @@ export default class DependencyComposer{
             }
 
             return this.container.get(dependency, id);
-        } else {                         
+        } else {                  
+            console.log("unexpected");
             return this.proccessUnexpected(parentObject, dependency);
         }
     }

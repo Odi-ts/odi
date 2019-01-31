@@ -48,7 +48,7 @@ describe('Controller Loader', async () => {
     const dependencyContainer = dependencyComposer['container'];
 
     const loader = new ControllersLoader({ dependencyComposer, app });
-    const processor = loader.processBase();
+    const processor = await loader.processBase();
     const controller = new SampleController();    
     const args = getFunctionArgs(controller, '/smth/:id/:name');
     const request = createRequest(requestPayload);   
