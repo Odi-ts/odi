@@ -1,11 +1,14 @@
-import { isMainThread, threadId, parentPort } from 'worker_threads';
 import { Constructor } from "../types";
 import { WORKER_CLASS } from '../definitions';
 import { WorkerRequest } from './worker.types';
+import { getModule } from "../utils/env.tools";
 
 
 export function Worker() {
     return (target: Constructor) => {
+        const workerThreads:  typeof import('worker_threads')  = getModule('worker_threads');
+        const { isMainThread, parentPort, threadId } = workerThreads; 
+
         if(isMainThread) {
             Reflect.defineMetadata(WORKER_CLASS, true, target);
 
