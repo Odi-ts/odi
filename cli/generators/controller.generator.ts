@@ -14,7 +14,7 @@ ${type === 'JSX' ? 'import { HomeView } from "../../views/home.view"' : ''}
 export default class ${capitalize(name)}Controller extends IController {
 
     @Get index() {
-        return ${type === 'JSX' ? "<HomeView />" : "Hello, world!"};
+        return ${type === 'JSX' ? "<HomeView />" : "'Hello, world!'"};
     }
 }    
 `;
