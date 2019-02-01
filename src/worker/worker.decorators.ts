@@ -1,5 +1,5 @@
 import { Constructor } from "../types";
-import { WORKER_CLASS } from '../definitions';
+import { WORKER } from '../definitions';
 import { WorkerRequest } from './worker.types';
 import { getModule } from "../utils/env.tools";
 
@@ -10,7 +10,7 @@ export function Worker() {
         const { isMainThread, parentPort, threadId } = workerThreads; 
 
         if(isMainThread) {
-            Reflect.defineMetadata(WORKER_CLASS, true, target);
+            Reflect.defineMetadata(WORKER, true, target);
 
         } else {
             const instance = new target();

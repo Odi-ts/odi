@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import { AuthLoader } from "../auth/local/auth.loader";
 
-import { AUTH, CONTROLLER, REPOSITORY, SERVICE, SOCKET, WORKER_CLASS } from "../definitions";
+import { AUTH, CONTROLLER, REPOSITORY, SERVICE, SOCKET, WORKER, MAIN_COMPONENTS } from "../definitions";
 import { ControllersLoader } from "../routing/controllers/controller.loader";
 import { RepositoryLoader } from "../respositories/repository.loader";
 import { ServicesLoader } from "../services/services.loader";
@@ -12,15 +12,25 @@ import { Instance, Constructor } from "../types";
 import { getType } from "mime";
 import { WorkerLoader } from "../worker/worker.loader";
 
-export enum DepType{ 
-    Controller = 1,
-    Service = 2,
-    Repository = 3,
-    Socket = 4,   
-    Auth = 5,
-    Worker = 6,
-    Custom = 7
+export enum DepType { 
+    Controller,
+    Service,
+    Repository,
+    Socket,   
+    Auth,
+    Worker,
+    Custom
 }
+
+export const DepMap = {
+    [CONTROLLER]: DepType.Controller,
+    [REPOSITORY]: DepType.Repository,
+    [SERVICE]: DepType.Service,
+    [WORKER]: DepType.Worker,
+    [SOCKET]: DepType.Socket,
+    [AUTH]: DepType.Auth
+};
+
 
 export interface Options{
     sources : string | string[];
@@ -144,28 +154,12 @@ export class DependencyManager {
 
     private getType(target: Instance | Function): DepType{
         let belongsTo = this.getRefer(target);
-        let result = DepType.Custom;
 
-        if(belongsTo(REPOSITORY))
-            result = DepType.Repository;
+        for(const type of MAIN_COMPONENTS) 
+            if(belongsTo(type))
+                return DepMap[type];
 
-        else if(belongsTo(SERVICE))
-            result = DepType.Service;
-            
-        else if(belongsTo(CONTROLLER))
-            result = DepType.Controller;    
-        
-        else if(belongsTo(SOCKET))
-            result = DepType.Socket;
-
-        else if(belongsTo(AUTH))
-            result = DepType.Auth;
-
-        else if(belongsTo(WORKER_CLASS))
-            result = DepType.Worker;
-
-
-        return result;
+        return DepType.Custom;
     }
 
     private getRefer(target: Instance | Function): (key: string) => boolean {

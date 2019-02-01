@@ -42,8 +42,8 @@ export const AUTH_MIDDLEWARE = `${naming}_auth_middleware`;
 
 
 /* Workers */
-export const WORKER_CLASS = `${naming}_worker`;
+export const WORKER = `${naming}_worker`;
 export const DB_CONNECTION = `#${naming}_db_connection_default`;
 
 
-export const MAIN_COMPONENTS = [CONTROLLER, SOCKET, SERVICE, AUTH, REPOSITORY, WORKER_CLASS ];
+export const MAIN_COMPONENTS = [CONTROLLER, SOCKET, SERVICE, AUTH, REPOSITORY, WORKER ];

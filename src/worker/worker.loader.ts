@@ -24,47 +24,52 @@ export class WorkerLoader implements ILoader{
 
             if(predefined)
                 return predefined;
-                
-            const instance = new classType();
            
-            const storage: WorkerHandlers = [];
-            const worker = new workerThreads.Worker(filePath!);
-        
-            worker.on('message', (message: WorkerResposne) => {
 
-                if(!storage[message.id])
-                    throw Error('No handler specified');
+            const worker = this.bindWorker(classType, filePath!, workerThreads);
+            DependencyContainer.getContainer().put(classType, worker);
 
-                storage[message.id].resolve(message.result);
-            });
-
-            const handler: ProxyHandler<any> = {
-                get(target, method, receiver) {    
-                    const targetValue = Reflect.get(target, method, receiver);
-
-                    if (typeof targetValue === 'function')                         
-                        return (...args: any[]) => new Promise((resolve, reject) => {
-                            const id = Date.now();
-                            
-                            storage[id] = {
-                                resolve,
-                                reject
-                            };
-                        
-                            worker.postMessage({ id, args, method });
-                        });      
-                    else
-                        return targetValue;
-                                                   
-                }
-            };
-        
-            const proxiedInstance = new Proxy(instance, handler);
-
-            DependencyContainer.getContainer().put(classType, proxiedInstance);
-
-            return proxiedInstance;
+            return worker;
         }; 
+    }
+
+    private bindWorker(classType: Constructor, filePath: string, workerThreads: any) {
+     
+        const instance = new classType();
+           
+        const storage: WorkerHandlers = [];
+        const worker = new workerThreads.Worker(filePath!);
+    
+        worker.on('message', (message: WorkerResposne) => {
+
+            if(!storage[message.id])
+                throw Error('No handler specified');
+
+            storage[message.id].resolve(message.result);
+        });
+
+        const handler: ProxyHandler<any> = {
+            get(target, method, receiver) {    
+                const targetValue = Reflect.get(target, method, receiver);
+
+                if (typeof targetValue === 'function')                         
+                    return (...args: any[]) => new Promise((resolve, reject) => {
+                        const id = Date.now();
+                        
+                        storage[id] = {
+                            resolve,
+                            reject
+                        };
+                    
+                        worker.postMessage({ id, args, method });
+                    });      
+                else
+                    return targetValue;
+                                               
+            }
+        };
+    
+        return new Proxy(instance, handler);
     }
     
 }
