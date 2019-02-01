@@ -15,7 +15,7 @@ export class RepositoryLoader implements ILoader{
    
     constructor(readonly options: LoaderOptions){}
     
-    public processBase() {
+    public async processBase() {
         return async (classType: Constructor) => {
             const { getConnection } = await import('typeorm');
 

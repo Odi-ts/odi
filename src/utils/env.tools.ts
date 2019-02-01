@@ -1,4 +1,4 @@
-export function getModule(md: string) {
+export function getModule<T = any>(md: string): T {
     const gl: any = global;
 
     if(!gl[md])

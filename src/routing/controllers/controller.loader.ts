@@ -35,7 +35,7 @@ export class ControllersLoader implements ILoader {
     }
 
 
-    public processBase() {
+    public async processBase() {
         const auth = DependencyContainer.getContainer().getById('auth') as CoreAuth<object, object>;
         const { app } = this.options;
 

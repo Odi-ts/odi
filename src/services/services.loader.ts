@@ -13,7 +13,7 @@ export class ServicesLoader implements ILoader{
    
     constructor(readonly options: LoaderOptions){}
     
-    public processBase() {
+    public async processBase() {
         return async (classType: Constructor) => {
             /* Because singleton */
             const id = 'default';

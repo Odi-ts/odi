@@ -26,3 +26,5 @@ export * from './http/error/http.error';
 export * from './aliases';
 
 export * from './http/message/index';
+
+export * from './worker/worker.decorators';

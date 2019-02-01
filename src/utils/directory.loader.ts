@@ -8,16 +8,16 @@ import { isPrimitive } from 'util';
 import { Instance, Constructor } from '../types';
 
 export interface ILoader{   
-    processBase(...args: any[]): (constructor: Constructor) => Promise<Instance>; 
+    processBase(...args: any[]): Promise<(constructor: Constructor, filePath?: string) => Promise<Instance>>; 
 }
 
-export function inject(pattern: string | string[], reworker: (constructor: Constructor) => any) {
+export function inject(pattern: string | string[], reworker: (constructor: Constructor, filePath: string) => any) {
     glob.sync(pattern).forEach(drpath => {
         let imp: any = require(path.relative(__dirname, drpath));       
         let typeClass: any = findExport(imp);
          
         if(typeClass)
-            reworker(typeClass);
+            reworker(typeClass, drpath);
         else{}
             //console.warn('No matching classes in files autoloading files')
     });  

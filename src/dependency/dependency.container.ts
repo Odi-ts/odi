@@ -27,10 +27,10 @@ export default class DependencyContainer {
         if(!instance)
             return;
 
-        const constructor = (instance.constructor as Constructor) || classType;
+        const constructor = classType || (instance.constructor as Constructor);
         const prev = this.map.get(constructor) || {};
         
-        this.map.set(constructor, { ...prev, [id]: instance });    
+        this.map.set(constructor, { ...prev, [id]: instance });
     }
 
     public get(classType: Constructor, id: string = 'default') {

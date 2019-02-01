@@ -65,8 +65,12 @@ describe('Dependency Classifier', () => {
         it('should load deps from folder into queues', () => {
             dep.classify(sources);
 
-            for(const queue of Object.values(dep['queues']))
+            const queues = Object.values(dep['queues']);
+            queues.pop();
+
+            for(const queue of queues) {
                 expect(queue).to.have.length(1);
+            }
         });      
     });
 

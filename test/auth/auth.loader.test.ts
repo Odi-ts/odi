@@ -25,7 +25,7 @@ describe('Auth Loader', () => {
 
 
         const loader = new AuthLoader({ dependencyComposer }); 
-        const processor = loader.processBase();       
+        const processor = await loader.processBase();       
 
         it('should return processing function', () => expect(processor).to.be.instanceOf(Function));
         

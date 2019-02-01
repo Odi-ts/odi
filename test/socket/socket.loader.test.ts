@@ -31,13 +31,13 @@ class HomeSocket extends ISocket{
 
 }
 
-describe('Socket Loader', () => {
+describe('Socket Loader', async () => {
     const app = fastify();
     const socketio = socketServer(app.server);
 
     const dependencyComposer = getDependencyComposer();
     const socketLoader = new SocketLoader({ socketio, dependencyComposer });
-    const processor = socketLoader.processBase();
+    const processor = await socketLoader.processBase();
 
     before(done => app.listen(8082, done));
 

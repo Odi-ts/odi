@@ -14,12 +14,12 @@ describe('Repository Loader', () => {
         let loader; 
         let processor: Function;
 
-        before(() => {
+        before(async () => {
             dependencyComposer = getDependencyComposer();
             dependencyContainer = dependencyComposer['container'];
 
             loader = new RepositoryLoader({ dependencyComposer });
-            processor = loader.processBase();
+            processor = await loader.processBase();
         });
        
         it('should return processing function', () => expect(processor).to.be.instanceOf(Function));

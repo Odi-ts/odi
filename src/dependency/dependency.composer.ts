@@ -97,8 +97,11 @@ export default class DependencyComposer{
     
 
     //* Deps processors
-    private async proccessDependency(parentObject: Instance, dependency: Constructor, depId?: string, propertyKey?: string | symbol) {    
-        if(metadata(dependency).hasMetadata(INJECT_ID) || ComponentSettingsStorage.get(dependency)){
+    private async proccessDependency(parentObject: Instance, dependency: Constructor, depId?: string, propertyKey?: string | symbol) {  
+        // Check if there are any predefined/instantiated components of this type 
+        const predefined = ComponentSettingsStorage.has(dependency) || this.container.contain(dependency);
+        
+        if(metadata(dependency).hasMetadata(INJECT_ID) || predefined) {
             
             const id = depId ||
                        metadata(Object.getPrototypeOf(parentObject), propertyKey).getMetadata(AUTOWIRED) || 
@@ -113,7 +116,8 @@ export default class DependencyComposer{
             }
 
             return this.container.get(dependency, id);
-        } else {                         
+        } else {                  
+            console.log("unexpected");
             return this.proccessUnexpected(parentObject, dependency);
         }
     }

@@ -20,7 +20,7 @@ export default class SocketLoader implements ILoader{
 
     constructor(readonly options: LoaderOptions) {}
 
-    public processBase() {
+    public async processBase() {
         const container = DependencyContainer.getContainer();
 
         return async (classType: Constructor) => {

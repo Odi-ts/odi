@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import { AuthLoader } from "../auth/local/auth.loader";
 
-import { AUTH, CONTROLLER, REPOSITORY, SERVICE, SOCKET } from "../definitions";
+import { AUTH, CONTROLLER, REPOSITORY, SERVICE, SOCKET, WORKER, MAIN_COMPONENTS } from "../definitions";
 import { ControllersLoader } from "../routing/controllers/controller.loader";
 import { RepositoryLoader } from "../respositories/repository.loader";
 import { ServicesLoader } from "../services/services.loader";
@@ -10,15 +10,27 @@ import DependencyComposer from "./dependency.composer";
 import SocketLoader from "../sockets/socket.loader";
 import { Instance, Constructor } from "../types";
 import { getType } from "mime";
+import { WorkerLoader } from "../worker/worker.loader";
 
-export enum DepType{ 
-    Controller = 1,
-    Service = 2,
-    Repository = 3,
-    Socket = 4,   
-    Auth = 5,
-    Custom = 6
+export enum DepType { 
+    Controller,
+    Service,
+    Repository,
+    Socket,   
+    Auth,
+    Worker,
+    Custom
 }
+
+export const DepMap = {
+    [CONTROLLER]: DepType.Controller,
+    [REPOSITORY]: DepType.Repository,
+    [SERVICE]: DepType.Service,
+    [WORKER]: DepType.Worker,
+    [SOCKET]: DepType.Socket,
+    [AUTH]: DepType.Auth
+};
+
 
 export interface Options{
     sources : string | string[];
@@ -34,7 +46,7 @@ interface Loaders{
 }
 
 interface Queues{
-    [index: string] : Constructor[];
+    [index: string] : [Constructor, string][];
 }
 
 export class DependencyManager {
@@ -57,7 +69,7 @@ export class DependencyManager {
          
 
     public classify(sources: string | string[]): void{
-        inject(sources, target => this.queues[this.getType(target)].push(target));    
+        inject(sources, (target, path) => this.queues[this.getType(target)].push([ target, path ]));    
     }
 
     public getDeps(type: DepType) {
@@ -77,6 +89,9 @@ export class DependencyManager {
         await this.processPart(DepType.Service);
         // Log.completion(`${this.queues[DepType.Service].length} Services were successfully loaded`);
         
+        await this.processPart(DepType.Worker);
+        // Log.completion(`${this.queues[DepType.Worker].length} Workers were successfully loaded`);
+
         await this.processPart(DepType.Auth);
         // Log.completion(`${this.queues[DepType.Auth].length} Auth was successfully loaded`);
 
@@ -89,7 +104,7 @@ export class DependencyManager {
 
     public async processDep(dep: Constructor): Promise<Instance> {
         const type = this.getType(dep);
-        const processor = this.loaders[type].processBase();
+        const processor = await this.loaders[type].processBase();
 
         return processor(dep);
     }
@@ -99,13 +114,13 @@ export class DependencyManager {
         if(!this.loaders[key] && this.queues[key].length > 0)
             throw Error(`${DepType[key]} processor doesn't exist. Install all required dependencies and fill configuration`);
         
-        else if(!this.loaders[key])
+        else if(!this.loaders[key] || this.queues[key].length === 0)
             return;
 
-        const processor = this.loaders[key].processBase();
+        const processor = await this.loaders[key].processBase();
 
-        for(const classType of this.queues[key])
-            await processor(classType);
+        for(const [ classType, filePath ] of this.queues[key])
+            await processor(classType, filePath);
     }
 
     private instansiateLoaders(): Loaders{
@@ -116,7 +131,7 @@ export class DependencyManager {
             [DepType.Auth]: new AuthLoader({ dependencyComposer }),
             [DepType.Service]: new ServicesLoader({ dependencyComposer }),
             [DepType.Controller]: new ControllersLoader({ dependencyComposer, app }),
-
+            [DepType.Worker]: new WorkerLoader({ dependencyComposer}),
             [DepType.Repository]: new RepositoryLoader({ dependencyComposer }),
         });
 
@@ -132,30 +147,19 @@ export class DependencyManager {
             [DepType.Service]: [],
             [DepType.Controller]: [],
             [DepType.Repository]: [],
+            [DepType.Worker]: [],
             [DepType.Socket]: []
         };
     }
 
     private getType(target: Instance | Function): DepType{
         let belongsTo = this.getRefer(target);
-        let result = DepType.Custom;
 
-        if(belongsTo(REPOSITORY))
-            result = DepType.Repository;
+        for(const type of MAIN_COMPONENTS) 
+            if(belongsTo(type))
+                return DepMap[type];
 
-        else if(belongsTo(SERVICE))
-            result = DepType.Service;
-            
-        else if(belongsTo(CONTROLLER))
-            result = DepType.Controller;    
-        
-        else if(belongsTo(SOCKET))
-            result = DepType.Socket;
-
-        else if(belongsTo(AUTH))
-            result = DepType.Auth;
-
-        return result;
+        return DepType.Custom;
     }
 
     private getRefer(target: Instance | Function): (key: string) => boolean {
