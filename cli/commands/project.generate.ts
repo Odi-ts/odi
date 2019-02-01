@@ -42,10 +42,10 @@ function action({ templating, database }: any) {
     
     // Sources dir
     mkdirSync(resolve(process.cwd(), './src'));
-    mkdirSync(resolve(process.cwd(), './views'));
     mkdirSync(resolve(process.cwd(), './src/controllers'));
     
-    if(templating) {
+    if(templating) {        
+        mkdirSync(resolve(process.cwd(), './views'));
         writeFile('./views/home.view.tsx', generateView());
     } 
 
