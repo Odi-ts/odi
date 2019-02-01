@@ -114,7 +114,7 @@ export class DependencyManager {
         if(!this.loaders[key] && this.queues[key].length > 0)
             throw Error(`${DepType[key]} processor doesn't exist. Install all required dependencies and fill configuration`);
         
-        else if(!this.loaders[key])
+        else if(!this.loaders[key] || this.queues[key].length === 0)
             return;
 
         const processor = await this.loaders[key].processBase();
