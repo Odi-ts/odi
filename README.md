@@ -36,10 +36,11 @@ Features Overview:
  - [ ] AOP
  - [ ] SSR
  
-For future updates check [Roadmap](https://github.com/Odi-ts/Odi/wiki/Roadmap)
+For future updates check [Roadmap](https://github.com/Odi-ts/Odi/wiki/Roadmap) <br>
+Got an idea, proposal or feature request? Feel free to [Submit](https://odi.nolt.io/) it!
 
 [![Edit Odi](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/pjov89947x)
- 
+  
 ## 🚀 Getting Started 
 1. Install npm package<br/>
   `npm install odi --save`
