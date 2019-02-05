@@ -156,7 +156,7 @@ export class ControllersLoader implements ILoader {
 
             if(typeof type === 'function' &&  md.hasMetadata(keys.DATA_CLASS)) {
                 const fieldName = md.getMetadata(keys.DATA_CLASS) === keys.BODY_DTO ? 'body' : 'querystring';
-                console.log(DtoSchemaStorage.get(type));
+                
                 schema[fieldName] = DtoSchemaStorage.get(type);
             }
         }
