@@ -3,7 +3,6 @@ import { WORKER } from '../definitions';
 import { WorkerRequest } from './worker.types';
 import { getModule } from "../utils/env.tools";
 
-
 export function Worker() {
     return (target: Constructor) => {
         const workerThreads:  typeof import('worker_threads')  = getModule('worker_threads');
@@ -18,10 +17,18 @@ export function Worker() {
             if(!parentPort)
                 throw Error("No message port is availble");
 
-            parentPort.on('message', async ({ id, args, method }: WorkerRequest) => {
-                const result = await instance[method](...args);
+            parentPort.once('message', (port: import('worker_threads').MessagePort) => {
 
-                parentPort!.postMessage({ id, result, threadId });
+                port.on('message', async ({ id, args, method }: WorkerRequest) => {
+                    try {                
+                        const result = await instance[method](...args);
+                        port!.postMessage({ id, result, threadId });
+                    
+                    } catch {
+                        port!.postMessage({ id, threadId, error: 'Error while processing worker method' });
+                    }
+                });
+                
             });
         }
     };

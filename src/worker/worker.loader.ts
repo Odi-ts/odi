@@ -4,7 +4,6 @@ import DependencyContainer from '../dependency/dependency.container';
 import { ILoader } from '../utils/directory.loader';
 import { Constructor } from '../types';
 import { WorkerHandlers, WorkerResposne } from './worker.types';
-import { getModule } from '../utils/env.tools';
 
 
 export interface LoaderOptions{
@@ -33,19 +32,26 @@ export class WorkerLoader implements ILoader{
         }; 
     }
 
-    private bindWorker(classType: Constructor, filePath: string, workerThreads: any) {
+    private bindWorker(classType: Constructor, filePath: string, workerThreads: typeof import("worker_threads")) {
      
         const instance = new classType();
            
         const storage: WorkerHandlers = [];
         const worker = new workerThreads.Worker(filePath!);
-    
-        worker.on('message', (message: WorkerResposne) => {
+        const { port1, port2 } = new workerThreads.MessageChannel();
 
-            if(!storage[message.id])
+        worker.postMessage(port1, [ port1 ]);
+
+        port2.on('message', (message: WorkerResposne) => {
+            const handler = storage[message.id];
+
+            if(!handler)
                 throw Error('No handler specified');
 
-            storage[message.id].resolve(message.result);
+            if(message.error)
+                handler.reject(message.error);
+            else 
+                handler.resolve(message.result);
         });
 
         const handler: ProxyHandler<any> = {
@@ -61,7 +67,7 @@ export class WorkerLoader implements ILoader{
                             reject
                         };
                     
-                        worker.postMessage({ id, args, method });
+                        port2.postMessage({ id, args, method });
                     });      
                 else
                     return targetValue;

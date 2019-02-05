@@ -11,6 +11,7 @@ export interface WorkerResposne {
     id: number;
     threadId: number;
     result: any;
+    error?: Error;
 }
 
 export interface WorkerHandlers {
