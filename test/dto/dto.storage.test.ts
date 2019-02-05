@@ -15,6 +15,7 @@ class DtoNotDecoratedSample {}
 
 
 const dtoSampleSchema = {
+    "type": "object",
     "properties": {
       "prop1": {
         "minimum": 2,

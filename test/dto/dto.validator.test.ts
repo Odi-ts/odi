@@ -42,6 +42,7 @@ class DtoLocalSampled {
 }
 
 const schema = {
+    "type": "object",
     "properties": {
         "prop1": {
             "type": "string",
@@ -70,6 +71,7 @@ const schema = {
         "nesteds": {
             "type": "array",
             "items": {
+                "type": "object",
                 "properties": {
                     "prop1": {
                         "format": "url",

@@ -68,6 +68,7 @@ export function buildSchema(target: Constructor) {
     }
     
     const schema: object  = { 
+        type: "object",
         properties, 
         required: requiredProperties
     };
