@@ -40,7 +40,7 @@
     "@types/node": "^10.12.21",
     "@types/ora": "^3.0.0",
     "@types/react": "^16.8.1",
-    "@types/react-dom": "^16.0.11",
+    "@types/react-dom": "^16.8.0",
     "@types/socket.io-client": "^1.4.32",
     "autocannon": "^3.2.0",
     "chai": "^4.2.0",
