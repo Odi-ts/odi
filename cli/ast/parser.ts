@@ -1,4 +1,4 @@
-import { Project, MethodDeclaration, Type, EnumDeclaration } from 'ts-simple-ast';
+import { Project, MethodDeclaration, Type, EnumDeclaration } from 'ts-morph';
 import { HTTP_MESSAGE_TYPE_ENDING } from './constraints';
 
 let project: Project;

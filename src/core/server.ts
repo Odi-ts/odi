@@ -10,6 +10,7 @@ import { DependencyManager } from '../dependency/dependency.manager';
 import DependencyComposer from '../dependency/dependency.composer';
 import { GAJV } from '../dto/dto.storage';
 import DependencyContainer from '../dependency/dependency.container';
+import { ParcelOptions } from 'parcel-bundler';
 
 
 export interface CoreOptions{
@@ -25,6 +26,10 @@ export interface CoreOptions{
     };
     sources: string;
     database?: any | 'ormconfig';
+    bundler?: ParcelOptions & {
+        entryFile: string,
+        containerId: string
+    };
     /*
         dependencies  : {
             controllers: string,
@@ -66,6 +71,9 @@ export class Core{
 
     private async setUp(): Promise<void>{
 
+        if(this.options.bundler)
+            await this.setBundler();
+
         if(this.options.server.static)
             this.app.register(fstatic, this.options.server.static);
 
@@ -106,6 +114,15 @@ export class Core{
         return socketio(this.app.server as any,  typeof options === 'boolean' ? {} : options);
     }
 
+    protected async setBundler(): Promise<any> {
+        const ParcelBundler = await import('parcel-bundler');
+        const { entryFile, containerId, ...options } = this.options.bundler!;
+        
+        const bundler = new ParcelBundler(entryFile, options);
+        const bundle = await bundler.bundle();
+
+        console.log(bundle);
+    }
 
     private async loadDependencies(): Promise<void>{
         const { sources } = this.options;

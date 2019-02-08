@@ -15,7 +15,7 @@ import { remapPath, injectTsFiles } from '../utils';
 import { Constructor } from '../types';
 import { resolve } from 'path';
 import { getProgram, extractReturnType } from '../ast/parser';
-import { ClassDeclaration, MethodDeclaration, JSDoc, ts } from 'ts-simple-ast';
+import { ClassDeclaration, MethodDeclaration, JSDoc, ts } from 'ts-morph';
 import chalk from "chalk";
 
 type HandlerDescriptor = OpenAPIV3.OperationObject & { path: string, method: string };
