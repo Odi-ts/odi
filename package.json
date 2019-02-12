@@ -63,7 +63,7 @@
     "tslint-eslint-rules": "^5.4.0",
     "tslint-microsoft-contrib": "^5.2.1",
     "typeorm": "^0.2.13",
-    "typescript": "^3.2.4"
+    "typescript": "^3.3.3"
   },
   "dependencies": {
     "@types/cls-hooked": "^4.2.1",
