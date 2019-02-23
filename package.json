@@ -81,7 +81,7 @@
     "globby": "^8.0.2",
     "inquirer": "^6.2.2",
     "reflect-metadata": "^0.1.13",
-    "ts-morph": "^1.1.0"
+    "ts-morph": "^1.2.0"
   },
   "optionalDependencies": {
     "socket.io": "^2.1.1",
