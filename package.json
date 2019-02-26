@@ -62,7 +62,6 @@
     "tslint": "^5.13.0",
     "tslint-eslint-rules": "^5.4.0",
     "tslint-microsoft-contrib": "^5.2.1",
-    "typeorm": "^0.2.14",
     "typescript": "^3.3.3"
   },
   "dependencies": {
@@ -81,7 +80,8 @@
     "globby": "^8.0.2",
     "inquirer": "^6.2.2",
     "reflect-metadata": "^0.1.13",
-    "ts-morph": "^1.2.0"
+    "ts-morph": "^1.2.0",
+    "typeorm": "^0.2.14"
   },
   "optionalDependencies": {
     "socket.io": "^2.1.1",
