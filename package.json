@@ -69,7 +69,7 @@
     "@types/cls-hooked": "^4.2.1",
     "@types/fastify-static": "^0.14.0",
     "@types/parcel-bundler": "^1.10.1",
-    "ajv": "^6.9.1",
+    "ajv": "^6.9.2",
     "chalk": "^2.4.2",
     "cls-hooked": "^4.2.2",
     "commander": "^2.19.0",
