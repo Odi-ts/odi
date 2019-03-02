@@ -22,7 +22,27 @@ export interface CoreOptions{
             certFile: string
         },
         proxy?: boolean,
-        static?: import('fastify-static').FastifyStaticOptions
+        static?: {
+            root: string;
+            prefix?: string;
+            serve?: boolean;
+            decorateReply?: boolean;
+            schemaHide?: boolean;
+            setHeaders?: (...args: any[]) => void;
+            redirect?: boolean;
+            wildcard?: boolean;
+        
+            // Passed on to `send`
+            acceptRanges?: boolean;
+            cacheControl?: boolean;
+            dotfiles?: boolean;
+            etag?: boolean;
+            extensions?: string[];
+            immutable?: boolean;
+            index?: string[];
+            lastModified?: boolean;
+            maxAge?: string | number;
+        }
     };
     sources: string;
     database?: any | 'ormconfig';

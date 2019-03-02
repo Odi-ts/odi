@@ -69,7 +69,7 @@ export class ControllersLoader implements ILoader {
                         schema: {
                             ...this.getSchemaDescriptor(params)
                         },
-                        beforeHandler: [...ctrlMd, ...routeMd] 
+                        preHandler: [...ctrlMd, ...routeMd] 
                     }, this.bindHandler(target, propertyKey, params));                    
                 }
             }
