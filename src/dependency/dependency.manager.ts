@@ -102,7 +102,7 @@ export class DependencyManager {
         // Log.completion(`${this.queues[DepType.Controller].length} Controllers were successfully loaded`);       
     }
 
-    public async processDep(dep: Constructor): Promise<Instance> {
+    public async processDep<T> (dep: Constructor<T>): Promise<Instance<T>> {
         const type = this.getType(dep);
         const processor = await this.loaders[type].processBase();
 

@@ -7,8 +7,8 @@ import { MAIN_COMPONENTS } from '../definitions';
 import { isPrimitive } from 'util';
 import { Instance, Constructor } from '../types';
 
-export interface ILoader{   
-    processBase(...args: any[]): Promise<(constructor: Constructor, filePath?: string) => Promise<Instance>>; 
+export interface ILoader<T = any>{   
+    processBase(...args: any[]): Promise<(constructor: Constructor<T>, filePath?: string) => Promise<Instance<T>>>; 
 }
 
 export function inject(pattern: string | string[], reworker: (constructor: Constructor, filePath: string) => any) {

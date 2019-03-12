@@ -8,6 +8,7 @@ import { metadata } from "../utils/metadata.utils";
 import { ComponentSettingsStorage } from "./dependency.store";
 import { Constructor, Instance } from "../types";
 import DependencyContainer from "./dependency.container";
+import { DependencyManager } from "./dependency.manager";
 
 export default class DependencyComposer{
     private static composer: DependencyComposer;
@@ -122,8 +123,8 @@ export default class DependencyComposer{
         }
     }
 
-    private proccessUnexpected<T>(instance: Instance, dependency: Constructor<T>): T{
-        return new dependency;
+    private async proccessUnexpected<T> (instance: Instance, dependency: Constructor<T>): Promise<Instance<T>> {
+        return DependencyManager.getManager().processDep(dependency);
     }
 
     //* Helper function
