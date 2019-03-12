@@ -103,6 +103,9 @@ export class DependencyManager {
     }
 
     public async processDep<T> (dep: Constructor<T>): Promise<Instance<T>> {
+        if(!this.loaders)
+            this.loaders = this.instansiateLoaders();
+
         const type = this.getType(dep);
         const processor = await this.loaders[type].processBase();
 
