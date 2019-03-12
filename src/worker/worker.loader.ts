@@ -4,6 +4,7 @@ import DependencyContainer from '../dependency/dependency.container';
 import { ILoader } from '../utils/directory.loader';
 import { Constructor } from '../types';
 import { WorkerHandlers, WorkerResposne } from './worker.types';
+import { CustomLoader } from '../utils/loaders/custom.loader';
 
 
 export interface LoaderOptions{
@@ -16,7 +17,18 @@ export class WorkerLoader implements ILoader{
     constructor(readonly options: LoaderOptions) {}
     
     public async processBase() {
-        const workerThreads = await import('worker_threads');
+        let workerThreads: typeof import("worker_threads") | null ;
+
+        try {
+            workerThreads = await import('worker_threads');
+        } catch (error) {
+            workerThreads = null;
+            
+            console.error(`Worker threads is not supported in ${process.version} Node.Js version. Try to provide a flag, or update Node.js. Workers will be treated like custom components.`);
+        }
+
+        if(!workerThreads)
+            return new CustomLoader().processBase();
 
         return async (classType: Constructor, filePath?: string) => {
             const predefined = DependencyContainer.getContainer().get(classType);
@@ -25,7 +37,7 @@ export class WorkerLoader implements ILoader{
                 return predefined;
            
 
-            const worker = this.bindWorker(classType, filePath!, workerThreads);
+            const worker = this.bindWorker(classType, filePath!, workerThreads!);
             DependencyContainer.getContainer().put(classType, worker);
 
             return worker;
