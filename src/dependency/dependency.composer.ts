@@ -118,7 +118,7 @@ export default class DependencyComposer{
 
             return this.container.get(dependency, id);
         } else {                  
-            console.log("unexpected");
+            console.log(`Unexpected dependency {${dependency}}`);
             return this.proccessUnexpected(parentObject, dependency);
         }
     }

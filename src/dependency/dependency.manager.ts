@@ -11,6 +11,8 @@ import SocketLoader from "../sockets/socket.loader";
 import { Instance, Constructor } from "../types";
 import { getType } from "mime";
 import { WorkerLoader } from "../worker/worker.loader";
+import { log } from "util";
+import { CustomLoader } from "../utils/loaders/custom.loader";
 
 export enum DepType { 
     Controller,
@@ -107,20 +109,19 @@ export class DependencyManager {
             this.loaders = this.instansiateLoaders();
 
         const type = this.getType(dep);
-        const processor = await this.loaders[type].processBase();
+        const processor = await this.getLoader(type, true).processBase();
 
         return processor(dep);
     }
 
 
     private async processPart(key: DepType): Promise<void>{
-        if(!this.loaders[key] && this.queues[key].length > 0)
-            throw Error(`${DepType[key]} processor doesn't exist. Install all required dependencies and fill configuration`);
+        const loader = this.getLoader(key);
         
-        else if(!this.loaders[key] || this.queues[key].length === 0)
+        if(!loader)
             return;
 
-        const processor = await this.loaders[key].processBase();
+        const processor = await loader.processBase();
 
         for(const [ classType, filePath ] of this.queues[key])
             await processor(classType, filePath);
@@ -136,6 +137,7 @@ export class DependencyManager {
             [DepType.Controller]: new ControllersLoader({ dependencyComposer, app }),
             [DepType.Worker]: new WorkerLoader({ dependencyComposer}),
             [DepType.Repository]: new RepositoryLoader({ dependencyComposer }),
+            [DepType.Custom]: new CustomLoader()
         });
 
         if(socketio)
@@ -169,4 +171,10 @@ export class DependencyManager {
         return (identifier: string) => Reflect.hasMetadata(identifier, target);
     }
 
+    private getLoader(key: DepType, isSingle: boolean = false) {
+        if((isSingle && !this.loaders[key]) || (!isSingle && !this.loaders[key] && this.queues[key].length > 0))
+            throw Error(`${DepType[key]} processor doesn't exist. Install all required dependencies and fill configuration`);        
+
+        return this.loaders[key];
+    }
 }
