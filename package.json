@@ -32,7 +32,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/chai": "^4.1.7",
-    "@types/cheerio": "^0.22.10",
+    "@types/cheerio": "^0.22.11",
     "@types/esprima": "^4.0.2",
     "@types/express": "^4.16.1",
     "@types/globby": "^8.0.0",
