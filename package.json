@@ -38,7 +38,7 @@
     "@types/globby": "^8.0.0",
     "@types/inquirer": "0.0.44",
     "@types/mocha": "^5.2.6",
-    "@types/node": "^11.9.6",
+    "@types/node": "^11.11.3",
     "@types/ora": "^3.1.0",
     "@types/react": "^16.8.6",
     "@types/react-dom": "^16.8.2",
