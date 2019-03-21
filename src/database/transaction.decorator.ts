@@ -1,21 +1,6 @@
-import { INJECT_ID, REPOSITORY } from '../definitions';
 import { getNamespace } from "cls-hooked";
 import { Instance } from '../types';
 import { getModule } from '../utils/env.tools';
-
-
-
-export const EntityRepository = (entity: Function): ClassDecorator => {
-    const typeorm = require('typeorm');
-
-    return (target: Function) => {
-        Reflect.defineMetadata(REPOSITORY, entity, target);
-        Reflect.defineMetadata(INJECT_ID, 'default', target);
-
-        typeorm.EntityRepository(entity)(target);
-    };
-};
-
 
 export function Transaction(connectionName: string = "default"): MethodDecorator {
     const { getConnection } = getModule('typeorm');
