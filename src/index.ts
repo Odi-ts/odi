@@ -29,4 +29,4 @@ export * from './http/message/index';
 
 export * from './worker/worker.decorators';
 
-export * from './dependency/dependency.container';
+export { getContainer } from './dependency/dependency.container';
