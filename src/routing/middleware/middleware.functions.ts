@@ -12,8 +12,7 @@ export function bindAuthMiddleware(options: unknown, auth: CoreAuth<object, obje
         user['decoding'] = decoding;
         const result = await auth.authenticate({ request, response }, user, options);
 
-        //@ts-ignore
-        request['locals'] =  { user };
+        request.locals =  { user };
 
         if(result !== true)
             response.status(403).send(); 
