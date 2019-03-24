@@ -4,6 +4,7 @@ import { ValidatorFormat } from "./dto.type";
 import { buildSchema } from "./dto.validator";
 import { DtoPropsStorage, getSchema, GAJV, DtoPropsTypes, DtoSchemaStorage } from "./dto.storage";
 import { Constructor, Propotype } from '../types';
+import { isObject, isFunction } from 'util';
 
 function dtoFactory(value: string): ClassDecorator {
     return (target: Function) => {
@@ -66,8 +67,11 @@ export const IsRequired = () => validationFactory({});
 export const Deafault = <T>(def: T) => validationFactory({ default: def });
 
 /* Array validaitons */
-export const ArrayOf = (targetClass: any) => (target: Propotype, propertyKey: string | symbol) => {
-    const items = DtoSchemaStorage.get(targetClass) || { type: targetClass.name.toLowerCase() };
+export const ArrayOf = (targetClass: any ) => (target: Propotype, propertyKey: string | symbol) => {
+    const items = 
+            isObject(targetClass) ? targetClass : 
+            isFunction(targetClass) ? DtoSchemaStorage.get(targetClass) :
+            { type: targetClass.name.toLoweCase() };
 
     validationFactory({ items })(target, propertyKey);
    

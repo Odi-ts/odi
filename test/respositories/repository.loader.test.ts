@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import { RepositoryLoader } from "../../src/respositories/repository.loader";
+import { RepositoryLoader } from "../../src/database/repository.loader";
 import { getDependencyComposer } from "../utils/di.utils";
 import { RepoMock } from './repository.decorator.test';
 import DependencyComposer from '../dependency/dependency.composer';

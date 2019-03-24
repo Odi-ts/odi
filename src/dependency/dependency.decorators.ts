@@ -5,6 +5,7 @@ import { AUTOWIRED, INJECT } from "../definitions";
 import { autowiredPropsStore } from "./dependency.utils";
 import { ValuedProps, ConstructorParameters } from "./dependency.store";
 import { Constructor, Instance, Propotype } from '../types';
+import { isObject } from 'util';
 
 export interface ComponentEntry<T extends Constructor> {
     type?: 'singleton' | 'scoped';
@@ -32,8 +33,8 @@ export const defaultSettings: ComponentSettings<Constructor> = {
 };
 
 
-export const Autowired = (id?: string) => (target: Propotype, propertyKey: string | symbol, descriptor?: PropertyDescriptor) => {
-    Reflect.defineMetadata(AUTOWIRED, id || "default", target, propertyKey);
+export const Autowired = (id: string = 'default') => (target: Propotype, propertyKey: string | symbol, descriptor?: PropertyDescriptor) => {
+    Reflect.defineMetadata(AUTOWIRED, id, target, propertyKey);
 
     if(descriptor) {
         return;
@@ -45,8 +46,13 @@ export const Autowired = (id?: string) => (target: Propotype, propertyKey: strin
         autowiredPropsStore.set(target, [propertyKey]);
 };
 
-export const Inject = (id: string = 'default') => (target: Propotype, propertyKey: string | symbol, index: number) => {
+
+
+export const Inject = (id: string = 'default') => (target: Propotype, propertyKey: string | symbol, descriptor?: PropertyDescriptor | number) => {
+    if(isObject(descriptor) || descriptor)  
+        return Autowired(id)(target, propertyKey, descriptor as PropertyDescriptor);
+
     const prev = Reflect.getMetadata(INJECT, target, propertyKey) || {};
     
-    Reflect.defineMetadata(INJECT, { ...prev, [index]: id }, target, propertyKey);
+    Reflect.defineMetadata(INJECT, { ...prev, [descriptor as number]: id }, target, propertyKey);
 };

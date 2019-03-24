@@ -3,15 +3,13 @@ import { AuthLoader } from "../auth/local/auth.loader";
 
 import { AUTH, CONTROLLER, REPOSITORY, SERVICE, SOCKET, WORKER, MAIN_COMPONENTS } from "../definitions";
 import { ControllersLoader } from "../routing/controllers/controller.loader";
-import { RepositoryLoader } from "../respositories/repository.loader";
+import { RepositoryLoader } from "../database/repository.loader";
 import { ServicesLoader } from "../services/services.loader";
 import { ILoader, inject } from "../utils/directory.loader";
 import DependencyComposer from "./dependency.composer";
 import SocketLoader from "../sockets/socket.loader";
 import { Instance, Constructor } from "../types";
-import { getType } from "mime";
 import { WorkerLoader } from "../worker/worker.loader";
-import { log } from "util";
 import { CustomLoader } from "../utils/loaders/custom.loader";
 
 export enum DepType { 

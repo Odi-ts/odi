@@ -5,7 +5,7 @@ import * as fstatic from 'fastify-static';
 import { Server as HttpServer } from 'http';
 
 import { CoreAuth } from '../auth/local/auth.interface';
-import { DB_CONNECTION } from '../definitions';
+import { DB_CONNECTION, REQ_CONTEXT, REQ_LOCALS } from '../definitions';
 import { DependencyManager } from '../dependency/dependency.manager';
 import DependencyComposer from '../dependency/dependency.composer';
 import { GAJV } from '../dto/dto.storage';
@@ -83,7 +83,9 @@ export class Core{
         this.dependencyComposer = DependencyComposer.getComposer();
         this.dependencyManager = DependencyManager.getManager();
         
-        this.app = fastify();   
+        this.app = fastify();  
+        this.app.decorateRequest(REQ_CONTEXT, {}); 
+        this.app.decorateRequest(REQ_LOCALS, { user: null });
         
         // Explicitly set AJV as schema compiler 
         this.app.setSchemaCompiler(shema => GAJV.compile(shema));

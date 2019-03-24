@@ -36,7 +36,6 @@ export class WorkerLoader implements ILoader{
             if(predefined)
                 return predefined;
            
-
             const worker = this.bindWorker(classType, filePath!, workerThreads!);
             DependencyContainer.getContainer().put(classType, worker);
 

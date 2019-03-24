@@ -1,7 +1,8 @@
 import "fastify-cookie";
-import { Request, Context } from '../../aliases';
+import { Request, RoutingContext } from '../../aliases';
 import { UserData } from './auth.container';
 import { SignOptions, VerifyOptions, DecodeOptions } from './auth.types';
+
 export abstract class CoreAuth<T extends object, U>{  
     protected secret: string;
     protected container: string | undefined;
@@ -48,11 +49,17 @@ export abstract class CoreAuth<T extends object, U>{
         return (this.jsonwebtoken.decode(token, options) as T);
     }
 
+    /* Hooks */
+    public refresh(context: RoutingContext, data: UserData<T,U>, options: any): Promise<boolean> | boolean | void {
+        return false;
+    }
 
-    /* Abstract Methods */
-    public authenticate(context: Context, data: UserData<T,U>, options: any): Promise<boolean> | boolean | void {
+    public authenticate(context: RoutingContext, data: UserData<T,U>, options: any): Promise<boolean> | boolean | void {
         return true;
     }
+
+
+    /* Abstract Methods */
     public abstract deserialize(decoding: T | null): Promise<U | null | undefined> |  U | null | undefined;
 
     public abstract serialize(user: U): T | Promise<T>;

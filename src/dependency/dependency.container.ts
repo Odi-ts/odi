@@ -63,3 +63,7 @@ export default class DependencyContainer {
         return this.idMap.has(id);
     }
 }
+
+export function getContainer() {
+    return DependencyContainer.getContainer();
+}

@@ -1,4 +1,4 @@
-import { Controller, IController, Autowired, Service } from "../../../src/index";
+import { Controller, IController, Autowired, Service, Inject } from "../../../src/index";
 import { RepositoryMock } from "./repo";
 import { ServiceMock } from "./service";
 import { Custom } from "./custom";
@@ -6,13 +6,13 @@ import { Custom } from "./custom";
 @Controller()
 export class ControllerMock extends IController{
 
-    @Autowired()
+    @Inject()
     repo: RepositoryMock;
 
-    @Autowired()
+    @Inject()
     serivce: ServiceMock;
 
-    @Autowired('custom')
+    @Inject('custom')
     custom: Custom;
 
     @Autowired()

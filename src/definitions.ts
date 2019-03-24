@@ -47,3 +47,5 @@ export const DB_CONNECTION = `#${naming}_db_connection_default`;
 
 
 export const MAIN_COMPONENTS = [CONTROLLER, SOCKET, SERVICE, AUTH, REPOSITORY, WORKER ];
+export const REQ_CONTEXT = 'context';
+export const REQ_LOCALS = 'locals';

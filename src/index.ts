@@ -17,7 +17,7 @@ export { ISocket } from './sockets/socket.interfaces';
 
 export * from './services/services.decorator';
 
-export * from './respositories/repository.decorator';
+export * from './database/repository.decorator';
 
 export * from './dependency/dependency.decorators';
 export { define, onInit } from './dependency/dependency.utils';
@@ -29,3 +29,4 @@ export * from './http/message/index';
 
 export * from './worker/worker.decorators';
 
+export { getContainer } from './dependency/dependency.container';
