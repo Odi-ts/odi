@@ -58,7 +58,7 @@ Auth Service should be created, to start working with authentication in **Odi** 
 Implementation must be provided for abstract class `CoreAuth` with 2 generics.
 
 ```typescript
-import { Authentication, CoreAuth, Context, Autowired } from 'odi';
+import { Authentication, CoreAuth, RoutingContext, Autowired } from 'odi';
 import User from './models/user.model';
 import UserService from './services/user.service';
 

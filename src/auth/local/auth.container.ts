@@ -30,9 +30,12 @@ export class UserData<Decoding extends object, User>{
         
         try {
             result = [ null, this.authService.verifyToken(this.token, options) ];
+            
         } catch (err) {
             result = [ (err as Error), null];
         }
+
+        this.decoding = result[1];
 
         return result;
     }

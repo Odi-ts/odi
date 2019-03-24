@@ -27,7 +27,7 @@ export type RequestHandler = (request: Request, reply: Response) => void | Promi
 export type RequestMiddleware = (this: FastifyInstance<Server, IncomingMessage, ServerResponse>, req: Request, reply: Response, done: (err?: Error) => void) => void;
 
 /** Req/res context */
-export interface Context {
+export interface RoutingContext {
     request: Request;
     response: Response;
 }
