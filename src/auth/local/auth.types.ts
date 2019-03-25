@@ -44,6 +44,16 @@ export interface VerifyOptions {
     maxAge?: string;
 }
 
+export interface DefaultFields {
+    iat: number;
+    exp: number;
+    nbf: number;
+    aud: string;
+    iss: string;
+    sub: string;
+    jti: string;
+}
+
 export interface DecodeOptions {
     complete?: boolean;
     json?: boolean;

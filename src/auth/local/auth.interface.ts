@@ -1,7 +1,7 @@
 import "fastify-cookie";
 import { Request, RoutingContext } from '../../aliases';
 import { UserData } from './auth.container';
-import { SignOptions, VerifyOptions, DecodeOptions } from './auth.types';
+import { SignOptions, VerifyOptions, DecodeOptions, DefaultFields } from './auth.types';
 
 export abstract class CoreAuth<T extends object, U>{  
     protected secret: string;
@@ -11,6 +11,7 @@ export abstract class CoreAuth<T extends object, U>{
     private jsonwebtoken = require("jsonwebtoken");
 
     constructor(){
+        
         this.configure();
     }
    
@@ -41,12 +42,12 @@ export abstract class CoreAuth<T extends object, U>{
         return this.jsonwebtoken.sign(data, this.secret, options);
     }
 
-    public verifyToken(token: string, options?: VerifyOptions): T {
-        return (this.jsonwebtoken.verify(token, this.secret, options) as T);
+    public verifyToken(token: string, options?: VerifyOptions): T & DefaultFields  {
+        return (this.jsonwebtoken.verify(token, this.secret, options) as T & DefaultFields);
     }
 
-    public decodeToken(token: string, options?: DecodeOptions): T | null {
-        return (this.jsonwebtoken.decode(token, options) as T);
+    public decodeToken(token: string, options?: DecodeOptions): T & DefaultFields | null {
+        return (this.jsonwebtoken.decode(token, options) as T & DefaultFields);
     }
 
     /* Hooks */
