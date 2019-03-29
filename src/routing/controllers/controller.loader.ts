@@ -20,6 +20,7 @@ import { getModule } from '../../utils/env.tools';
 import { CoreAuth } from '../../auth/local/auth.interface';
 import { Constructor } from '../../types';
 import DependencyContainer from '../../dependency/dependency.container';
+import { buildParamsFunc } from '../../comiler/binders';
 
 export type AuthMetadata = any;
 
@@ -70,7 +71,7 @@ export class ControllersLoader implements ILoader {
                             ...this.getSchemaDescriptor(params)
                         },
                         preHandler: [...ctrlMd, ...routeMd] 
-                    }, this.bindHandler(target, propertyKey, params));                    
+                    }, this.bindHandler(target, classType, propertyKey, params));                    
                 }
             }
 
@@ -78,16 +79,16 @@ export class ControllersLoader implements ILoader {
         };
     }
 
-    public bindHandler(target: IController, property: string, rawParams: FunctionParam[]): RequestHandler {        
-        return async (req, res) => {
-            const ctrl = this.bindController(target)['applyContext'](req, res);
+    public bindHandler(target: IController, classType: Constructor, property: string, rawParams: FunctionParam[]): RequestHandler {       
+        const paramsGetter = buildParamsFunc(rawParams);
 
+        return async (req, res) => {           
+            const ctrl = Object.assign(new classType, target);
             //@ts-ignore;          
             ctrl['userData'] = req.locals ? req.locals.user : null;
 
             try {    
-                const params = await this.bindParams(req, rawParams);
-                const result = await ctrl[property].call(ctrl, ...params);
+                const result = await ctrl[property].apply(ctrl, paramsGetter(req));
 
                 if(res.sent)
                     return;
@@ -124,30 +125,7 @@ export class ControllersLoader implements ILoader {
         };
     }
 
-    private async bindParams(req: Request, rawParams: FunctionParam[]) {
-        const params = [];
-        
-        for(const { name, type } of rawParams) {
-            const md = metadata(type);
-
-            if([ Number, String, Boolean ].includes(type))       
-                params.push(req.params[name] ? type(req.params[name]) : undefined);
-
-            else if(typeof type === 'function' && md.hasMetadata(keys.DATA_CLASS))                 
-                params.push(await plainToClass(type, req[md.getMetadata(keys.DATA_CLASS) === keys.BODY_DTO ? 'body' : 'query']));  
-
-            else 
-                params.push(undefined);
-        }
-
-    
-        return params;
-    }
-
-    private bindController(target: IController){
-        return Object.assign(Object.create(Object.getPrototypeOf(target)), target);
-    }
-
+ 
     private getSchemaDescriptor(rawParams: FunctionParam[]) {
         const schema: RouteSchema = {};
 

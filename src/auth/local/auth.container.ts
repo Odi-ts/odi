@@ -7,17 +7,17 @@ export class UserData<Decoding extends object, User>{
     
     constructor(
         token: string,
-        private readonly authService: CoreAuth<Decoding, User>
+        private readonly authService: CoreAuth<any, any>
     ) {
         this.token = token;
     }
 
         
     async load(options?: DecodeOptions) {
-        return this.authService.deserialize(this.decode(options));
+        return this.authService.deserialize(this.decode(options) as any);
     }    
     
-    decode(options?: DecodeOptions) {
+    decode(options?: DecodeOptions): Decoding {
         if(!this.decoding) {
             this.decoding = (this.authService.decodeToken(this.token, options) as Decoding);
         }

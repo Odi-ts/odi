@@ -3,7 +3,7 @@ import { Request, RoutingContext } from '../../aliases';
 import { UserData } from './auth.container';
 import { SignOptions, VerifyOptions, DecodeOptions, DefaultFields } from './auth.types';
 
-export abstract class CoreAuth<T extends object, U>{  
+export abstract class CoreAuth<T extends object, U, P extends object = T & DefaultFields>{  
     protected secret: string;
     protected container: string | undefined;
     protected expiration: string | number;    
@@ -15,8 +15,8 @@ export abstract class CoreAuth<T extends object, U>{
         this.configure();
     }
    
-    private extractUser(ctx: Request): UserData<T, U>{
-        return new UserData<T, U>(this.extractToken(ctx), this);
+    private extractUser(ctx: Request): UserData<P, U>{
+        return new UserData<P, U>(this.extractToken(ctx), this);
     }
 
     private extractToken(ctx: Request, container: string = this.container = "authorization"){  
@@ -42,26 +42,26 @@ export abstract class CoreAuth<T extends object, U>{
         return this.jsonwebtoken.sign(data, this.secret, options);
     }
 
-    public verifyToken(token: string, options?: VerifyOptions): T & DefaultFields  {
-        return (this.jsonwebtoken.verify(token, this.secret, options) as T & DefaultFields);
+    public verifyToken(token: string, options?: VerifyOptions): P  {
+        return (this.jsonwebtoken.verify(token, this.secret, options) as P);
     }
 
-    public decodeToken(token: string, options?: DecodeOptions): T & DefaultFields | null {
-        return (this.jsonwebtoken.decode(token, options) as T & DefaultFields);
+    public decodeToken(token: string, options?: DecodeOptions): P | null {
+        return (this.jsonwebtoken.decode(token, options) as P);
     }
 
     /* Hooks */
-    public refresh(context: RoutingContext, data: UserData<T,U>, options: any): Promise<boolean> | boolean | void {
+    public refresh(context: RoutingContext, data: UserData<P, U>, options: any): Promise<boolean> | boolean | void {
         return false;
     }
 
-    public authenticate(context: RoutingContext, data: UserData<T,U>, options: any): Promise<boolean> | boolean | void {
+    public authenticate(context: RoutingContext, data: UserData<P, U>, options: any): Promise<boolean> | boolean | void {
         return true;
     }
 
 
     /* Abstract Methods */
-    public abstract deserialize(decoding: T | null): Promise<U | null | undefined> |  U | null | undefined;
+    public abstract deserialize(decoding: P | null): Promise<U | null | undefined> |  U | null | undefined;
 
     public abstract serialize(user: U): T | Promise<T>;
 
