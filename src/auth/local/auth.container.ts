@@ -17,7 +17,7 @@ export class UserData<Decoding extends object, User>{
         return this.authService.deserialize(this.decode(options) as any);
     }    
     
-    decode(options?: DecodeOptions): Decoding {
+    decode(options?: DecodeOptions): Decoding &  DefaultFields {
         if(!this.decoding) {
             this.decoding = (this.authService.decodeToken(this.token, options) as Decoding & DefaultFields);
         }
