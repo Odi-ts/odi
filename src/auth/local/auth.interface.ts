@@ -15,8 +15,8 @@ export abstract class CoreAuth<T extends object, U, P extends object = T & Defau
         this.configure();
     }
    
-    private extractUser(ctx: Request): UserData<P, U>{
-        return new UserData<P, U>(this.extractToken(ctx), this);
+    private extractUser(ctx: Request): UserData<T, U>{
+        return new UserData<T, U>(this.extractToken(ctx), this);
     }
 
     private extractToken(ctx: Request, container: string = this.container = "authorization"){  
@@ -51,11 +51,11 @@ export abstract class CoreAuth<T extends object, U, P extends object = T & Defau
     }
 
     /* Hooks */
-    public refresh(context: RoutingContext, data: UserData<P, U>, options: any): Promise<boolean> | boolean | void {
+    public refresh(context: RoutingContext, data: UserData<T, U>, options: any): Promise<boolean> | boolean | void {
         return false;
     }
 
-    public authenticate(context: RoutingContext, data: UserData<P, U>, options: any): Promise<boolean> | boolean | void {
+    public authenticate(context: RoutingContext, data: UserData<T, U>, options: any): Promise<boolean> | boolean | void {
         return true;
     }
 
