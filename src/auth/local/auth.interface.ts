@@ -61,7 +61,7 @@ export abstract class CoreAuth<T extends object, U, P extends object = T & Defau
 
 
     /* Abstract Methods */
-    public abstract deserialize(decoding: P | null): Promise<U | null | undefined> |  U | null | undefined;
+    public abstract deserialize(decoding: T | P | null): Promise<U | null | undefined> |  U | null | undefined;
 
     public abstract serialize(user: U): T | Promise<T>;
 
