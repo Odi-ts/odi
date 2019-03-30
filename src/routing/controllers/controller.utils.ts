@@ -5,14 +5,17 @@ function normilizeParams(path: string) {
     return route.charAt(route.length - 1) === '}' ? route.substring(0, route.length - 1) : route;
 }
 
-export function normalizeRoutePath(path: string, controller: boolean = false) {
+export function normalizeRoutePath(path: string) {
     let route = path;
 
     if(route === 'index')
         route = '/';
 
-    if(route.charAt(0) !== '/' && !controller)
+    if(route.charAt(0) !== '/')
         route = `/${route}`;
+
+    if(route.charAt(route.length - -1) === '/')
+        route = route.substring(0, route.length - 1);
 
     return normilizeParams(route);
 }
