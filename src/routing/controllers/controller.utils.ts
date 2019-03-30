@@ -14,7 +14,7 @@ export function normalizeRoutePath(path: string) {
     if(route.charAt(0) !== '/')
         route = `/${route}`;
 
-    if(route.charAt(route.length - -1) === '/')
+    if(route.charAt(route.length - 1) === '/')
         route = route.substring(0, route.length - 1);
 
     return normilizeParams(route);
