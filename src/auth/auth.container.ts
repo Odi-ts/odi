@@ -1,52 +1,7 @@
-import { CoreAuth } from "./auth.interface";
-import { SignOptions, VerifyOptions, DecodeOptions, DefaultFields } from "./auth.types";
-
-export class UserData<Decoding extends object, User>{     
-    private decoding: Decoding & DefaultFields | null;
-    public token: string;
-    
-    constructor(
-        token: string,
-        private readonly authService: CoreAuth<any, any>
-    ) {
-        this.token = token;
-    }
-
+export abstract class IUser<Decoding extends object, User>{     
         
-    async load(options?: DecodeOptions) {
-        return this.authService.deserialize(this.decode(options) as any);
-    }    
-    
-    decode(options?: DecodeOptions): Decoding &  DefaultFields {
-        if(!this.decoding) {
-            this.decoding = (this.authService.decodeToken(this.token, options) as Decoding & DefaultFields);
-        }
-
-        return this.decoding;
-    }
-
-    verify(options?: VerifyOptions) {
-        let result: [ Error | null, Decoding & DefaultFields | null];
-        
-        try {
-            result = [ null, this.authService.verifyToken(this.token, options) ];
-            
-        } catch (err) {
-            result = [ (err as Error), null];
-        }
-
-        this.decoding = result[1];
-
-        return result;
-    }
+    abstract async load(options?: any): Promise<User | any>;
  
-    async assign(user: User, options?: SignOptions): Promise<string> {
-        return this.authService.createToken(await this.authService.serialize(user), options);
-    }
+    abstract async assign(user: User, options?: any): Promise<Decoding | any>;
 
-    /*
-    abstract requestStrategy(name: string, options? :any): void;
-    abstract acceptStrategy(name: string, options?: any): Promise<any>;
-    */
 }
-   

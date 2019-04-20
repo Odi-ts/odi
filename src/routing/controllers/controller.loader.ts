@@ -10,17 +10,17 @@ import { getFunctionArgs, FunctionParam } from '../../utils/reflection/function.
 import { metadata } from '../../utils/metadata.utils';
 import { IController } from './controller.interface';
 import { IHttpError } from '../../http/error/http.error';
-import { plainToClass } from '../../dto/dto.transformer';
 import { DtoSchemaStorage } from '../../dto/dto.storage';
 import { bindAuthMiddleware } from '../middleware/middleware.functions';
 import { HttpMessage } from '../../http/message/http.message';
 import { RequestMiddleware, RequestHandler, Request } from '../../aliases';
 import { concatinateBase } from '../../utils/url.utils';
 import { getModule } from '../../utils/env.tools';
-import { CoreAuth } from '../../auth/auth.interface';
+import { IAuth } from '../../auth/auth.interface';
 import { Constructor } from '../../types';
 import DependencyContainer from '../../dependency/dependency.container';
 import { buildParamsFunc } from '../../comiler/binders';
+import { IUser } from '../../auth/auth.container';
 
 export type AuthMetadata = any;
 
@@ -37,7 +37,7 @@ export class ControllersLoader implements ILoader {
 
 
     public async processBase() {
-        const auth = DependencyContainer.getContainer().getById('auth') as CoreAuth<object, object>;
+        const auth = DependencyContainer.getContainer().getById('auth') as IAuth<object, object, IUser<object, object>>;
         const { app } = this.options;
 
         return async (classType: Constructor<IController>) => {

@@ -1,14 +1,13 @@
 import { Request, Response } from "../../aliases";
-import { CoreAuth } from "../../auth/auth.interface";
-import { UserData } from "../../auth/auth.container";
+import { IAuth } from "../../auth/auth.interface";
 
-import { Decoding, User } from "./controller.types";
+import { Decoding, User, UserContainer } from "./controller.types";
 import { DefaultHeaders, DefaultQuery, FastifyReply } from "fastify";
 import { FastifyCookieOptions } from 'fastify-cookie';
 
 export class IController<T = any>{ 
-    private authService: CoreAuth<Decoding<T>, User<T>>;    
-    private userData: UserData<Decoding<T>, User<T>>;
+    private authService: IAuth<Decoding<T>, User<T>, UserContainer<T>>;    
+    private userData: UserContainer<T>;
 
     /* Express request and response */
     protected request: Request;

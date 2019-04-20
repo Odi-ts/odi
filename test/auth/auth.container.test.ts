@@ -56,7 +56,7 @@ describe('User Data', () => {
 
     describe('#assing(...)', () => {
         it('should call serialize and return new token', async () => {
-            const token = await userData.assign(payload);
+            const token = await userData.assign({ user: payload });
 
             expect(token).to.be.a('string');
            

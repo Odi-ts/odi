@@ -4,11 +4,12 @@ import { ILoader } from "../utils/directory.loader";
 import { AuthDefaults } from "./auth.decorator";
 
 import DependencyComposer from "../dependency/dependency.composer";
-import { CoreAuth } from "./auth.interface";
+import { IAuth } from "./auth.interface";
 import { Constructor } from "../types";
 import { metadata } from "../utils/metadata.utils";
 import { DependencyManager } from "../dependency/dependency.manager";
 import DependencyContainer from "../dependency/dependency.container";
+import { JWTAuth } from "./strategies/index";
 
 
 export interface Options{
@@ -20,7 +21,7 @@ export class AuthLoader implements ILoader{
     constructor(readonly options: Options){}
 
     public async processBase() {
-        return  async (classType: Constructor<CoreAuth<object, object>>) => {
+        return  async (classType: Constructor<IAuth<object, object>>) => {
             const md = metadata(classType);
 
             const defaults: AuthDefaults = md.getMetadata(AUTH);
@@ -28,9 +29,11 @@ export class AuthLoader implements ILoader{
 
             const authInstance = await this.options.dependencyComposer.instanciateClassType(classType);
             
-            authInstance['secret'] = defaults.secret || 'secret';
-            authInstance['expiration'] = defaults.expiration || '1 hour';
-            authInstance['container'] = defaults.header;
+            if(authInstance instanceof JWTAuth) {
+                authInstance['secret'] = defaults.secret || 'secret';
+                authInstance['container'] = defaults.header || '"authorization"';
+                authInstance['expiration'] = defaults.expiration || '1 hour';
+            }
 
             DependencyContainer.getContainer().putById('auth', authInstance);  
             DependencyContainer.getContainer().put(classType, authInstance, typeId);

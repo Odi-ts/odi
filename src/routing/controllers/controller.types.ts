@@ -1,5 +1,4 @@
-import { CoreAuth } from "../../auth/auth.interface";
-import { DefaultFields } from "../../auth/auth.types";
+import { IAuth } from "../../auth/auth.interface";
 
 export enum Method {
     GET = "get",
@@ -10,7 +9,8 @@ export enum Method {
     PATCH = "patch",
 }
 
-export type UDD<T> = T extends CoreAuth<infer D, infer U> ? { D: D, U: U }: { D: any, U: any };
+export type UDD<T> = T extends IAuth<infer D, infer U, infer F> ? { D: D, U: U, F: F  }: { D: any, U: any, F: any };
 
-export type Decoding<T> = UDD<T>['D'] & DefaultFields;
+export type Decoding<T> = UDD<T>['D'];
 export type User<T> = UDD<T>['U'];
+export type UserContainer<T> = UDD<T>['F'];

@@ -4,7 +4,7 @@ import * as fstatic from 'fastify-static';
 
 import { Server as HttpServer } from 'http';
 
-import { CoreAuth } from '../auth/auth.interface';
+import { IAuth } from '../auth/auth.interface';
 import { DB_CONNECTION, REQ_CONTEXT, REQ_LOCALS } from '../definitions';
 import { DependencyManager } from '../dependency/dependency.manager';
 import DependencyComposer from '../dependency/dependency.composer';
@@ -73,7 +73,7 @@ export class Core{
     protected app: fastify.FastifyInstance;
 
 
-    protected auth: typeof CoreAuth;
+    protected auth: typeof IAuth;
 
 
     constructor(options: CoreOptions){
