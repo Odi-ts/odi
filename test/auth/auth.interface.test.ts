@@ -1,10 +1,9 @@
 import { expect } from 'chai';
 import { createRequest } from 'node-mocks-http';
+import { JWTAuth, JWTUser } from '../index';
 
-import { CoreAuth } from './auth.interface';
-import { UserData } from './auth.container';
 
-export class AuthService extends CoreAuth<any, any> {
+export class AuthService extends JWTAuth<any, any> {
 
     serialize(data: any) {
         return data;
@@ -70,8 +69,8 @@ describe('Core Auth Service', () => {
 
         it('should extarct token from custom cookie field if no header', () => {
             const request = createRequest({ cookies: { sample: token }});
-
-            expect(auth['extractToken'](request as any, 'sample')).to.be.eq(token);
+            auth['container'] = 'sample';
+            expect(auth['extractToken'](request as any)).to.be.eq(token);
         });
     });
 
@@ -80,7 +79,7 @@ describe('Core Auth Service', () => {
             const request = createRequest({ headers: { authorization: `Authorization: ${token}` }});
             const userData = auth['extractUser'](request as any);
 
-            expect(userData).to.be.instanceOf(UserData);
+            expect(userData).to.be.instanceOf(JWTUser);
             expect(userData.token).to.be.eq(token);
         });
     });

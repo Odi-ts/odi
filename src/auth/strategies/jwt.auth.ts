@@ -56,11 +56,11 @@ export abstract class JWTAuth<T extends object, U> extends IAuth<T,U, JWTUser<T,
 
     /** Extractions */
     protected extractUser(ctx: Request): JWTUser<T, U>{
-        return new JWTUser<T, U>(this.extractToken(ctx, this.container), this);
+        return new JWTUser<T, U>(this.extractToken(ctx), this);
     }
 
-    private extractToken(ctx: Request, container: string) {  
-        const header = ctx.headers[container];
+    private extractToken(ctx: Request) {  
+        const header = ctx.headers[this.container];
         
         let def;
         if(header){
@@ -70,7 +70,7 @@ export abstract class JWTAuth<T extends object, U> extends IAuth<T,U, JWTUser<T,
             }
         }
         
-        return def || ctx.cookies[container];
+        return def || ctx.cookies[this.container];
     }
 
 

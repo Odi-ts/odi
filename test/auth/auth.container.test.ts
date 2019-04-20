@@ -2,11 +2,9 @@ import * as fc from  'fastify-cookie';
 
 import { expect } from 'chai';
 import { createRequest } from 'node-mocks-http';
+import { JWTAuth, JWTUser } from '../index';
 
-import { CoreAuth } from './auth.interface';
-import { UserData } from './auth.container';
-
-class AuthService extends CoreAuth<any, any> {
+class AuthService extends JWTAuth<any, any> {
 
     serialize(data: any) {
         return data;
@@ -31,7 +29,7 @@ describe('User Data', () => {
     const token = auth.createToken(payload, { expiresIn: '10 sec' });
     const req = createRequest({ headers: { authorization: token }});
 
-    const userData = new UserData(token, auth);
+    const userData = new JWTUser(token, auth);
 
     describe('#decode(...)', () => {
         it('should decode token', () => expect(userData.decode()).to.be.include(payload));

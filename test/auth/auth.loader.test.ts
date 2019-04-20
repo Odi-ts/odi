@@ -1,11 +1,10 @@
 import { expect } from 'chai';
 
-import { Authentication } from '../../src/index';
+import { Authentication, JWTAuth } from '../../src/index';
 import { AuthLoader } from './auth.loader';
 import { getDependencyComposer } from '../utils/di.utils';
-import { CoreAuth } from './auth.interface';
 
-class AuthServiceMock extends CoreAuth<any, any> {
+class AuthServiceMock extends JWTAuth<any, any> {
 
     serialize(data: any) {
         return data;

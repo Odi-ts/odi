@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { createRequest, createResponse } from 'node-mocks-http';
-import { IController, UserData } from '../../src/index';
+import { IController, JWTUser, JWTAuth } from '../../src/index';
 import { AuthService } from '../auth/auth.interface.test';
 
 class SampleController extends IController {}
@@ -84,9 +84,9 @@ describe('Controller Interface Test', () => {
 
         controller['authService'] = new AuthService();
 
-        expect(controller['user']).to.be.instanceOf(UserData);
+        expect(controller['user']).to.be.instanceOf(JWTUser);
 
-        const userData = new UserData('86851f53-6bc5-492d-8709-f5289f0910f6', controller['authService']);        
+        const userData = new JWTUser('86851f53-6bc5-492d-8709-f5289f0910f6', controller['authService'] as JWTAuth<any, any>);        
         controller['userData'] = userData;
 
         expect(controller['user']).to.be.deep.eq(userData);
