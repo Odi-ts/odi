@@ -1,32 +1,32 @@
 import { CoreAuth } from "./auth.interface";
-import { SignOptions, VerifyOptions, DecodeOptions } from "./auth.types";
+import { SignOptions, VerifyOptions, DecodeOptions, DefaultFields } from "./auth.types";
 
 export class UserData<Decoding extends object, User>{     
-    private decoding: Decoding | null;
+    private decoding: Decoding & DefaultFields | null;
     public token: string;
     
     constructor(
         token: string,
-        private readonly authService: CoreAuth<Decoding, User>
+        private readonly authService: CoreAuth<any, any>
     ) {
         this.token = token;
     }
 
         
     async load(options?: DecodeOptions) {
-        return this.authService.deserialize(this.decode(options));
+        return this.authService.deserialize(this.decode(options) as any);
     }    
     
-    decode(options?: DecodeOptions) {
+    decode(options?: DecodeOptions): Decoding &  DefaultFields {
         if(!this.decoding) {
-            this.decoding = (this.authService.decodeToken(this.token, options) as Decoding);
+            this.decoding = (this.authService.decodeToken(this.token, options) as Decoding & DefaultFields);
         }
 
         return this.decoding;
     }
 
     verify(options?: VerifyOptions) {
-        let result: [ Error | null, Decoding | null];
+        let result: [ Error | null, Decoding & DefaultFields | null];
         
         try {
             result = [ null, this.authService.verifyToken(this.token, options) ];

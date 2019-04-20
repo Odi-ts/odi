@@ -1,5 +1,4 @@
 import { reflectParameters } from "../directory.loader";
-import { parseScript } from 'esprima';
 import { Function as ASTFunction } from "estree";
 import { Instance, Constructor } from "../../types";
 
@@ -8,13 +7,18 @@ export interface FunctionParam {
   type: any;
 }
 
+const parser = require('espree');
+
 export function fnArgsList(fn: Function): string[] {
     const script = fn.toString();
 
     const parsed = script.replace(/(\".*\"\(|\'.*\'\()/g, 'anonym(');
     const normalized = parsed.startsWith('async') ? `async function ${parsed.replace(/^async/, '')}` : parsed;
     
-    const ast = parseScript((normalized.startsWith('function') || normalized.startsWith('async function ')) ? normalized : `function ${normalized}`);
+    const ast = parser.parse((normalized.startsWith('function') || normalized.startsWith('async function ')) ? normalized : `function ${normalized}`, {
+		ecmaVersion: process.env.ECMA_VERSION || 10
+    });
+
     const params = (ast.body[0] as ASTFunction).params;
 
     let patterCounter = 0;

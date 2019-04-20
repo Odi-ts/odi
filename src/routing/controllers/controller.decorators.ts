@@ -37,7 +37,7 @@ export function isRouteHandler(target: Instance, propertyKey: string) {
 
 // Factories
 export function controllerFactory(route?: BasePath, options? : object) {
-    const path = normalizeRoutePath(route || '/', true);   
+    const path = normalizeRoutePath(route || '/');   
 
     return <T extends IController>(target: Constructor<T>) => Reflect.defineMetadata(keys.CONTROLLER, { path, ...options }, target);
 }

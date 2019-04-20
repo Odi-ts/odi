@@ -1,9 +1,9 @@
 import "fastify-cookie";
 import { Request, RoutingContext } from '../../aliases';
 import { UserData } from './auth.container';
-import { SignOptions, VerifyOptions, DecodeOptions } from './auth.types';
+import { SignOptions, VerifyOptions, DecodeOptions, DefaultFields } from './auth.types';
 
-export abstract class CoreAuth<T extends object, U>{  
+export abstract class CoreAuth<T extends object, U, P extends object = T & DefaultFields>{  
     protected secret: string;
     protected container: string | undefined;
     protected expiration: string | number;    
@@ -11,6 +11,7 @@ export abstract class CoreAuth<T extends object, U>{
     private jsonwebtoken = require("jsonwebtoken");
 
     constructor(){
+        
         this.configure();
     }
    
@@ -41,26 +42,26 @@ export abstract class CoreAuth<T extends object, U>{
         return this.jsonwebtoken.sign(data, this.secret, options);
     }
 
-    public verifyToken(token: string, options?: VerifyOptions): T {
-        return (this.jsonwebtoken.verify(token, this.secret, options) as T);
+    public verifyToken(token: string, options?: VerifyOptions): P  {
+        return (this.jsonwebtoken.verify(token, this.secret, options) as P);
     }
 
-    public decodeToken(token: string, options?: DecodeOptions): T | null {
-        return (this.jsonwebtoken.decode(token, options) as T);
+    public decodeToken(token: string, options?: DecodeOptions): P | null {
+        return (this.jsonwebtoken.decode(token, options) as P);
     }
 
     /* Hooks */
-    public refresh(context: RoutingContext, data: UserData<T,U>, options: any): Promise<boolean> | boolean | void {
+    public refresh(context: RoutingContext, data: UserData<T, U>, options: any): Promise<boolean> | boolean | void {
         return false;
     }
 
-    public authenticate(context: RoutingContext, data: UserData<T,U>, options: any): Promise<boolean> | boolean | void {
+    public authenticate(context: RoutingContext, data: UserData<T, U>, options: any): Promise<boolean> | boolean | void {
         return true;
     }
 
 
     /* Abstract Methods */
-    public abstract deserialize(decoding: T | null): Promise<U | null | undefined> |  U | null | undefined;
+    public abstract deserialize(decoding: T | P | null): Promise<U | null | undefined> |  U | null | undefined;
 
     public abstract serialize(user: U): T | Promise<T>;
 

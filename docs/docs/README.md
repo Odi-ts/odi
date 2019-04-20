@@ -13,7 +13,8 @@
   * [Authentication](../basics/authentication.md)
   * [Web Sockets](../basics/web-sockets.md)
   * [Database](../basics/database/README.md)
+    * [Settings](../basics/database/settings.md)
     * [Repository](../basics/database/repository.md)
-    * [Model](../basics/database/model.md)
+    * [Transactions](../basics/database/model.md)
   * [Middleware](../basics/middleware.md)
 
