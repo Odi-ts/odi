@@ -1,5 +1,5 @@
 import { FastifyInstance } from "fastify";
-import { AuthLoader } from "../auth/local/auth.loader";
+import { AuthLoader } from "../auth/auth.loader";
 
 import { AUTH, CONTROLLER, REPOSITORY, SERVICE, SOCKET, WORKER, MAIN_COMPONENTS } from "../definitions";
 import { ControllersLoader } from "../routing/controllers/controller.loader";

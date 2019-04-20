@@ -1,4 +1,4 @@
-import { CoreAuth } from "../../auth/local/auth.interface";
+import { CoreAuth } from "../../auth/auth.interface";
 import { RequestMiddleware } from "../../aliases";
 
 export function bindAuthMiddleware(options: unknown, auth: CoreAuth<object, object>): RequestMiddleware {

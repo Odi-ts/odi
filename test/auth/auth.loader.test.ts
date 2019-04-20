@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 
 import { Authentication } from '../../src/index';
-import { AuthLoader } from '../../src/auth/local/auth.loader';
+import { AuthLoader } from './auth.loader';
 import { getDependencyComposer } from '../utils/di.utils';
-import { CoreAuth } from '../../src/auth/local/auth.interface';
+import { CoreAuth } from './auth.interface';
 
 class AuthServiceMock extends CoreAuth<any, any> {
 

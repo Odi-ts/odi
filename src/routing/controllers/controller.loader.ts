@@ -17,7 +17,7 @@ import { HttpMessage } from '../../http/message/http.message';
 import { RequestMiddleware, RequestHandler, Request } from '../../aliases';
 import { concatinateBase } from '../../utils/url.utils';
 import { getModule } from '../../utils/env.tools';
-import { CoreAuth } from '../../auth/local/auth.interface';
+import { CoreAuth } from '../../auth/auth.interface';
 import { Constructor } from '../../types';
 import DependencyContainer from '../../dependency/dependency.container';
 import { buildParamsFunc } from '../../comiler/binders';

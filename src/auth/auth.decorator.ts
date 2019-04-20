@@ -1,6 +1,6 @@
 import 'reflect-metadata';
-import { AUTH, AUTH_MIDDLEWARE } from "../../definitions";
-import { Propotype } from '../../types';
+import { AUTH, AUTH_MIDDLEWARE } from "../definitions";
+import { Propotype } from '../types';
 
 export interface AuthDefaults{
     secret? : string;

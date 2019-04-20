@@ -1,5 +1,5 @@
-import { CoreAuth } from "../../auth/local/auth.interface";
-import { DefaultFields } from "../../auth/local/auth.types";
+import { CoreAuth } from "../../auth/auth.interface";
+import { DefaultFields } from "../../auth/auth.types";
 
 export enum Method {
     GET = "get",

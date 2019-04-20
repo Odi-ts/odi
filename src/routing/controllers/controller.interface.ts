@@ -1,6 +1,6 @@
 import { Request, Response } from "../../aliases";
-import { CoreAuth } from "../../auth/local/auth.interface";
-import { UserData } from "../../auth/local/auth.container";
+import { CoreAuth } from "../../auth/auth.interface";
+import { UserData } from "../../auth/auth.container";
 
 import { Decoding, User } from "./controller.types";
 import { DefaultHeaders, DefaultQuery, FastifyReply } from "fastify";

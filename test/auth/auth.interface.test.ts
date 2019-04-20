@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import { createRequest } from 'node-mocks-http';
 
-import { CoreAuth } from '../../src/auth/local/auth.interface';
-import { UserData } from '../../src/auth/local/auth.container';
+import { CoreAuth } from './auth.interface';
+import { UserData } from './auth.container';
 
 export class AuthService extends CoreAuth<any, any> {
 

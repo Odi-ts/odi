@@ -1,10 +1,10 @@
 import 'reflect-metadata';
 
 export { Core } from './core/server';
-export { CoreAuth } from './auth/local/auth.interface';
-export { UserData } from './auth/local/auth.container';
+export { CoreAuth } from './auth/auth.interface';
+export { UserData } from './auth/auth.container';
 
-export * from './auth/local/auth.decorator';
+export * from './auth/auth.decorator';
 
 export * from './routing/controllers/controller.decorators';
 export * from './routing/controllers/controller.types';

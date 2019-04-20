@@ -1,14 +1,14 @@
-import { AUTH, INJECT_ID } from "../../definitions";
-import { ILoader } from "../../utils/directory.loader";
+import { AUTH, INJECT_ID } from "../definitions";
+import { ILoader } from "../utils/directory.loader";
 
 import { AuthDefaults } from "./auth.decorator";
 
-import DependencyComposer from "../../dependency/dependency.composer";
+import DependencyComposer from "../dependency/dependency.composer";
 import { CoreAuth } from "./auth.interface";
-import { Constructor } from "../../types";
-import { metadata } from "../../utils/metadata.utils";
-import { DependencyManager } from "../../dependency/dependency.manager";
-import DependencyContainer from "../../dependency/dependency.container";
+import { Constructor } from "../types";
+import { metadata } from "../utils/metadata.utils";
+import { DependencyManager } from "../dependency/dependency.manager";
+import DependencyContainer from "../dependency/dependency.container";
 
 
 export interface Options{

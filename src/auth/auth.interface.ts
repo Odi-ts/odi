@@ -1,5 +1,5 @@
 import "fastify-cookie";
-import { Request, RoutingContext } from '../../aliases';
+import { Request, RoutingContext } from '../aliases';
 import { UserData } from './auth.container';
 import { SignOptions, VerifyOptions, DecodeOptions, DefaultFields } from './auth.types';
 
