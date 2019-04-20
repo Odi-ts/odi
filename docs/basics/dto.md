@@ -81,6 +81,23 @@ Data from request body will be automatically injected and validated. If validati
 
 ### DTO definition
 
+Currently, there are two types of DTO, for `querystring` and `body` validation.
+
+#### Decorators
+
+* `@Data()` - set DTO for handling `body` 
+* `@Query()` - set DTO for handling `querystring`
+
+#### Handler Injection
+
+There are no additional actions required for including DTO in the handler \(method of the controller\). Just add DTO  \(or multiple\) as an argument.
+
+```typescript
+@Post async index(body: BodyDTO, query: QueryDTO) {
+   //..code
+}
+```
+
 ### Decorators for validation
 
 There are set of decorators for convenient data validation. If you have special needs on validation, you can always implement your own decorator \(read more in advanced\). But custom decorators can be implemented. Read in Advanced about it.
@@ -155,12 +172,6 @@ Following formats for `@Format` decorator available:
 
 Data transformation from plain object to DTO instance applied automatically. But don't forget about `@ArraoyOf` decorator for DTOs arrays.
 
-### Future
-
-{% hint style="success" %}
-Decorators for transformations will be added in next major release.
-{% endhint %}
-
 ## Inheritance
 
 You can easily use inheritance `(extends)` for DTOs.
@@ -192,7 +203,7 @@ class TodoDTO extends BaseDTO {
 
 ## Flow
 
-Every controller method, that contains **DTO** class as argument will be automatically provided with validated and mapped data. Validation will be performed before controller method call.
+Every controller method that contains **DTO** class as argument will be automatically provided with validated and mapped data. Validation will be performed before controller method call.
 
 ![](../.gitbook/assets/untitled-diagram-2.png)
 

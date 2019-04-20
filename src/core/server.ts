@@ -113,7 +113,7 @@ export class Core{
         await this.loadDependencies();        
         this.afterDependeciesLoad();
 
-        this.server = this.app.server;
+        this.server = this.app.server;       
     }
 
     protected afterDependeciesLoad(){}
@@ -142,8 +142,6 @@ export class Core{
         
         const bundler = new ParcelBundler(entryFile, options);
         const bundle = await bundler.bundle();
-
-        console.log(bundle);
     }
 
     private async loadDependencies(): Promise<void>{

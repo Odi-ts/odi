@@ -7,6 +7,7 @@ import { ControllersLoader } from "../../src/routing/controllers/controller.load
 import { getDependencyComposer } from "../utils/di.utils";
 import { getFunctionArgs } from '../../src/utils/reflection/function.reflection';
 import { plainToClass } from '../../src/dto/dto.transformer';
+import { buildParamsFunc } from '../../src/comiler/binders';
 
 
 @Data()
@@ -26,6 +27,8 @@ class SampleController extends IController{
 
     // tslint:disable-next-line:function-name
     @Post '/smth/:id/:name' (id: string, name: string, anything: number, dto: SampleControllerDto) {
+        console.log(id, name, anything, dto);
+
         if(name == id && name == dto.title)
             throw new Error();        
 
@@ -53,10 +56,10 @@ describe('Controller Loader', async () => {
     const args = getFunctionArgs(controller, '/smth/:id/:name');
     const request = createRequest(requestPayload);   
 
-    describe('#bindParams(...)', () => {
+    describe('#buildParamsFunc(...)', () => {
         
         it('should return correct array of params', async () => { 
-            const binded = await loader['bindParams'](request as any, args);
+            const binded = await buildParamsFunc(args)(request as any);
 
             expect(binded).to.be.instanceOf(Array);
             expect(binded).to.have.length(4);
@@ -79,14 +82,8 @@ describe('Controller Loader', async () => {
         });
     });
 
-    describe('#bindController(...)', () => {   
-
-        it('should create copy of controller', () => expect(loader['bindController'](controller)).to.deep.eq(controller));
-
-    }); 
-
     describe('#bindHandler(...)', async () => {
-        const handler = loader.bindHandler(controller, '/smth/:id/:name', args);
+        const handler = loader.bindHandler(controller, SampleController, '/smth/:id/:name', args);
 
         it('should return function for router', () => expect(handler).to.be.instanceOf(Function));
 
