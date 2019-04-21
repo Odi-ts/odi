@@ -10,6 +10,7 @@ export class JWTUser<Decoding extends object, User> extends IUser<Decoding, User
     
     constructor(token: string, private readonly authService: JWTAuth<Decoding, User>) {
         super();
+        console.log(token);
         this.token = token;
     }
 

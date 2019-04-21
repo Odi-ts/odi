@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Auth, Authentication } from './auth.decorator';
+import { Auth, Authentication } from '../../src/auth/auth.decorator';
 import { AUTH, AUTH_MIDDLEWARE } from '../../src/definitions';
 import { IController } from '../../src/index';
 

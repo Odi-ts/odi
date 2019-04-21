@@ -23,6 +23,7 @@ const payload = {
 describe('Core Auth Service', () => {
     const auth = new AuthService();
     auth['secret'] = 'fc7be42c-6fa7-4727-ac2c-eb40458cc07c';
+    auth['container'] = 'authorization';
     
     auth['jsonwebtoken'] = require('jsonwebtoken');
 
@@ -76,6 +77,8 @@ describe('Core Auth Service', () => {
 
     describe('#extractUser', () => {
         it('should return UserData instance with token', () => {
+            auth['container'] = 'authorization';
+
             const request = createRequest({ headers: { authorization: `Authorization: ${token}` }});
             const userData = auth['extractUser'](request as any);
 

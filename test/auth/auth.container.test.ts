@@ -24,6 +24,7 @@ const payload = {
 describe('User Data', () => {
     const auth = new AuthService();
     auth['secret'] = 'fc7be42c-6fa7-4727-ac2c-eb40458cc07c';
+    auth['expiration'] = '1 min';
     auth['configure']();
 
     const token = auth.createToken(payload, { expiresIn: '10 sec' });

@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import { Authentication, JWTAuth } from '../../src/index';
-import { AuthLoader } from './auth.loader';
+import { AuthLoader } from '../../src/auth/auth.loader';
 import { getDependencyComposer } from '../utils/di.utils';
 
 class AuthServiceMock extends JWTAuth<any, any> {
