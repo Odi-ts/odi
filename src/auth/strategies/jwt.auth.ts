@@ -1,7 +1,7 @@
 import { IAuth } from "../auth.interface";
 import { JWT } from "../auth.types";
 import { IUser } from "../auth.container";
-import { Request } from "../../aliases";
+import { Request, RequestMiddleware, RoutingContext } from "../../aliases";
 
 
 export class JWTUser<Decoding extends object, User> extends IUser<Decoding, User> {
@@ -73,6 +73,31 @@ export abstract class JWTAuth<T extends object, U> extends IAuth<T,U, JWTUser<T,
         return def || ctx.cookies[this.container];
     }
 
+    protected getMiddleware(options?: any): RequestMiddleware {
+        return async (request, response) => {   
+                const context = { request, response }; 
+                const user = this.extractUser(request);
+                
+                const [ err ] = user.verify();
+                
+                /** Refresh hook */
+                const refresh = await this.refresh(context, user, options);
+
+                if(err && !refresh) {
+                    response.status(401).send();
+                    return;
+                }
+
+                const result = await this.authenticate(context, user, options);
+                
+                if(result !== true) {
+                    response.status(403).send(); 
+                    return;
+                }
+
+                request.locals =  { user };
+        };
+    }
 
     /** JWT Methods */
     public createToken(data: T, options?: JWT.SignOptions): string{
@@ -85,6 +110,10 @@ export abstract class JWTAuth<T extends object, U> extends IAuth<T,U, JWTUser<T,
 
     public decodeToken(token: string, options?: JWT.DecodeOptions): T & JWT.DefaultFields | null {
         return (this.jsonwebtoken.decode(token, options) as T & JWT.DefaultFields);
+    }
+
+    protected refresh(context: RoutingContext, user: JWTUser<T,U>, options?: any) {
+        return false;
     }
 
     public abstract deserialize(decoding: T & JWT.DefaultFields | null): Promise<U | null | undefined> |  U | null | undefined;

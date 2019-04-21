@@ -11,7 +11,6 @@ import { metadata } from '../../utils/metadata.utils';
 import { IController } from './controller.interface';
 import { IHttpError } from '../../http/error/http.error';
 import { DtoSchemaStorage } from '../../dto/dto.storage';
-import { bindAuthMiddleware } from '../middleware/middleware.functions';
 import { HttpMessage } from '../../http/message/http.message';
 import { RequestMiddleware, RequestHandler, Request } from '../../aliases';
 import { concatinateBase } from '../../utils/url.utils';
@@ -59,10 +58,10 @@ export class ControllersLoader implements ILoader {
                     const routeMd: RequestMiddleware[] = meta.getMetadata(keys.ROUTE_MIDDLEWARE) || [];
                     
                     if(ctrlMeta.hasMetadata(keys.AUTH_MIDDLEWARE))
-                        ctrlMd.push(bindAuthMiddleware(ctrlMeta.getMetadata(keys.AUTH_MIDDLEWARE), auth));
+                        ctrlMd.push(auth['getMiddleware'](ctrlMeta.getMetadata(keys.AUTH_MIDDLEWARE)));
 
                     if(meta.hasMetadata(keys.AUTH_MIDDLEWARE))
-                        routeMd.push(bindAuthMiddleware(auMeta, auth));
+                        routeMd.push(auth['getMiddleware'](auMeta));
 
                     const route = concatinateBase(base.path, path);
 

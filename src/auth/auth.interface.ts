@@ -1,5 +1,5 @@
 import "fastify-cookie";
-import { Request, RoutingContext } from '../aliases';
+import { Request, RoutingContext, RequestMiddleware } from '../aliases';
 import { IUser } from './auth.container';
 
 export abstract class IAuth<T extends object, U, Container extends IUser<T, U> = IUser<T,U>> {  
@@ -24,6 +24,8 @@ export abstract class IAuth<T extends object, U, Container extends IUser<T, U> =
 
     public abstract serialize(user: U): T | Promise<T>;
 
+    protected abstract getMiddleware(options?: any): RequestMiddleware;
+    
 
     /* Hooks */    
     protected configure() {}
