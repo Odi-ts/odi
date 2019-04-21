@@ -79,7 +79,7 @@
     "fastify-static": "^2.4.0",
     "gauge": "^2.7.4",
     "globby": "^9.2.0",
-    "inquirer": "^6.2.2",
+    "inquirer": "^6.3.1",
     "reflect-metadata": "^0.1.13",
     "ts-morph": "^1.3.1"
   },
