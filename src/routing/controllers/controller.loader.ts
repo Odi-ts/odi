@@ -82,12 +82,15 @@ export class ControllersLoader implements ILoader {
         const paramsGetter = buildParamsFunc(rawParams);
 
         return async (req, res) => {           
-            const ctrl = Object.assign(new classType, target);
+            const ctrl: IController = Object.assign(new classType, target);
+            ctrl['request'] = req;
+            ctrl['response'] = res;
+
             //@ts-ignore;          
             ctrl['userData'] = req.locals ? req.locals.user : null;
 
             try {    
-                const result = await ctrl[property].apply(ctrl, paramsGetter(req));
+                const result = await (ctrl as any)[property].apply(ctrl, paramsGetter(req));
 
                 if(res.sent)
                     return;
