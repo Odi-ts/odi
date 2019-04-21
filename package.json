@@ -58,7 +58,7 @@
     "react-dom": "^16.8.6",
     "socket.io-client": "^2.2.0",
     "source-map-support": "^0.5.12",
-    "ts-node": "^8.0.3",
+    "ts-node": "^8.1.0",
     "tslint": "^5.14.0",
     "tslint-eslint-rules": "^5.4.0",
     "tslint-microsoft-contrib": "^6.1.1",
