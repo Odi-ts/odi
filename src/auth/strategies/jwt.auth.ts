@@ -101,7 +101,7 @@ export abstract class JWTAuth<T extends object, U> extends IAuth<T,U, JWTUser<T,
 
     /** JWT Methods */
     public createToken(data: T, options?: JWT.SignOptions): string{
-        return this.jsonwebtoken.sign(data, this.secret, { exp: this.expiration, ...options });
+        return this.jsonwebtoken.sign(data, this.secret, { expiresIn : this.expiration, ...options });
     }
 
     public verifyToken(token: string, options?: JWT.VerifyOptions): T & JWT.DefaultFields  {
