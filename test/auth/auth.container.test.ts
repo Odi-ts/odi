@@ -2,7 +2,7 @@ import * as fc from  'fastify-cookie';
 
 import { expect } from 'chai';
 import { createRequest } from 'node-mocks-http';
-import { JWTAuth, JWTUser } from '../index';
+import { JWTAuth, JWTUser } from '../../src';
 
 class AuthService extends JWTAuth<any, any> {
 
