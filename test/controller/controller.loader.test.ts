@@ -27,8 +27,6 @@ class SampleController extends IController{
 
     // tslint:disable-next-line:function-name
     @Post '/smth/:id/:name' (id: string, name: string, anything: number, dto: SampleControllerDto) {
-        console.log(id, name, anything, dto);
-
         if(name == id && name == dto.title)
             throw new Error();        
 

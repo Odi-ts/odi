@@ -78,9 +78,8 @@ describe('Dependency Classifier', () => {
         it('should instantiate deps from folder into deps storage', async () => {
             dep.applyRoots({ app, socketio });
             try{
-            await dep.compose();
+                await dep.compose();
             } catch(e) {
-                console.log(e);
             }
 
             expect(dependencyContainer.contain(RepositoryMock)).to.be.eq(true);

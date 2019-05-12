@@ -19,7 +19,7 @@
   ],
   "typings": "lib/src/index.d.ts",
   "scripts": {
-    "test": "nyc mocha test/**/*.test.ts --exit",
+    "test": "nyc --reporter=lcov mocha test/**/*.test.ts --exit",
     "build": "rm -rf ./lib && tsc",
     "pack": "npm run build && npm pack",
     "integration": "tsc && node lib/test/integration/index.js",
