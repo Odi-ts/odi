@@ -43,7 +43,7 @@
     "@types/react": "^16.8.17",
     "@types/react-dom": "^16.8.4",
     "@types/socket.io-client": "^1.4.32",
-    "autocannon": "^3.2.1",
+    "autocannon": "^3.2.2",
     "chai": "^4.2.0",
     "cheerio": "^1.0.0-rc.2",
     "istanbul": "^0.4.5",
