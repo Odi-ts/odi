@@ -49,7 +49,7 @@
     "istanbul": "^0.4.5",
     "jsonwebtoken": "^8.5.1",
     "mocha": "^6.1.4",
-    "node-mocks-http": "^1.7.5",
+    "node-mocks-http": "^1.7.6",
     "nyc": "^14.1.1",
     "openapi-types": "^1.3.5",
     "parcel-bundler": "^1.12.3",
