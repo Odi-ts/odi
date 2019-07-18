@@ -1,101 +1,101 @@
-import { expect } from 'chai';
+import { expect } from "chai";
 
 import { buildSchema } from "../../src/dto/dto.validator";
-import { Data, IsEmail, Maximum, IsUrl, Nested, ArrayOf, MaxItems, IsOptional, Const } from "../../src/dto/index";
+import { ArrayOf, Const, Data, IsEmail, IsOptional, IsUrl, Maximum, MaxItems, Nested } from "../../src/dto/index";
 
 @Data()
 class DtoLocalSampledNested {
 
     @IsUrl()
-    prop1: string;
+    public prop1: string;
 
 }
 
 // Decorator disabled for auto schema build
-//@Data()
+// @Data()
 class DtoLocalSampled {
 
     @IsEmail()
-    prop1: string;
+    public prop1: string;
 
     @Maximum(20)
-    prop2: number;
+    public prop2: number;
 
     @MaxItems(20)
-    prop4: number[];
+    public prop4: number[];
 
     @Nested()
-    nested: DtoLocalSampledNested;
+    public nested: DtoLocalSampledNested;
 
     @ArrayOf(DtoLocalSampledNested)
-    nesteds: DtoLocalSampledNested[];
+    public nesteds: DtoLocalSampledNested[];
 
     @IsOptional()
-    prop3: number;
+    public prop3: number;
 
     @IsOptional()
-    date: Date;
+    public date: Date;
 
     @Const(true)
-    bool: boolean;
+    public bool: boolean;
 
 }
 
 const schema = {
-    "type": "object",
-    "properties": {
-        "prop1": {
-            "type": "string",
-            "format": "email"
+    type: "object",
+    properties: {
+        prop1: {
+            type: "string",
+            format: "email"
         },
-        "prop2": {
-            "type": "number",
-            "maximum": 20
+        prop2: {
+            type: "number",
+            maximum: 20
         },
-        "prop4": {
-            "type": "array",
-            "maxItems": 20
+        prop4: {
+            type: "array",
+            maxItems: 20
         },
-        "nested": {
-            "type": "object",
-            "properties": {
-                "prop1": {
-                    "type": "string",
-                    "format": "url"
+        nested: {
+            type: "object",
+            properties: {
+                prop1: {
+                    type: "string",
+                    format: "url"
                 }
             },
-            "required": [
+            required: [
                 "prop1"
             ]
         },
-        "nesteds": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "prop1": {
-                        "format": "url",
-                        "type": "string"
+        nesteds: {
+            type: "array",
+            items: {
+                type: "object",
+                properties: {
+                    prop1: {
+                        format: "url",
+                        type: "string"
                     }
                 },
-                "required": [
+                required: [
                     "prop1"
                 ]
             }
         },
-        "prop3": {
-            "type": "number"
+        prop3: {
+            type: "number"
         },
-        "date": {
-            "type": "string",
-            "format": "date-time"
+        date: {
+            type: "string",
+            format: "date-time"
         },
-        "bool": {
-            "type": "boolean",
-            "const": true
+        bool: {
+            type: "boolean",
+            const: true
         }
     },
-    "required": [
+    required: [
         "prop1",
         "prop2",
         "prop4",
@@ -105,7 +105,7 @@ const schema = {
     ]
 };
 
-describe('DTOs Validators', () => {
+describe("DTOs Validators", () => {
     const result = buildSchema(DtoLocalSampled);
-    describe('#buildSchema(...)', () => it('should build correct schema', () => expect(result).to.deep.eq(schema)));
+    describe("#buildSchema(...)", () => it("should build correct schema", () => expect(result).to.deep.eq(schema)));
 });

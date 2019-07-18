@@ -1,4 +1,4 @@
-import { IController, Authentication } from "../../../src/index";
+import { Authentication, IController } from "../../../src/index";
 
 @Authentication()
-export class AuthMock{} 
+export class AuthMock {}

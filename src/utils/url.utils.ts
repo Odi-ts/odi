@@ -1,9 +1,11 @@
 export function concatinateBase(base: string, path: string) {
-    if(!base || base === '/')
+    if (!base || base === "/") {
         return path;
+    }
 
-    if(path === '/' && base)
+    if (path === "/" && base) {
         return base;
-        
+    }
+
     return base + path;
 }

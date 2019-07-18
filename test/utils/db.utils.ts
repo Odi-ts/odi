@@ -1,15 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn, createConnection} from "typeorm";
+import { Column, createConnection, Entity, PrimaryGeneratedColumn} from "typeorm";
 
 @Entity()
 export class FooModel {
 
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+    @PrimaryGeneratedColumn("uuid")
+    public id: string;
 
     @Column()
-    bar: string;
+    public bar: string;
 }
-
 
 before(async () => {
     await createConnection({

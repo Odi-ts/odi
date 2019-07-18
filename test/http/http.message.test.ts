@@ -1,12 +1,12 @@
-import { expect } from 'chai';
-import { createMessage } from '../../src/http/message/http.message.factory';
-import { HttpMessage } from '../../src/http/message/http.message';
-import { HttpStatus } from '../../src/http/message/http.statuses';
-import { Ok, BadRequest, Forbidden, NotFound } from '../../src/http/message/index';
+import { expect } from "chai";
+import { HttpMessage } from "../../src/http/message/http.message";
+import { createMessage } from "../../src/http/message/http.message.factory";
+import { HttpStatus } from "../../src/http/message/http.statuses";
+import { BadRequest, Forbidden, NotFound, Ok } from "../../src/http/message/index";
 
-describe('Http Message', () => {
-    describe('#HttpMessage(...)', () => {
-  
+describe("Http Message", () => {
+    describe("#HttpMessage(...)", () => {
+
         const statusCodes: any = {
             200: { status: HttpStatus.Ok },
             400: { status: HttpStatus.BadRequest },
@@ -14,7 +14,7 @@ describe('Http Message', () => {
             404: { status: HttpStatus.NotFound }
         };
 
-        for(const code of [200, 400, 403, 404]) {
+        for (const code of [200, 400, 403, 404]) {
             it(`should create ${code} http message with proper information`, () => {
                 const httpMessage = createMessage(code, null);
 
@@ -25,7 +25,7 @@ describe('Http Message', () => {
         }
     });
 
-    describe('#factory(...)', () => {
+    describe("#factory(...)", () => {
         const sets = [
             { func: Ok, code: 200 },
             { func: BadRequest, code: 400 },
@@ -33,7 +33,7 @@ describe('Http Message', () => {
             { func: NotFound, code: 404 },
         ];
 
-        for(const { func, code } of sets) {
+        for (const { func, code } of sets) {
             it(`should create correct message using ${func.name} function`, () => {
                 const message = (func as any)();
 

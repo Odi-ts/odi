@@ -1,21 +1,21 @@
-import { Controller, IController, Autowired, Service, Inject } from "../../../src/index";
+import { Autowired, Controller, IController, Inject, Service } from "../../../src/index";
+import { Custom } from "./custom";
 import { RepositoryMock } from "./repo";
 import { ServiceMock } from "./service";
-import { Custom } from "./custom";
 
 @Controller()
-export class ControllerMock extends IController{
+export class ControllerMock extends IController {
 
     @Inject()
-    repo: RepositoryMock;
+    public repo: RepositoryMock;
 
     @Inject()
-    serivce: ServiceMock;
+    public serivce: ServiceMock;
 
-    @Inject('custom')
-    custom: Custom;
+    @Inject("custom")
+    public custom: Custom;
 
     @Autowired()
-    public injectService(serivce: ServiceMock){}
+    public injectService(serivce: ServiceMock) {}
 
-} 
+}

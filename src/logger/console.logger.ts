@@ -1,15 +1,14 @@
-import chalk from 'chalk';
+import chalk from "chalk";
 
-export class Logger{
+export class Logger {
 
-    public completion(text: string): void{
-        console.log(chalk.green('\u2714 ')+text);
+    public completion(text: string): void {
+        console.log(chalk.green("\u2714 ") + text);
     }
 
-    public warning(text: string): void{
+    public warning(text: string): void {
         console.log(chalk.yellow(`⚠ ${text}`));
     }
 }
-
 
 export const Log = new Logger();

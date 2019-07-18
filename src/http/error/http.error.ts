@@ -1,4 +1,4 @@
-export class IHttpError extends Error{
+export class IHttpError extends Error {
     private httpCode: number;
 
     constructor(message: string, httpCode: number) {
@@ -7,7 +7,7 @@ export class IHttpError extends Error{
         this.httpCode = httpCode;
     }
 
-    public getHttpCode(){
+    public getHttpCode() {
         return this.httpCode;
     }
 }

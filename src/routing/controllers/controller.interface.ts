@@ -1,89 +1,82 @@
 import { Request, Response } from "../../aliases";
 import { IAuth } from "../../auth/auth.interface";
 
-import { Decoding, User, UserContainer } from "./controller.types";
 import { DefaultHeaders, DefaultQuery, FastifyReply } from "fastify";
-import { FastifyCookieOptions } from 'fastify-cookie';
+import { FastifyCookieOptions } from "fastify-cookie";
+import { Decoding, User, UserContainer } from "./controller.types";
 
-export class IController<T = any>{ 
-    private authService: IAuth<Decoding<T>, User<T>, UserContainer<T>>;    
-    private userData: UserContainer<T>;
+export class IController<T = any> {
+
+    protected get user() {
+        if (!this.authService) {
+            throw new Error("No auth service.");
+        }
+
+        if (this.userData) {
+            return this.userData;
+        }
+
+        this.userData = this.authService.extractUser(this.request);
+
+        return this.userData;
+    }
 
     /* Express request and response */
     protected request: Request;
     protected response: Response;
+    private authService: IAuth<Decoding<T>, User<T>, UserContainer<T>>;
+    private userData: UserContainer<T>;
 
-    
     /* Complex objects */
-    getHeaders(): DefaultHeaders{
+    public getHeaders(): DefaultHeaders {
         return this.request.headers;
     }
 
-    getQuery(): DefaultQuery{
+    public getQuery(): DefaultQuery {
         return this.request.query;
     }
 
-
     /* Single get */
-    getQueryParam(key: string) {
+    public getQueryParam(key: string) {
         return this.request.query[key];
     }
 
-    getCookie(key: string) {
+    public getCookie(key: string) {
         return this.request.cookies[key];
     }
 
-    getParam(key: string) {
+    public getParam(key: string) {
         return this.request.params[key];
     }
 
-    getHeader(key: string) {
+    public getHeader(key: string) {
         return this.request.headers[key];
     }
 
-
    /* Single set */
-    setCookie(key: string, value: string, options: FastifyCookieOptions = {}): void{
+    public setCookie(key: string, value: string, options: FastifyCookieOptions = {}): void {
         this.response.setCookie(key, value, options);
     }
 
-    setHeader(key: string, value: string){
+    public setHeader(key: string, value: string) {
         this.response.header(key, value);
     }
 
-    setType(type: string) {
+    public setType(type: string) {
         this.response.type(type);
     }
 
-
     /* Useful actions */
-    redirect(url: string, code: number = 302): FastifyReply<import('http').ServerResponse>{      
+    public redirect(url: string, code: number = 302): FastifyReply<import ("http").ServerResponse> {
         return this.response.redirect(code, url);
     }
 
     /* Set status */
-    setStatus(status: number) {
+    public setStatus(status: number) {
         return this.response.code(status);
     }
 
-
-
-
-    protected get user(){
-        if(!this.authService){
-            throw new Error('No auth service.');
-        }
-
-        if(this.userData){
-            return this.userData;
-        }
-
-        this.userData = this.authService['extractUser'](this.request);
-        
-        return this.userData;      
-    }
-
-    private applyContext(req: Request, res: Response){
+    private applyContext(req: Request, res: Response) {
         this.request = req;
         this.response = res;
 

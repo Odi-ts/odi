@@ -1,9 +1,9 @@
-const naming = '__Odi';
+const naming = "__Odi";
 
 /* Basic controller metadata */
 export const CONTROLLER = `${naming}_controller`;
 export const ROUTE = `${naming}_route`;
-export const RAW_ROUTE =`${naming}_raw_route`;
+export const RAW_ROUTE = `${naming}_raw_route`;
 export const ROUTE_HANDLER = `${naming}_route_handler`;
 
 /* Controller advanced metadata */
@@ -40,12 +40,10 @@ export const QUERY_DTO = `${DATA_CLASS}_query_dto`;
 export const AUTH = `${naming}_auth_defaults`;
 export const AUTH_MIDDLEWARE = `${naming}_auth_middleware`;
 
-
 /* Workers */
 export const WORKER = `${naming}_worker`;
 export const DB_CONNECTION = `#${naming}_db_connection_default`;
 
-
 export const MAIN_COMPONENTS = [CONTROLLER, SOCKET, SERVICE, AUTH, REPOSITORY, WORKER ];
-export const REQ_CONTEXT = 'context';
-export const REQ_LOCALS = 'locals';
+export const REQ_CONTEXT = "context";
+export const REQ_LOCALS = "locals";

@@ -1,6 +1,6 @@
-export declare type ObjectType<T> = {
+export declare interface ObjectType<T> {
     new (): T;
-};
+}
 
 export declare type Constructor<T = any> = (new (...args: any[]) => T);
 

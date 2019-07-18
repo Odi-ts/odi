@@ -1,12 +1,11 @@
-import { createMessage } from "./http.message.factory";
 import { HttpMessage } from "./http.message";
+import { createMessage } from "./http.message.factory";
 
-
-export function Ok<T>(body?: T): HttpMessage<T | undefined, 200, "application/json">{
+export function Ok<T>(body?: T): HttpMessage<T | undefined, 200, "application/json"> {
     return createMessage(200, body);
 }
 
-export function BadRequest<T = string>(body?: T): HttpMessage<T | undefined, 400, "text/plain">{
+export function BadRequest<T = string>(body?: T): HttpMessage<T | undefined, 400, "text/plain"> {
     return createMessage(400, body);
 }
 

@@ -4,6 +4,6 @@ export function isNull(object: unknown) {
     return (object === null || object === undefined);
 }
 
-export type KeyMap<V> = { 
+export interface KeyMap<V> {
     [index: string]: V
-};
+}

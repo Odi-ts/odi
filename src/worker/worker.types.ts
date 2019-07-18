@@ -1,4 +1,4 @@
-import { MessagePort } from 'worker_threads';
+import { MessagePort } from "worker_threads";
 
 export interface WorkerRequest {
     id: number;

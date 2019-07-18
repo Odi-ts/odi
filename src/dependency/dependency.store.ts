@@ -1,6 +1,6 @@
-import { ComponentEntry } from "./dependency.decorators";
-import { KeyMap } from "../utils/object.utils";
 import { Constructor } from "../types";
+import { KeyMap } from "../utils/object.utils";
+import { ComponentEntry } from "./dependency.decorators";
 
 export type Omit<T, K extends keyof T | undefined> = Pick<T, Exclude<keyof T, K>>;
 

@@ -1,11 +1,12 @@
-import { Project, MethodDeclaration, Type, EnumDeclaration } from 'ts-morph';
-import { HTTP_MESSAGE_TYPE_ENDING } from './constraints';
+import { EnumDeclaration, MethodDeclaration, Project, Type } from "ts-morph";
+import { HTTP_MESSAGE_TYPE_ENDING } from "./constraints";
 
 let project: Project;
 
 export const getProgram = () => {
-    if(!project)
+    if (!project) {
         project = new Project();
+    }
 
     return project;
 };
@@ -15,51 +16,53 @@ function getChecker() {
 }
 
 function extractType(type: Type | undefined, level: number = 0) {
-    const nextLevel = level+ 1;
-    if(!type || nextLevel > 4)
+    const nextLevel = level + 1;
+    if (!type || nextLevel > 4) {
         return;
-    
+    }
+
     let descriptor = {};
-    if(type.isArray()) {
+    if (type.isArray()) {
         const items = type.getTypeArguments();
 
         descriptor = {
-            type: 'array',
-            items: items.length === 1 ? extractType(items[0], nextLevel) : items.map(extractType)
+            type: "array",
+            items: items.length === 1 ? extractType(items[0], nextLevel) : items.map(extractType),
         };
-    } else if(type.getText().startsWith("Promise") || type.getText() === 'void') {
+    } else if (type.getText().startsWith("Promise") || type.getText() === "void") {
         // 1. Nested promises wouldn't resolved during send.
         // 2. Void type shouldn't be documented.
         return;
-    
-    } else if(type.isEnumLiteral()) {
+
+    } else if (type.isEnumLiteral()) {
         const enumDeclaration = type.getSymbol()!.getValueDeclaration();
-        
-        if(!enumDeclaration) 
+
+        if (!enumDeclaration) {
             return;
+        }
 
         const members = (enumDeclaration as EnumDeclaration).getMembers();
         descriptor = {
             type: "string",
-            enum: members.map(m => m.getValue())
+            enum: members.map((m) => m.getValue()),
         };
 
-    } else if(type.getText() === 'Date') {
-        descriptor = { 
-            type: 'string',
-            format: "date"
-        };
-
-    } else if(type.getText() === 'JSX.Element') {
-        descriptor = { 
-            type: 'string',
-            format: "html"
-        };
-
-    } else if(type.isClassOrInterface() || type.isObject()) {
+    } else if (type.getText() === "Date") {
         descriptor = {
-            type: 'object',
-            properties: extractProperties(type, nextLevel)
+            type: "string",
+            format: "date",
+        };
+
+    } else if (type.getText() === "JSX.Element") {
+        descriptor = {
+            type: "string",
+            format: "html",
+        };
+
+    } else if (type.isClassOrInterface() || type.isObject()) {
+        descriptor = {
+            type: "object",
+            properties: extractProperties(type, nextLevel),
         };
     } else {
         descriptor = { type: getChecker().compilerObject.typeToString(type.compilerType) };
@@ -68,11 +71,11 @@ function extractType(type: Type | undefined, level: number = 0) {
     return descriptor;
 }
 
-function unwrapReservedTypes(type: Type, reservedCodes: ([string, string] | undefined)[]) {
-    if(type.getText().includes(HTTP_MESSAGE_TYPE_ENDING)) {
+function unwrapReservedTypes(type: Type, reservedCodes: Array<[string, string] | undefined>) {
+    if (type.getText().includes(HTTP_MESSAGE_TYPE_ENDING)) {
         const [ unwrapped, code, rawType ] = type.getTypeArguments();
 
-        reservedCodes.push([code.getText(), rawType.getText().replace(/[\'\"]/g, '')]);
+        reservedCodes.push([code.getText(), rawType.getText().replace(/[\'\"]/g, "")]);
         return unwrapped;
     }
 
@@ -83,20 +86,20 @@ function unwrapReservedTypes(type: Type, reservedCodes: ([string, string] | unde
 function extractProperties(type: Type, level: number = 0): any {
     return type.getProperties().reduce((prev, symbol) => {
         const type = getChecker().getTypeOfSymbolAtLocation(symbol, symbol.getValueDeclaration()!);
-        
+
         return {
             ...prev,
-            [symbol.getName()]: extractType(type, level)
+            [symbol.getName()]: extractType(type, level),
         };
     }, {});
 }
 
-export function extractReturnType(method: MethodDeclaration, reservedCodes: ([string, string] |  undefined)[]) {
+export function extractReturnType(method: MethodDeclaration, reservedCodes: Array<[string, string] |  undefined>) {
     const baseType = method.getReturnType();
-    const isPromised = baseType.getText().startsWith('Promise');
+    const isPromised = baseType.getText().startsWith("Promise");
 
     const targetType = isPromised ? baseType.getTypeArguments()![0] :  baseType;
     const returnTypes = targetType.isUnion() ? targetType.getUnionTypes() : [targetType];
-  
-    return returnTypes.map(type => unwrapReservedTypes(type,reservedCodes)).map(extractType);
+
+    return returnTypes.map((type) => unwrapReservedTypes(type, reservedCodes)).map(extractType);
 }

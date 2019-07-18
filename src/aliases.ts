@@ -1,9 +1,9 @@
-import { Server, IncomingMessage, ServerResponse} from 'http';
-import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify';
-import fastify = require('fastify');
+import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
+import fastify = require("fastify");
+import { IncomingMessage, Server, ServerResponse} from "http";
 
 declare  module "fastify" {
-    
+
    export interface FastifyRequest<
     HttpRequest,
     Query = fastify.DefaultQuery,
@@ -12,7 +12,7 @@ declare  module "fastify" {
     Body = any
   > {
     context: any;
-    locals: { user? :any };
+    locals: { user?: any };
     cookies: {[cookieName: string]: string};
   }
 }

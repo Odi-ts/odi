@@ -1,10 +1,10 @@
-import { ValidateFunction } from 'ajv';
-import { DATA_CLASS, DATA_VALIDATION_PROP, BODY_DTO, QUERY_DTO, DATA_CLASS_SCHEMA } from "../definitions";
+import { ValidateFunction } from "ajv";
+import { isFunction, isObject } from "util";
+import { BODY_DTO, DATA_CLASS, DATA_CLASS_SCHEMA, DATA_VALIDATION_PROP, QUERY_DTO } from "../definitions";
+import { Constructor, Propotype } from "../types";
+import { DtoPropsStorage, DtoPropsTypes, DtoSchemaStorage, GAJV, getSchema } from "./dto.storage";
 import { ValidatorFormat } from "./dto.type";
 import { buildSchema } from "./dto.validator";
-import { DtoPropsStorage, getSchema, GAJV, DtoPropsTypes, DtoSchemaStorage } from "./dto.storage";
-import { Constructor, Propotype } from '../types';
-import { isObject, isFunction } from 'util';
 
 function dtoFactory(value: string): ClassDecorator {
     return (target: Function) => {
@@ -27,13 +27,14 @@ export function validationFactory(object: object): PropertyDecorator {
     return (target: Propotype, propertyKey: string | symbol) => {
         const prev = Reflect.getMetadata(DATA_VALIDATION_PROP, target, propertyKey) || {};
         Reflect.defineMetadata(DATA_VALIDATION_PROP, { ...prev, ...object }, target, propertyKey);
-        
-        if(DtoPropsStorage.has(target)) {
+
+        if (DtoPropsStorage.has(target)) {
             const props = DtoPropsStorage.get(target)!;
-           
-            if(!props.includes(propertyKey))
+
+            if (!props.includes(propertyKey)) {
                 props.push(propertyKey);
-                
+            }
+
         } else {
             DtoPropsStorage.set(target, [propertyKey]);
         }
@@ -68,13 +69,13 @@ export const Deafault = <T>(def: T) => validationFactory({ default: def });
 
 /* Array validaitons */
 export const ArrayOf = (targetClass: any ) => (target: Propotype, propertyKey: string | symbol) => {
-    const items = 
-            isObject(targetClass) ? targetClass : 
+    const items =
+            isObject(targetClass) ? targetClass :
             isFunction(targetClass) ? DtoSchemaStorage.get(targetClass) :
             { type: targetClass.name.toLoweCase() };
 
     validationFactory({ items })(target, propertyKey);
-   
+
     /* Set array value */
     const prevTypes = DtoPropsTypes.get(target) || {};
 
@@ -92,7 +93,7 @@ export const CustomValidation = (validate: ValidateFunction, params: any = true)
     const keyword = `odi_${new Date().getTime()}`;
     GAJV.addKeyword(keyword, {
         async: true,
-        validate
+        validate,
     });
 
     return validationFactory({ [keyword]: true });

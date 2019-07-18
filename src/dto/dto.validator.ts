@@ -1,78 +1,81 @@
-import 'reflect-metadata';
+import "reflect-metadata";
 
-import { reflectType } from "../utils/directory.loader";
 import { DATA_CLASS, DATA_VALIDATION_PROP } from "../definitions";
-import { DtoSchemaStorage, getSchema, getDtoProps } from "./dto.storage";
+import { Constructor, Instance } from "../types";
+import { reflectType } from "../utils/directory.loader";
 import { metadata } from "../utils/metadata.utils";
-import { Constructor, Instance } from '../types';
-
+import { DtoSchemaStorage, getDtoProps, getSchema } from "./dto.storage";
 
 function extractBase(type: Constructor) {
-    let base: any = { type: null }; 
-    
-    if(type === String)
+    let base: any = { type: null };
+
+    if (type === String) {
         base.type = "string";
+    }
 
-    else if (type === Number)
+    else if (type === Number) {
         base.type = "number";
+         }
 
-    else if (type === Boolean)
+    else if (type === Boolean) {
         base.type = "boolean";
-    
-    else if (type === Array)
+         }
+
+    else if (type === Array) {
         base.type = "array";
+         }
 
     else if (type === Date) {
         base.type = "string";
         base.format = "date-time";
 
-    } else { 
-        if(Reflect.hasMetadata(DATA_CLASS, type)) {
+    } else {
+        if (Reflect.hasMetadata(DATA_CLASS, type)) {
             const nestedSchema = getSchema(type);
 
-            base = { 
+            base = {
                 type: "object",
-                ...(nestedSchema as object)
+                ...(nestedSchema as object),
             };
         } else {
             base = { type: "object" };
         }
-    }  
+    }
 
     return base;
 }
 
 export function buildSchema(target: Constructor) {
-    const instance = new target();        
+    const instance = new target();
     const reflectedProperties = (getDtoProps(Object.getPrototypeOf(instance)));
-    
+
     let requiredProperties = [...reflectedProperties];
     let properties = {};
 
-    for(const propertyKey of reflectedProperties) {
+    for (const propertyKey of reflectedProperties) {
         const type = reflectType(instance, propertyKey);
         const schema = metadata(instance, propertyKey).getMetadata(DATA_VALIDATION_PROP);
 
-        if(schema.isOptional === true) {
-            requiredProperties = requiredProperties.filter(elem => elem !== propertyKey);
+        if (schema.isOptional === true) {
+            requiredProperties = requiredProperties.filter((elem) => elem !== propertyKey);
             delete schema.isOptional;
         }
 
-        properties = { 
-            ...properties, 
+        properties = {
+            ...properties,
             [propertyKey]: {
                 ...extractBase(type),
-                ...schema
-            }
+                ...schema,
+            },
         };
     }
-    
-    const schema: object  = { 
+
+    const schema: object  = {
         type: "object",
-        properties, 
-        required: requiredProperties
+        properties,
+        required: requiredProperties,
     };
-  
+
     DtoSchemaStorage.set(target, schema);
     return schema;
 }

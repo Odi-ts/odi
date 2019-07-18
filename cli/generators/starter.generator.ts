@@ -1,7 +1,7 @@
 
 export const generateStarter = () => `
 import { Core } from 'odi';
- 
+
 new Core({
     sources: __dirname,
     server: {

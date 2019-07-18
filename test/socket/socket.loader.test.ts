@@ -1,37 +1,36 @@
-import * as socketClient from 'socket.io-client';
-import * as socketServer from 'socket.io';
+import * as socketServer from "socket.io";
+import * as socketClient from "socket.io-client";
 
-import { expect } from 'chai';
+import { expect } from "chai";
 
-import SocketLoader from '../../src/sockets/socket.loader';
+import SocketLoader from "../../src/sockets/socket.loader";
 
-import { Socket, OnEvent } from '../../src/sockets/socket.decorator';
-import { ISocket } from '../../src/sockets/socket.interfaces';
-import { getDependencyComposer } from '../utils/di.utils';
+import { OnEvent, Socket } from "../../src/sockets/socket.decorator";
+import { ISocket } from "../../src/sockets/socket.interfaces";
+import { getDependencyComposer } from "../utils/di.utils";
 
-import fastify = require('fastify');
+import fastify = require("fastify");
 
+@Socket("admin")
+class HomeSocket extends ISocket {
 
-@Socket('admin')
-class HomeSocket extends ISocket{
-
-    onConnect() {
-        console.log('connected');
+    public onConnect() {
+        console.log("connected");
     }
 
-    @OnEvent('message')
-    foo() {
-        this.emit('response', 'Hello world!');
+    @OnEvent("message")
+    public foo() {
+        this.emit("response", "Hello world!");
     }
 
-    @OnEvent('exit')
-    exit() {
-        this.emit('quite', 'Goodby world!');
+    @OnEvent("exit")
+    public exit() {
+        this.emit("quite", "Goodby world!");
     }
 
 }
 
-describe('Socket Loader', async () => {
+describe("Socket Loader", async () => {
     const app = fastify();
     const socketio = socketServer(app.server);
 
@@ -39,58 +38,58 @@ describe('Socket Loader', async () => {
     const socketLoader = new SocketLoader({ socketio, dependencyComposer });
     const processor = await socketLoader.processBase();
 
-    before(done => app.listen(8082, done));
+    before((done) => app.listen(8082, done));
 
-    describe('#processBase(...)', async () => {      
-            
-        it('should return processing function', () => expect(processor).to.be.instanceOf(Function));
+    describe("#processBase(...)", async () => {
 
-        it('should put instance in DI container', async () => {
+        it("should return processing function", () => expect(processor).to.be.instanceOf(Function));
+
+        it("should put instance in DI container", async () => {
             await processor(HomeSocket);
-            expect(dependencyComposer['container'].contain(HomeSocket, 'default')).to.be.eq(true);
+            expect(dependencyComposer["container"].contain(HomeSocket, "default")).to.be.eq(true);
         });
     });
 
-    describe('#bindHandlers', async () => {
-        const handerls = Array.from(socketLoader['bindHandlers'](new HomeSocket));
-    
-        it('should collect handlers', () => expect(handerls).to.have.length(2));
+    describe("#bindHandlers", async () => {
+        const handerls = Array.from(socketLoader["bindHandlers"](new HomeSocket));
 
-        it('should have functions and names', () => { 
+        it("should collect handlers", () => expect(handerls).to.have.length(2));
+
+        it("should have functions and names", () => {
             const [ first, second ] = handerls;
 
-            expect(first[0]).to.be.eq('message');
-            expect(second[0]).to.be.eq('exit');
+            expect(first[0]).to.be.eq("message");
+            expect(second[0]).to.be.eq("exit");
         });
     });
 
-    describe('handling', () => {
+    describe("handling", () => {
         let socket: SocketIOClient.Socket;
 
-        before(function (done) {
-            socket = socketClient('http://localhost:8082/admin', { transports: ['websocket'] });
-            socket.on('connect', () => done());
+        before(function(done) {
+            socket = socketClient("http://localhost:8082/admin", { transports: ["websocket"] });
+            socket.on("connect", () => done());
         });
 
-        it('should emmit message event and accept response event', (done) => {
-            socket.on('response', (res: any) => {
+        it("should emmit message event and accept response event", (done) => {
+            socket.on("response", (res: any) => {
                 expect(res).to.be.eq("Hello world!");
                 done();
             });
 
-            socket.emit('message', 'Hello!');
+            socket.emit("message", "Hello!");
         });
 
-        it('should emmit exit event and accept quite event', (done) => {
-            socket.on('quite', (res: any) => {
-                expect(res).to.be.eq('Goodby world!');
+        it("should emmit exit event and accept quite event", (done) => {
+            socket.on("quite", (res: any) => {
+                expect(res).to.be.eq("Goodby world!");
                 done();
             });
 
-            socket.emit('exit', 'Hello!');
+            socket.emit("exit", "Hello!");
         });
 
-        after(done => {
+        after((done) => {
           //  socket.close();
            socketio.close(() => done());
         });

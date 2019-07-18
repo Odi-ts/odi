@@ -1,4 +1,4 @@
-import { ValidateFunction } from 'ajv';
+import { ValidateFunction } from "ajv";
 
 export type ValidatorFormat = "date"
     | "time"

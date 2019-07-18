@@ -1,1 +1,1 @@
-export { JWTAuth, JWTUser } from './jwt.auth';
+export { JWTAuth, JWTUser } from "./jwt.auth";

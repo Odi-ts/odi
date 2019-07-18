@@ -1,32 +1,31 @@
-import 'reflect-metadata';
-import * as keys from '../../definitions';
+import "reflect-metadata";
+import * as keys from "../../definitions";
 
-import { Method } from './controller.types';
-import { IController } from './controller.interface';
-import { normalizeRoutePath } from './controller.utils';
-import { Instance, Propotype, Constructor } from '../../types';
+import { Constructor, Instance, Propotype } from "../../types";
+import { IController } from "./controller.interface";
+import { Method } from "./controller.types";
+import { normalizeRoutePath } from "./controller.utils";
 
 export type BasePath = string;
 export type RouteHandler = (...args: any[]) => any | void;
 
 export enum ControllerType {
     Rest,
-    Render
-} 
+    Render,
+}
 export interface ControllerMeta {
-    path: string;  
-    type? : ControllerType;
+    path: string;
+    type?: ControllerType;
 }
 
 export enum Returning {
-    Void
+    Void,
 }
 
 export type RouteHandlerDecorator = PropertyDecorator;
 
-
 export interface RouteMetadata {
-    method: 'get' | 'post' | 'all' | 'delete' | 'put' | 'patch' | 'head' | 'options';
+    method: "get" | "post" | "all" | "delete" | "put" | "patch" | "head" | "options";
     path: string;
     args: string[];
 }
@@ -36,8 +35,8 @@ export function isRouteHandler(target: Instance, propertyKey: string) {
 }
 
 // Factories
-export function controllerFactory(route?: BasePath, options? : object) {
-    const path = normalizeRoutePath(route || '/');   
+export function controllerFactory(route?: BasePath, options?: object) {
+    const path = normalizeRoutePath(route || "/");
 
     return <T extends IController>(target: Constructor<T>) => Reflect.defineMetadata(keys.CONTROLLER, { path, ...options }, target);
 }
@@ -45,30 +44,29 @@ export function controllerFactory(route?: BasePath, options? : object) {
 export function handlerFactory(method: string): PropertyDecorator {
     return (target: Propotype, propertyKey: string | symbol) => {
         const path = normalizeRoutePath(propertyKey.toString());
-        
+
         Reflect.defineMetadata(keys.ROUTE, { method, path }, target, propertyKey);
     };
 }
 
 // Decorators
-export function Route(method: Method, route: string = '/'): PropertyDecorator {
-    const path = normalizeRoutePath(route); 
+export function Route(method: Method, route: string = "/"): PropertyDecorator {
+    const path = normalizeRoutePath(route);
 
     return (target: Propotype, propertyKey: string | symbol) => Reflect.defineMetadata(keys.RAW_ROUTE, { method, path }, target, propertyKey);
 }
 
-export function Controller(path? : BasePath ) { 
-    return controllerFactory(path, { type : ControllerType.Rest });    
+export function Controller(path?: BasePath ) {
+    return controllerFactory(path, { type : ControllerType.Rest });
 }
 
-
 /* Short bindings using method names */
-export const All: RouteHandlerDecorator = handlerFactory('all');
-export const Get: RouteHandlerDecorator = handlerFactory('get');
-export const Put: RouteHandlerDecorator = handlerFactory('put');
-export const Del: RouteHandlerDecorator = handlerFactory('delete');
-export const Post: RouteHandlerDecorator = handlerFactory('post');
-export const Patch: RouteHandlerDecorator = handlerFactory('patch');
+export const All: RouteHandlerDecorator = handlerFactory("all");
+export const Get: RouteHandlerDecorator = handlerFactory("get");
+export const Put: RouteHandlerDecorator = handlerFactory("put");
+export const Del: RouteHandlerDecorator = handlerFactory("delete");
+export const Post: RouteHandlerDecorator = handlerFactory("post");
+export const Patch: RouteHandlerDecorator = handlerFactory("patch");
 
 /* Full route binding with alias to methods */
 export const RouteAll = (path?: string) => Route(Method.ALL, path);

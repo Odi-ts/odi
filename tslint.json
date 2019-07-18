@@ -3,8 +3,11 @@
         "node_modules/tslint-eslint-rules/dist/rules",
         "node_modules/tslint-microsoft-contrib"
     ],
+    "extends": "tslint:recommended",
     "rules": {
         "no-var-keyword": true,
+        "no-string-literal":false,
+        "trailing-comma": false,
         "linebreak-style": false,
         "object-literal-shorthand": true,
         "semicolon": [true, "always", "ignore-bound-class-methods"],

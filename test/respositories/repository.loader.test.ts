@@ -1,37 +1,37 @@
-import { expect } from 'chai';
+import { expect } from "chai";
 
 import { RepositoryLoader } from "../../src/database/repository.loader";
+import DependencyComposer from "../dependency/dependency.composer";
+import DependencyContainer from "../dependency/dependency.container";
 import { getDependencyComposer } from "../utils/di.utils";
-import { RepoMock } from './repository.decorator.test';
-import DependencyComposer from '../dependency/dependency.composer';
-import DependencyContainer from '../dependency/dependency.container';
+import { RepoMock } from "./repository.decorator.test";
 
 let dependencyComposer: DependencyComposer;
 let dependencyContainer: DependencyContainer;
 
-describe('Repository Loader', () => {    
-    describe('#RepositoryLoader', async () => {      
-        let loader; 
+describe("Repository Loader", () => {
+    describe("#RepositoryLoader", async () => {
+        let loader;
         let processor: Function;
 
         before(async () => {
             dependencyComposer = getDependencyComposer();
-            dependencyContainer = dependencyComposer['container'];
+            dependencyContainer = dependencyComposer["container"];
 
             loader = new RepositoryLoader({ dependencyComposer });
             processor = await loader.processBase();
         });
-       
-        it('should return processing function', () => expect(processor).to.be.instanceOf(Function));
-        it('should put instance in DI container', async () => {                
+
+        it("should return processing function", () => expect(processor).to.be.instanceOf(Function));
+        it("should put instance in DI container", async () => {
             await processor(RepoMock);
-            expect(dependencyContainer.contain(RepoMock, 'default')).to.be.eq(true);
+            expect(dependencyContainer.contain(RepoMock, "default")).to.be.eq(true);
         });
-        it('should not override existed repository in DI container', () => {            
-            (dependencyContainer.get(RepoMock) as any)['flag'] = 'origin';
+        it("should not override existed repository in DI container", () => {
+            (dependencyContainer.get(RepoMock) as any).flag = "origin";
             processor(RepoMock);
-            
-            expect((dependencyContainer.get(RepoMock) as any)['flag']).to.be.eq('origin');
+
+            expect((dependencyContainer.get(RepoMock) as any).flag).to.be.eq("origin");
         });
     });
 });

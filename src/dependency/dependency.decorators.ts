@@ -1,14 +1,14 @@
-import 'reflect-metadata';
+import "reflect-metadata";
 
 import { AUTOWIRED, INJECT } from "../definitions";
 
+import { isObject } from "util";
+import { Constructor, Instance, Propotype } from "../types";
+import { ConstructorParameters, ValuedProps } from "./dependency.store";
 import { autowiredPropsStore } from "./dependency.utils";
-import { ValuedProps, ConstructorParameters } from "./dependency.store";
-import { Constructor, Instance, Propotype } from '../types';
-import { isObject } from 'util';
 
 export interface ComponentEntry<T extends Constructor> {
-    type?: 'singleton' | 'scoped';
+    type?: "singleton" | "scoped";
     constructorArgs?: Partial<ConstructorParameters<T>>;
     props?: Partial<ValuedProps<InstanceType<T>>>;
 }
@@ -23,36 +23,36 @@ export interface ComponentSettings<T extends Constructor> {
 }
 
 export const defaultEntry: ComponentEntry<Constructor> = {
-    type: 'singleton',
+    type: "singleton",
     constructorArgs: [],
-    props: {}
+    props: {},
 };
 
 export const defaultSettings: ComponentSettings<Constructor> = {
-    'default': defaultEntry
+    default: defaultEntry,
 };
 
-
-export const Autowired = (id: string = 'default') => (target: Propotype, propertyKey: string | symbol, descriptor?: PropertyDescriptor) => {
+export const Autowired = (id: string = "default") => (target: Propotype, propertyKey: string | symbol, descriptor?: PropertyDescriptor) => {
     Reflect.defineMetadata(AUTOWIRED, id, target, propertyKey);
 
-    if(descriptor) {
+    if (descriptor) {
         return;
     }
 
-    if(autowiredPropsStore.has(target))
+    if (autowiredPropsStore.has(target)) {
         autowiredPropsStore.get(target)!.push(propertyKey);
-    else
+    }
+    else {
         autowiredPropsStore.set(target, [propertyKey]);
+    }
 };
 
-
-
-export const Inject = (id: string = 'default') => (target: Propotype, propertyKey: string | symbol, descriptor?: PropertyDescriptor | number) => {
-    if(isObject(descriptor) || descriptor)  
+export const Inject = (id: string = "default") => (target: Propotype, propertyKey: string | symbol, descriptor?: PropertyDescriptor | number) => {
+    if (isObject(descriptor) || descriptor) {
         return Autowired(id)(target, propertyKey, descriptor as PropertyDescriptor);
+    }
 
     const prev = Reflect.getMetadata(INJECT, target, propertyKey) || {};
-    
+
     Reflect.defineMetadata(INJECT, { ...prev, [descriptor as number]: id }, target, propertyKey);
 };

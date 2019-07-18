@@ -1,4 +1,4 @@
-import { sep } from 'path';
+import { sep } from "path";
 
 export function generatePackage(): any {
     return {
