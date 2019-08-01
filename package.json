@@ -74,7 +74,7 @@
     "cls-hooked": "^4.2.2",
     "commander": "^2.20.0",
     "espree": "^5.0.1",
-    "fastify": "^2.6.0",
+    "fastify": "^2.7.1",
     "fastify-cookie": "^3.0.2",
     "fastify-static": "^2.5.0",
     "gauge": "^2.7.4",
