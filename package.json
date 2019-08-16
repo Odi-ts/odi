@@ -31,7 +31,7 @@
   "author": "Dan Tsekhmastryuk",
   "license": "MIT",
   "devDependencies": {
-    "@types/chai": "^4.1.7",
+    "@types/chai": "^4.2.0",
     "@types/cheerio": "^0.22.12",
     "@types/esprima": "^4.0.2",
     "@types/express": "^4.17.0",
