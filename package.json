@@ -28,7 +28,7 @@
   "bin": {
     "odi": "./lib/cli/index.js"
   },
-  "author": "Dan Tsekhmastryuk",
+  "author": "Dan T",
   "license": "MIT",
   "devDependencies": {
     "@types/chai": "^4.2.0",
